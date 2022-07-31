@@ -24,3 +24,6 @@ evalexpr_rustler-*.tar
 
 # Temporary files, for example, from tests.
 /tmp/
+
+# Rustler
+/priv/native/*
