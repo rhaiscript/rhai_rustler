@@ -18,7 +18,7 @@ fn eval<'a>(env: Env<'a>, string: &str, context: Term<'a>) -> Result<Term<'a>, S
     let map = MapIterator::new(context).expect("Should be a map in the argument");
 
     for (k, v) in map {
-        let key: String = k.decode().unwrap();
+        let key: String = k.decode().or(Err("key should be a string"))?;
 
         match Term::get_type(v) {
             TermType::Binary => {
