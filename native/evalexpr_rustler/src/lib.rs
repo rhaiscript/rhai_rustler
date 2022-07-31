@@ -1,10 +1,12 @@
 use evalexpr::*;
-use rustler::{Decoder, Encoder, Env, MapIterator, Term, TermType};
+use rustler::{Encoder, Env, MapIterator, Term, TermType};
 
-macro_rules! try_set_number {
+macro_rules! set_value {
     ($context_map:expr, $key:expr, $term:expr, $type:ty) => {
-        if let Ok(num) = parse_number(&$term) as Result<$type, rustler::Error> {
+        if let Ok(num) = $term.decode() as Result<$type, rustler::Error> {
             _ = $context_map.set_value((&$key).to_string(), Value::from(num));
+        } else {
+            panic!("expected type: {}", stringify!($type));
         }
     };
 }
@@ -20,18 +22,16 @@ fn eval<'a>(env: Env<'a>, string: &str, context: Term<'a>) -> Result<Term<'a>, S
 
         match Term::get_type(v) {
             TermType::Binary => {
-                let value: String = v.decode().unwrap();
-                _ = context_map.set_value(key, Value::from(value));
+                set_value!(context_map, key, v, String);
             }
             TermType::Number => {
-                try_set_number!(context_map, key, v, f64);
-                try_set_number!(context_map, key, v, i64);
+                set_value!(context_map, key, v, f64);
+                set_value!(context_map, key, v, i64);
             }
             TermType::Atom => {
-                let value: bool = v.decode().unwrap();
-                _ = context_map.set_value(key, Value::from(value));
+                set_value!(context_map, key, v, bool);
             }
-            _ => return Err("Invalid type".to_string()),
+            _ => return Err("invalid type".to_string()),
         };
     }
 
@@ -40,17 +40,9 @@ fn eval<'a>(env: Env<'a>, string: &str, context: Term<'a>) -> Result<Term<'a>, S
         Ok(Value::Int(value)) => Ok(value.encode(env)),
         Ok(Value::String(value)) => Ok(value.encode(env)),
         Ok(Value::Float(value)) => Ok(value.encode(env)),
-        Ok(_) => Err("not impl".to_string()),
+        Ok(_) => Err("not implemented".to_string()),
         Err(err) => Err(err.to_string()),
     }
-}
-
-fn parse_number<'a, T: Decoder<'a>>(term: &Term<'a>) -> Result<T, rustler::Error> {
-    if !term.is_number() {
-        return Err(rustler::Error::BadArg);
-    }
-
-    term.decode().or(Err(rustler::Error::BadArg))
 }
 
 rustler::init!("Elixir.Evalexpr", [eval]);
