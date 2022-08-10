@@ -1,16 +1,6 @@
 use evalexpr::*;
 use rustler::{Encoder, Env, MapIterator, Term, TermType};
 
-macro_rules! set_value {
-    ($context_map:expr, $key:expr, $term:expr, $type:ty) => {
-        if let Ok(num) = $term.decode() as Result<$type, rustler::Error> {
-            _ = $context_map.set_value((&$key).to_string(), Value::from(num));
-        } else {
-            panic!("expected type: {}", stringify!($type));
-        }
-    };
-}
-
 #[rustler::nif]
 fn eval<'a>(env: Env<'a>, string: &str, context: Term<'a>) -> Result<Term<'a>, String> {
     let mut context_map = HashMapContext::new();
@@ -20,19 +10,20 @@ fn eval<'a>(env: Env<'a>, string: &str, context: Term<'a>) -> Result<Term<'a>, S
     for (k, v) in map {
         let key: String = k.decode().or(Err("key should be a string"))?;
 
-        match Term::get_type(v) {
-            TermType::Binary => {
-                set_value!(context_map, key, v, String);
-            }
+        let value: Value = match Term::get_type(v) {
+            TermType::Binary => Value::from(v.decode::<String>().expect("Should be a string")),
             TermType::Number => {
-                set_value!(context_map, key, v, f64);
-                set_value!(context_map, key, v, i64);
+                if let Ok(num) = v.decode() as Result<i64, rustler::Error> {
+                    Value::from(num)
+                } else {
+                    Value::from(v.decode::<f64>().expect("Should be a number"))
+                }
             }
-            TermType::Atom => {
-                set_value!(context_map, key, v, bool);
-            }
+            TermType::Atom => Value::from(v.decode::<bool>().expect("Should be a boolean")),
             _ => return Err("invalid type".to_string()),
         };
+
+        context_map.set_value((key).to_string(), value).ok();
     }
 
     match eval_with_context(string, &context_map) {
