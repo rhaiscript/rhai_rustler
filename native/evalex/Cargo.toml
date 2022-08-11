@@ -1,11 +1,11 @@
 [package]
-name = "evalexpr_rustler"
+name = "evalex"
 version = "0.1.0"
 authors = ["Fabrizio Sestito <fabrizio.sestito@suse.com>"]
 edition = "2018"
 
 [lib]
-name = "evalexpr_rustler"
+name = "evalex"
 path = "src/lib.rs"
 crate-type = ["cdylib"]
 

@@ -22,4 +22,4 @@ fn eval<'a>(env: Env<'a>, string: &str, context: Term<'a>) -> Result<Term<'a>, T
     }
 }
 
-rustler::init!("Elixir.Evalexpr", [eval]);
+rustler::init!("Elixir.EvalEx", [eval]);

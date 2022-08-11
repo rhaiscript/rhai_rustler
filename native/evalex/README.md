@@ -1,4 +1,4 @@
-# NIF for Elixir.Evalexpr
+# NIF for EvalEx
 
 ## To build the NIF module:
 
@@ -8,7 +8,7 @@
 
 ```elixir
 defmodule Evalexpr do
-    use Rustler, otp_app: :evalexpr_rustler, crate: "evalexpr_rustler"
+    use Rustler, otp_app: :evalex, crate: "evalex"
 
     # When your NIF is loaded, it will override this function.
     def add(_a, _b), do: :erlang.nif_error(:nif_not_loaded)
