@@ -40,10 +40,9 @@ mod atoms {
 
 pub fn to_error_tuple(env: Env, err: evalexpr::EvalexprError) -> Term {
     match err {
-        EvalexprError::WrongOperatorArgumentAmount {
-            expected: _,
-            actual: _,
-        } => make_reason_tuple(env, atoms::wrong_operator_amount(), err),
+        EvalexprError::WrongOperatorArgumentAmount { .. } => {
+            make_reason_tuple(env, atoms::wrong_operator_amount(), err)
+        }
         EvalexprError::WrongFunctionArgumentAmount { .. } => {
             make_reason_tuple(env, atoms::wrong_function_argument_amount(), err)
         }
