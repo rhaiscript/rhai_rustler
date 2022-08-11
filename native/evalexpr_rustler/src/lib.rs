@@ -10,7 +10,9 @@ fn eval<'a>(env: Env<'a>, string: &str, context: Term<'a>) -> Result<Term<'a>, S
     for (k, v) in map {
         let key: String = k.decode().expect("Should be a string");
 
-        context_map.set_value((key).to_string(), to_value(&v)).ok();
+        context_map
+            .set_value((key).to_string(), to_value(env, &v))
+            .ok();
     }
 
     match eval_with_context(string, &context_map) {
@@ -19,7 +21,7 @@ fn eval<'a>(env: Env<'a>, string: &str, context: Term<'a>) -> Result<Term<'a>, S
     }
 }
 
-fn to_value(term: &Term) -> Value {
+fn to_value<'a>(env: Env<'a>, term: &Term<'a>) -> Value {
     match Term::get_type(*term) {
         TermType::Binary => term
             .decode()
@@ -34,8 +36,13 @@ fn to_value(term: &Term) -> Value {
         TermType::Atom => term
             .decode()
             .map(Value::Boolean)
-            .or_else(|_| term.decode::<String>().map(Value::String))
-            .or_else(|_| term.decode::<()>().map(|_| Value::Empty))
+            .or_else(|_| {
+                if *term == rustler::types::atom::nil().to_term(env) {
+                    Ok(Value::Empty)
+                } else {
+                    term.atom_to_string().map(Value::String)
+                }
+            })
             .expect("get_type() returned Atom but could not decode as string, boolean or empty."),
 
         TermType::List => {
@@ -43,7 +50,8 @@ fn to_value(term: &Term) -> Value {
                 .decode::<Vec<Term>>()
                 .expect("get_type() returned List but could not decode as list.");
 
-            let converted_items: Vec<Value> = items.iter().map(to_value).collect();
+            let converted_items: Vec<Value> =
+                items.iter().map(|item| to_value(env, item)).collect();
 
             Value::from(converted_items)
         }
@@ -51,7 +59,8 @@ fn to_value(term: &Term) -> Value {
         TermType::Tuple => {
             let elems =
                 get_tuple(*term).expect("get_type() returned Tuple but could not decode as tuple.");
-            let converted_elems: Vec<Value> = elems.iter().map(to_value).collect();
+            let converted_elems: Vec<Value> =
+                elems.iter().map(|elem| to_value(env, elem)).collect();
 
             Value::from(converted_elems)
         }
