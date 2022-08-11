@@ -7,7 +7,7 @@
 ## To load the NIF:
 
 ```elixir
-defmodule Evalexpr do
+defmodule EvalEx do
     use Rustler, otp_app: :evalex, crate: "evalex"
 
     # When your NIF is loaded, it will override this function.
