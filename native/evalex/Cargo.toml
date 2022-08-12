@@ -1,6 +1,6 @@
 [package]
 name = "evalex"
-version = "0.1.0"
+version = "0.1.0-alpha"
 authors = ["Fabrizio Sestito <fabrizio.sestito@suse.com>"]
 edition = "2018"
 

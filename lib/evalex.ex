@@ -1,7 +1,8 @@
 defmodule EvalEx do
   @moduledoc """
-  EvalEx is an expression evaluator and tiny scripting language for elixir, powered by the Rust crate evalexpr.
-  """
+  EvalEx is an expression evaluator and tiny scripting language for elixir,
+  powered by the Rust crate evalexpr.
+"""
 
   version = Mix.Project.config()[:version]
 
