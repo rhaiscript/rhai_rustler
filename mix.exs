@@ -10,17 +10,17 @@ defmodule EvalEx.MixProject do
       elixir: "~> 1.11",
       start_permanent: Mix.env() == :prod,
       deps: deps(),
-      files: [
-        "lib",
-        "native",
-        "checksum-*.exs",
-        "mix.exs",
-        "README.md",
-        "LICENSE"
-      ],
       description:
         "A powerful expression evaluation library for Elixir, based on the Rust crate evalexpr.",
       package: [
+        files: [
+          "lib",
+          "native",
+          "checksum-*.exs",
+          "mix.exs",
+          "README.md",
+          "LICENSE"
+        ],
         licenses: ["Apache-2.0"],
         mantainers: ["Fabrizio Sestito <fabrizio.sestito@suse.com>"],
         links: %{
