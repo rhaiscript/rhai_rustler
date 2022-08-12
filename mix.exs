@@ -9,31 +9,40 @@ defmodule EvalEx.MixProject do
       version: @version,
       elixir: "~> 1.11",
       start_permanent: Mix.env() == :prod,
-      deps: deps(),
-      description:
-        "A powerful expression evaluation library for Elixir, based on the Rust crate evalexpr.",
-      package: [
-        files: [
-          "lib",
-          "native",
-          "checksum-*.exs",
-          "mix.exs",
-          "README.md",
-          "LICENSE"
-        ],
-        licenses: ["Apache-2.0"],
-        mantainers: ["Fabrizio Sestito <fabrizio.sestito@suse.com>"],
-        links: %{
-          "GitHub" => "https://github.com/fabriziosestito/evalex",
-          "Docs" => "https://hexdocs.pm/evalex/"
-        }
-      ]
+      description: description(),
+      package: package(),
+      deps: deps()
     ]
   end
 
   def application do
     [
       extra_applications: [:logger]
+    ]
+  end
+
+  defp description do
+    "A powerful expression evaluation library for Elixir, based on the Rust crate evalexpr."
+  end
+
+  defp package do
+    [
+      files: [
+        "lib",
+        "native/evalex/.cargo",
+        "native/evalex/src",
+        "native/evalex/Cargo*",
+        "checksum-*.exs",
+        "mix.exs",
+        "README.md",
+        "LICENSE"
+      ],
+      licenses: ["Apache-2.0"],
+      mantainers: ["Fabrizio Sestito <fabrizio.sestito@suse.com>"],
+      links: %{
+        "GitHub" => "https://github.com/fabriziosestito/evalex",
+        "Docs" => "https://hexdocs.pm/evalex/"
+      }
     ]
   end
 
