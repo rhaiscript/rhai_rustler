@@ -14,7 +14,19 @@ defmodule EvalEx.MixProject do
         "lib",
         "native",
         "checksum-*.exs",
-        "mix.exs"
+        "mix.exs",
+        "README.md",
+        "LICENSE"
+      ],
+      description:
+        "A powerful expression evaluation library for Elixir, based on the Rust crate evalexpr.",
+      package: [
+        licenses: ["Apache-2.0"],
+        mantainers: ["Fabrizio Sestito <fabrizio.sestito@suse.com>"],
+        links: %{
+          "GitHub" => "https://github.com/fabriziosestito/evalex",
+          "Docs" => "https://hexdocs.pm/evalex/"
+        }
       ]
     ]
   end
@@ -28,7 +40,8 @@ defmodule EvalEx.MixProject do
   defp deps do
     [
       {:rustler, "~> 0.25.0"},
-      {:rustler_precompiled, "~> 0.5.1"}
+      {:rustler_precompiled, "~> 0.5.1"},
+      {:ex_doc, ">= 0.0.0", only: :dev, runtime: false}
     ]
   end
 end
