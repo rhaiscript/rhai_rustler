@@ -4,28 +4,6 @@ defmodule EvalEx do
   based on [evalexpr](https://github.com/ISibboI/evalexpr) using [rustler](https://github.com/rusterlium/rustler).
   """
 
-  version = Mix.Project.config()[:version]
-
-  targets = ~w(
-    aarch64-apple-darwin
-    x86_64-apple-darwin
-    x86_64-unknown-linux-gnu
-    x86_64-unknown-linux-musl
-    arm-unknown-linux-gnueabihf
-    aarch64-unknown-linux-gnu
-    aarch64-unknown-linux-musl
-    x86_64-pc-windows-msvc
-    x86_64-pc-windows-gnu
-  )
-
-  use RustlerPrecompiled,
-    otp_app: :evalex,
-    crate: "evalex",
-    base_url: "https://github.com/fabriziosestito/evalex/releases/download/v#{version}",
-    force_build: System.get_env("EVALEX_FORCE_BUILD") == "true",
-    version: version,
-    targets: targets
-
   @type evalex_any :: number() | boolean() | String.t() | nil | [evalex_any()]
 
   @doc """
@@ -55,7 +33,5 @@ defmodule EvalEx do
   """
   @doc since: "0.1.0"
   @spec eval(String.t(), map()) :: {:ok, evalex_any()} | {:error, {atom(), String.t()}}
-  def eval(_, _) do
-    :erlang.nif_error(:nif_not_loaded)
-  end
+  def eval(expression, context \\ %{}), do: EvalEx.Native.eval(expression, context)
 end
