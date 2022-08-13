@@ -11,6 +11,7 @@ defmodule EvalEx.MixProject do
       start_permanent: Mix.env() == :prod,
       description: description(),
       package: package(),
+      docs: docs(),
       deps: deps()
     ]
   end
@@ -43,6 +44,13 @@ defmodule EvalEx.MixProject do
         "GitHub" => "https://github.com/fabriziosestito/evalex",
         "Docs" => "https://hexdocs.pm/evalex/"
       }
+    ]
+  end
+
+  defp docs do
+    [
+      main: "readme",
+      extras: ["README.md", "LICENSE"]
     ]
   end
 
