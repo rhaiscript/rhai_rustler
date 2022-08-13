@@ -23,7 +23,7 @@ defmodule EvalEx.MixProject do
   end
 
   defp description do
-    "A powerful expression evaluation library for Elixir, based on the Rust crate evalexpr."
+    "A powerful expression evaluation library for Elixir, based on evalexpr using rustler."
   end
 
   defp package do
