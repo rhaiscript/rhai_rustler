@@ -33,5 +33,5 @@ defmodule EvalEx do
   """
   @doc since: "0.1.0"
   @spec eval(String.t(), map()) :: {:ok, evalex_any()} | {:error, {atom(), String.t()}}
-  def eval(expression, context \\ %{}), do: EvalEx.Native.eval(expression, context)
+  def eval(expression, %{} = context \\ %{}), do: EvalEx.Native.eval(expression, context)
 end
