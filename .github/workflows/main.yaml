@@ -54,6 +54,10 @@ jobs:
         run: mix format --check-formatted
         if: ${{matrix.lint}}
 
+      - name: Credo
+        run: mix credo --strict
+        if: ${{matrix.lint}}
+
       - name: Check no unused dependencies
         run: mix deps.get && mix deps.unlock --check-unused
         if: ${{matrix.lint == 'true' && steps.cache-deps.outputs.cache-hit != 'true'}}
