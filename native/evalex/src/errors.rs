@@ -1,5 +1,5 @@
 use evalexpr::EvalexprError;
-use rustler::{types::tuple::make_tuple, Encoder, Env, Term};
+use rustler::{Encoder, Env, Term};
 
 mod atoms {
     rustler::atoms! {
@@ -117,5 +117,5 @@ pub fn to_error_tuple(env: Env, err: evalexpr::EvalexprError) -> Term {
 }
 
 fn make_reason_tuple(env: Env, atom: rustler::types::atom::Atom, err: EvalexprError) -> Term {
-    make_tuple(env, &[atom.to_term(env), err.to_string().encode(env)])
+    (atom, err.to_string().encode(env)).encode(env)
 }
