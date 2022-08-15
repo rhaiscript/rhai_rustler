@@ -28,4 +28,4 @@ evalexpr_rustler-*.tar
 # Rustler
 /priv/native/*
 
-checksum-Elixir.EvalEx.exs
+checksum-Elixir.EvalEx.Native.exs
