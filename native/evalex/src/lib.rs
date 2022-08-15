@@ -13,7 +13,9 @@ fn eval<'a>(env: Env<'a>, string: &str, context: Term<'a>) -> Result<Term<'a>, T
         .for_each(|(k, v)| {
             let key: String = k.decode().expect("Should be a string");
 
-            hash_map_context.set_value(key, types::to_value(env, &v)).ok();
+            hash_map_context
+                .set_value(key, types::to_value(env, &v))
+                .ok();
         });
 
     match eval_with_context_mut(string, &mut hash_map_context) {
