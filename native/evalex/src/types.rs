@@ -6,13 +6,14 @@ pub fn to_value<'a>(env: Env<'a>, term: &Term<'a>) -> Value {
         TermType::Binary => term
             .decode()
             .map(Value::String)
-            .expect("get_type() returned String but could not decode as string."),
+            .expect("get_type() returned Binary but could not decode as string."),
 
         TermType::Number => term
             .decode::<i64>()
             .map(Value::Int)
             .or_else(|_| term.decode::<f64>().map(Value::Float))
-            .expect("get_type() returned String but could not decode as integer or float."),
+            .expect("get_type() returned Number but could not decode as integer or float."),
+
         TermType::Atom => term
             .decode()
             .map(Value::Boolean)
