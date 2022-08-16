@@ -48,7 +48,7 @@ defmodule EvalExTest do
       end
     end
 
-    property "should convert tuple() to List and List to list()" do
+    property "should convert tuple() to Tuple and Tuple to list()" do
       check all tuple <- tuple({integer(), string(:ascii)}) do
         assert {:ok, result} = EvalEx.eval("a", %{"a" => tuple})
         assert Tuple.to_list(tuple) == result
@@ -56,7 +56,7 @@ defmodule EvalExTest do
       end
     end
 
-    property "should convert list() to List and List to list()" do
+    property "should convert list() to Tuple and Tuple to list()" do
       check all list <- list_of(string(:ascii)) do
         assert {:ok, result} = EvalEx.eval("a", %{"a" => list})
         assert list == result
