@@ -156,7 +156,7 @@ jobs:
           echo ::set-output name=LIB_FINAL_PATH::${LIB_FINAL_PATH}
           echo ::set-output name=LIB_FINAL_NAME::${LIB_FINAL_NAME}.tar.gz
       - name: "Artifact upload"
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: ${{ steps.rename.outputs.LIB_FINAL_NAME }}
           path: ${{ steps.rename.outputs.LIB_FINAL_PATH }}
