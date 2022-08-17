@@ -54,7 +54,19 @@ iex> EvalEx.eval("a + b", %{"a" => 10})
 
 ### Precompile expressions
 
-T.B.D.
+EvalEx allows you to precompile expressions to speed up the evaluation.
+
+```elixir
+iex> {:ok, precompiled_expression} = EvalEx.precompile_expression("1 + 1")
+{:ok,
+ %EvalEx.PrecompiledExpression{
+   reference: #Reference<0.2278913865.304611331.189837>,
+   resource: #Reference<0.2278913865.304742403.189834>
+ }}
+
+iex> EvalEx.eval(precompiled_expression)
+{:ok, 2}
+```
 
 ## Type conversion table
 

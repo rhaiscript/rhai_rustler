@@ -26,4 +26,12 @@ defmodule EvalEx.Native do
   def eval(_, _) do
     :erlang.nif_error(:nif_not_loaded)
   end
+
+  def eval_precompiled_expression(_, _) do
+    :erlang.nif_error(:nif_not_loaded)
+  end
+
+  def precompile_expression(_) do
+    :erlang.nif_error(:nif_not_loaded)
+  end
 end

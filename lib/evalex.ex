@@ -64,8 +64,41 @@ defmodule EvalEx do
       {:error,
       {:variable_identifier_not_found,
       "Variable identifier is not bound to anything by context: \"b\"."}}
+
+      iex> {:ok, precompiled_expression} = EvalEx.precompile_expression("1 + 1")
+      {:ok,
+      %EvalEx.PrecompiledExpression{
+      reference: #Reference<0.2278913865.304611331.189837>,
+      resource: #Reference<0.2278913865.304742403.189834>
+      }}
+
+      iex> EvalEx.eval(precompiled_expression)
+      {:ok, 2}
   """
   @doc since: "0.1.0"
-  @spec eval(String.t(), map()) :: {:ok, evalex_any()} | {:error, {evalex_error(), String.t()}}
-  def eval(expression, %{} = context \\ %{}), do: EvalEx.Native.eval(expression, context)
+  @spec eval(String.t() | EvalEx.PrecompiledExpression.t(), map()) ::
+          {:ok, evalex_any()} | {:error, {evalex_error(), String.t()}}
+  def eval(expression, context \\ %{})
+
+  def eval(%EvalEx.PrecompiledExpression{resource: resource}, %{} = context),
+    do: EvalEx.Native.eval_precompiled_expression(resource, context)
+
+  def eval(expression, context) when is_binary(expression),
+    do: EvalEx.Native.eval(expression, %{} = context)
+
+  @doc """
+  Precompiles the given expression.
+  """
+  @doc since: "0.1.1"
+  @spec precompile_expression(String.t()) ::
+          {:ok, EvalEx.PrecompiledExpression.t()} | {:error, {evalex_error(), String.t()}}
+  def precompile_expression(expression) do
+    case EvalEx.Native.precompile_expression(expression) do
+      {:ok, resource} ->
+        {:ok, EvalEx.PrecompiledExpression.wrap_resource(resource)}
+
+      {:error, error} ->
+        {:error, error}
+    end
+  end
 end
