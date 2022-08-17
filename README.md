@@ -23,7 +23,7 @@ Add `:evalex` to the list of dependencies in `mix.exs`:
 ```elixir
 def deps do
   [
-    {:evalex, "~> 0.1.0"}
+    {:evalex, "~> 0.1.1"}
   ]
 end
 ```
