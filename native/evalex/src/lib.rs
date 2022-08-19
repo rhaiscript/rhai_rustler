@@ -1,10 +1,12 @@
 mod errors;
 mod types;
 
+use std::collections::HashMap;
+
 use evalexpr::{
     build_operator_tree, eval_with_context_mut, ContextWithMutableVariables, HashMapContext,
 };
-use rustler::{Env, MapIterator, ResourceArc, Term};
+use rustler::{Env, ResourceArc, Term};
 
 struct PrecompiledExpression {
     operator_tree: evalexpr::Node,
@@ -16,7 +18,11 @@ fn load(env: Env, _: Term) -> bool {
 }
 
 #[rustler::nif]
-fn eval<'a>(env: Env<'a>, expression: &str, context: Term<'a>) -> Result<Term<'a>, Term<'a>> {
+fn eval<'a>(
+    env: Env<'a>,
+    expression: &str,
+    context: HashMap<String, Term<'a>>,
+) -> Result<Term<'a>, Term<'a>> {
     match eval_with_context_mut(expression, &mut build_hash_map_context(env, context)) {
         Ok(value) => Ok(types::from_value(env, &value)),
         Err(err) => Err(errors::to_error_tuple(env, err)),
@@ -27,7 +33,7 @@ fn eval<'a>(env: Env<'a>, expression: &str, context: Term<'a>) -> Result<Term<'a
 fn eval_precompiled_expression<'a>(
     env: Env<'a>,
     precompiled_expression: ResourceArc<PrecompiledExpression>,
-    context: Term<'a>,
+    context: HashMap<String, Term<'a>>,
 ) -> Result<Term<'a>, Term<'a>> {
     match precompiled_expression
         .operator_tree
@@ -54,18 +60,12 @@ fn precompile_expression<'a>(
     }
 }
 
-fn build_hash_map_context<'a>(env: Env<'a>, context: Term<'a>) -> HashMapContext {
+fn build_hash_map_context<'a>(env: Env<'a>, context: HashMap<String, Term<'a>>) -> HashMapContext {
     let mut hash_map_context = HashMapContext::new();
 
-    MapIterator::new(context)
-        .expect("Should be a map in the argument")
-        .for_each(|(k, v)| {
-            let key: String = k.decode().expect("Should be a string");
-
-            hash_map_context
-                .set_value(key, types::to_value(env, &v))
-                .ok();
-        });
+    for (k, v) in context {
+        hash_map_context.set_value(k, types::to_value(env, &v)).ok();
+    }
 
     hash_map_context
 }

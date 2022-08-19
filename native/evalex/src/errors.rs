@@ -38,7 +38,7 @@ mod atoms {
     }
 }
 
-pub fn to_error_tuple(env: Env, err: evalexpr::EvalexprError) -> Term {
+pub fn to_error_tuple(env: Env, err: EvalexprError) -> Term {
     match err {
         EvalexprError::WrongOperatorArgumentAmount { .. } => {
             make_reason_tuple(env, atoms::wrong_operator_amount(), err)
