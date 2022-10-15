@@ -12,3 +12,5 @@ crate-type = ["cdylib"]
 [dependencies]
 rustler = "0.26.0"
 evalexpr = { version = "8.1.0", features = ["regex_support"] }
+rhai = "1.10.1"
+smartstring = "*"
