@@ -1,7 +1,7 @@
 use std::collections::HashMap;
 
 use rhai::Dynamic;
-use rustler::{Encoder, Env, Term};
+use rustler::{types::tuple::get_tuple, Encoder, Env, Term, TermType};
 
 pub fn from_dynamic(env: Env, value: Dynamic) -> Term {
     match value.type_name() {
@@ -46,10 +46,10 @@ pub fn to_dynamic<'a>(env: Env<'a>, term: &Term<'a>) -> Dynamic {
                 }
             })
             .expect("get_type() returned Atom but could not decode as string, boolean or empty."),
-        rustler::TermType::EmptyList => Dynamic::from(Vec::<Dynamic>::new()),
-        rustler::TermType::Exception => Dynamic::from(()),
-        rustler::TermType::Fun => Dynamic::from(()),
-        rustler::TermType::List => {
+        TermType::EmptyList => Dynamic::from(Vec::<Dynamic>::new()),
+        TermType::Exception => Dynamic::from(()),
+        TermType::Fun => Dynamic::from(()),
+        TermType::List => {
             let items: Vec<Dynamic> = term
                 .decode::<Vec<Term>>()
                 .expect("get_type() returned List but could not decode as list.")
@@ -59,7 +59,7 @@ pub fn to_dynamic<'a>(env: Env<'a>, term: &Term<'a>) -> Dynamic {
 
             Dynamic::from(items)
         }
-        rustler::TermType::Map => {
+        TermType::Map => {
             let mut object_map = rhai::Map::new();
 
             for (k, v) in term
@@ -70,16 +70,25 @@ pub fn to_dynamic<'a>(env: Env<'a>, term: &Term<'a>) -> Dynamic {
             }
             Dynamic::from(object_map)
         }
-        rustler::TermType::Number => term
+        TermType::Number => term
             .decode::<i64>()
             .map(Dynamic::from)
             .or_else(|_| term.decode::<f64>().map(Dynamic::from))
             .expect("get_type() returned Number but could not decode as integer or float."),
 
-        rustler::TermType::Pid => Dynamic::from(()),
-        rustler::TermType::Port => Dynamic::from(()),
-        rustler::TermType::Ref => Dynamic::from(()),
-        rustler::TermType::Tuple => todo!("Tuple"),
-        rustler::TermType::Unknown => Dynamic::from(()),
+        TermType::Pid => Dynamic::from(()),
+        TermType::Port => Dynamic::from(()),
+        TermType::Ref => Dynamic::from(()),
+        TermType::Tuple => {
+            let items: Vec<Dynamic> = get_tuple(*term)
+                .expect("get_type() returned Tuple but could not decode as list.")
+                .iter()
+                .map(|item| to_dynamic(env, item))
+                .collect();
+
+            Dynamic::from(items)
+        }
+
+        TermType::Unknown => Dynamic::from(()),
     }
 }

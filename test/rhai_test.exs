@@ -12,13 +12,11 @@ defmodule RhaiTest do
     end
 
     test "should assing a variable" do
-      assert {:ok, 7} == Rhai.eval("c = 4; a + b + c", %{"a" => 1, "b" => 2})
+      assert {:ok, 7} == Rhai.eval("let c = 4; a + b + c;", %{"a" => 1, "b" => 2})
     end
 
     test "should return an error if a variable does not exist" do
-      assert {:error,
-              {:variable_identifier_not_found,
-               "Variable identifier is not bound to anything by context: \"b\"."}} ==
+      assert {:error, {:variable_not_found, "Variable not found: b (line 1, position 5)"}} ==
                Rhai.eval("a + b", %{"a" => 1})
     end
   end
