@@ -9,6 +9,6 @@ updates:
     schedule:
       interval: "daily"
   - package-ecosystem: "cargo"
-    directory: "/native/evalex"
+    directory: "/native/rhai_rustler"
     schedule:
       interval: "daily"

@@ -20,7 +20,7 @@ erl_crash.dump
 *.ez
 
 # Ignore package tarball (built via "mix hex.build").
-evalexpr_rustler-*.tar
+rhai_rustler-*.tar
 
 # Temporary files, for example, from tests.
 /tmp/
@@ -28,4 +28,4 @@ evalexpr_rustler-*.tar
 # Rustler
 /priv/native/*
 
-checksum-Elixir.EvalEx.Native.exs
+checksum-Elixir.Rhai.Native.exs

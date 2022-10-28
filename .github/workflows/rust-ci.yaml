@@ -17,7 +17,7 @@ jobs:
     strategy:
       matrix:
         manifest:
-          - native/evalex/Cargo.toml
+          - native/rhai_rustler/Cargo.toml
 
     steps:
       - name: Check out this repository
