@@ -21,14 +21,14 @@ defmodule RhaiTest do
     end
   end
 
-  describe "precompiled expressions" do
-    test "should evaluate a precompiled expression" do
-      assert {:ok, %Rhai.PrecompiledExpression{} = precompiled_expression} =
-               Rhai.precompile_expression("a + b")
+  # describe "precompiled expressions" do
+  #   test "should evaluate a precompiled expression" do
+  #     assert {:ok, %Rhai.PrecompiledExpression{} = precompiled_expression} =
+  #              Rhai.precompile_expression("a + b")
 
-      assert {:ok, 3} == Rhai.eval(precompiled_expression, %{"a" => 1, "b" => 2})
-    end
-  end
+  #     assert {:ok, 3} == Rhai.eval(precompiled_expression, %{"a" => 1, "b" => 2})
+  #   end
+  # end
 
   describe "type conversion" do
     property "should convert integer() to Integer and Integer to integer()" do
