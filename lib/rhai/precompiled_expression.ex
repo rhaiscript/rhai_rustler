@@ -1,4 +1,4 @@
-defmodule EvalEx.PrecompiledExpression do
+defmodule Rhai.PrecompiledExpression do
   @moduledoc false
 
   defstruct [

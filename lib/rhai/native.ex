@@ -1,4 +1,4 @@
-defmodule EvalEx.Native do
+defmodule Rhai.Native do
   @moduledoc false
 
   version = Mix.Project.config()[:version]
@@ -16,10 +16,10 @@ defmodule EvalEx.Native do
   )
 
   use RustlerPrecompiled,
-    otp_app: :evalex,
-    crate: "evalex",
-    base_url: "https://github.com/fabriziosestito/evalex/releases/download/v#{version}",
-    force_build: System.get_env("EVALEX_FORCE_BUILD") in ["1", "true"],
+    otp_app: :rhai_rustler,
+    crate: "rhai_rustler",
+    base_url: "https://github.com/fabriziosestito/rhai_rustler/releases/download/v#{version}",
+    force_build: System.get_env("RHAI_RUSTLER_FORCE_BUILD") in ["1", "true"],
     version: version,
     targets: targets
 

@@ -1,11 +1,11 @@
 defmodule EvalEx.MixProject do
   use Mix.Project
 
-  @version "0.1.1"
+  @version "0.1.0"
 
   def project do
     [
-      app: :evalex,
+      app: :rhai_rustler,
       version: @version,
       elixir: "~> 1.11",
       start_permanent: Mix.env() == :prod,
@@ -23,16 +23,16 @@ defmodule EvalEx.MixProject do
   end
 
   defp description do
-    "A powerful expression evaluation library for Elixir, based on evalexpr using rustler."
+    "Rhai rustler bindings"
   end
 
   defp package do
     [
       files: [
         "lib",
-        "native/evalex/.cargo",
-        "native/evalex/src",
-        "native/evalex/Cargo*",
+        "native/rhai_rustler/.cargo",
+        "native/rhai_rustler/src",
+        "native/rhai_rustler/Cargo*",
         "checksum-*.exs",
         "mix.exs",
         "README.md",
@@ -41,8 +41,8 @@ defmodule EvalEx.MixProject do
       licenses: ["Apache-2.0"],
       mantainers: ["Fabrizio Sestito <fabrizio.sestito@suse.com>"],
       links: %{
-        "GitHub" => "https://github.com/fabriziosestito/evalex",
-        "Docs" => "https://hexdocs.pm/evalex/"
+        "GitHub" => "https://github.com/fabriziosestito/rhai_rustler",
+        "Docs" => "https://hexdocs.pm/rhai_rustler/"
       }
     ]
   end

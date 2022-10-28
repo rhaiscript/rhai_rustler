@@ -1,16 +1,14 @@
 [package]
-name = "evalex"
-version = "0.1.1"
+name = "rhai_rustler"
+version = "0.1.0"
 authors = ["Fabrizio Sestito <fabrizio.sestito@suse.com>"]
 edition = "2018"
 
 [lib]
-name = "evalex"
+name = "rhai_rustler"
 path = "src/lib.rs"
 crate-type = ["cdylib"]
 
 [dependencies]
 rustler = "0.26.0"
-evalexpr = { version = "8.1.0", features = ["regex_support"] }
 rhai = "1.10.1"
-smartstring = "*"

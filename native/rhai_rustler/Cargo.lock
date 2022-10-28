@@ -42,25 +42,6 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "baf1de4339761588bc0619e3cbc0120ee582ebb74b53b4efbf79117bd2da40fd"
 
 [[package]]
-name = "evalex"
-version = "0.1.1"
-dependencies = [
- "evalexpr",
- "rhai",
- "rustler",
- "smartstring",
-]
-
-[[package]]
-name = "evalexpr"
-version = "8.1.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "aacfb566035f8cd02f6ec9247c242f3f9904a0b288ea383abcf4e95df6436a34"
-dependencies = [
- "regex",
-]
-
-[[package]]
 name = "getrandom"
 version = "0.2.7"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -178,6 +159,14 @@ dependencies = [
  "proc-macro2",
  "quote",
  "syn",
+]
+
+[[package]]
+name = "rhai_rustler"
+version = "0.1.0"
+dependencies = [
+ "rhai",
+ "rustler",
 ]
 
 [[package]]

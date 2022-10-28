@@ -1,6 +1,6 @@
-defmodule EvalEx do
+defmodule Rhai do
   @moduledoc """
-  EvalEx is a powerful expression evaluation library for Elixir,
+  Rhai is a powerful expression evaluation library for Elixir,
   based on [evalexpr](https://github.com/ISibboI/evalexpr) using [rustler](https://github.com/rusterlium/rustler).
   """
 
@@ -45,57 +45,57 @@ defmodule EvalEx do
 
   ## Examples
 
-      iex> EvalEx.eval("1 + 1")
+      iex> Rhai.eval("1 + 1")
       {:ok, 2}
 
-      iex> EvalEx.eval("a * b", %{"a" => 10, "b" => 10})
+      iex> Rhai.eval("a * b", %{"a" => 10, "b" => 10})
       {:ok, 100}
 
-      iex> EvalEx.eval("a == b", %{"a" => "tonio", "b" => "wanda"})
+      iex> Rhai.eval("a == b", %{"a" => "tonio", "b" => "wanda"})
       {:ok, false}
 
-      iex> EvalEx.eval("a != b", %{"a" => "tonio", "b" => "wanda"})
+      iex> Rhai.eval("a != b", %{"a" => "tonio", "b" => "wanda"})
       {:ok, true}
 
-      iex> EvalEx.eval("len(a)", %{"a" => [1, 2, 3]})
+      iex> Rhai.eval("len(a)", %{"a" => [1, 2, 3]})
       {:ok, 3}
 
-      iex> EvalEx.eval("a + b", %{"a" => 10})
+      iex> Rhai.eval("a + b", %{"a" => 10})
       {:error,
       {:variable_identifier_not_found,
       "Variable identifier is not bound to anything by context: \"b\"."}}
 
-      iex> {:ok, precompiled_expression} = EvalEx.precompile_expression("1 + 1")
+      iex> {:ok, precompiled_expression} = Rhai.precompile_expression("1 + 1")
       {:ok,
-      %EvalEx.PrecompiledExpression{
+      %Rhai.PrecompiledExpression{
       reference: #Reference<0.2278913865.304611331.189837>,
       resource: #Reference<0.2278913865.304742403.189834>
       }}
 
-      iex> EvalEx.eval(precompiled_expression)
+      iex> Rhai.eval(precompiled_expression)
       {:ok, 2}
   """
   @doc since: "0.1.0"
-  @spec eval(String.t() | EvalEx.PrecompiledExpression.t(), map()) ::
+  @spec eval(String.t() | Rhai.PrecompiledExpression.t(), map()) ::
           {:ok, evalex_any()} | {:error, {evalex_error(), String.t()}}
   def eval(expression, context \\ %{})
 
-  def eval(%EvalEx.PrecompiledExpression{resource: resource}, %{} = context),
-    do: EvalEx.Native.eval_precompiled_expression(resource, context)
+  def eval(%Rhai.PrecompiledExpression{resource: resource}, %{} = context),
+    do: Rhai.Native.eval_precompiled_expression(resource, context)
 
   def eval(expression, context) when is_binary(expression),
-    do: EvalEx.Native.eval(expression, %{} = context)
+    do: Rhai.Native.eval(expression, %{} = context)
 
   @doc """
   Precompiles the given expression.
   """
   @doc since: "0.1.1"
   @spec precompile_expression(String.t()) ::
-          {:ok, EvalEx.PrecompiledExpression.t()} | {:error, {evalex_error(), String.t()}}
+          {:ok, Rhai.PrecompiledExpression.t()} | {:error, {evalex_error(), String.t()}}
   def precompile_expression(expression) do
-    case EvalEx.Native.precompile_expression(expression) do
+    case Rhai.Native.precompile_expression(expression) do
       {:ok, resource} ->
-        {:ok, EvalEx.PrecompiledExpression.wrap_resource(resource)}
+        {:ok, Rhai.PrecompiledExpression.wrap_resource(resource)}
 
       {:error, error} ->
         {:error, error}
