@@ -4,7 +4,7 @@ mod types;
 use std::collections::HashMap;
 
 use rhai::{Dynamic, Engine, Scope};
-use rustler::{Encoder, Env, ResourceArc, Term};
+use rustler::{Env, Term};
 
 // struct PrecompiledExpression {
 //     operator_tree: evalexpr::Node,
@@ -25,7 +25,7 @@ fn eval<'a>(
     let engine = Engine::new();
     let mut scope = Scope::new();
 
-    // Add all the variables to the scope
+    // Add variables to the scope
     for (k, v) in &expression_scope {
         scope.push_constant_dynamic(k, types::to_dynamic(env, v));
     }

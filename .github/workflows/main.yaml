@@ -7,7 +7,7 @@ on:
       - main
 
 env:
-  EVALEX_FORCE_BUILD: "true"
+  RHAI_RUSTLER_FORCE_BUILD: "true"
 
 jobs:
   test:
