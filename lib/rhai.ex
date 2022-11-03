@@ -1,6 +1,6 @@
 defmodule Rhai do
   @moduledoc """
-  Rhai elixir bindings 
+  Rhai elixir bindings
   """
 
   @type rhai_any ::
@@ -55,48 +55,19 @@ defmodule Rhai do
       iex> Rhai.eval("a != b", %{"a" => "tonio", "b" => "wanda"})
       {:ok, true}
 
-      iex> Rhai.eval("len(a)", %{"a" => [1, 2, 3]})
+      iex> Rhai.eval("a.len()", %{"a" => [1, 2, 3]})
       {:ok, 3}
 
+      iex> Rhai.eval("a.b", %{"a" => %{"b" => 1}})
+      {:ok, 1}
+
       iex> Rhai.eval("a + b", %{"a" => 10})
-      {:error,
-      {:variable_identifier_not_found,
-      "Variable identifier is not bound to anything by context: \"b\"."}}
-
-      iex> {:ok, precompiled_expression} = Rhai.precompile_expression("1 + 1")
-      {:ok,
-      %Rhai.PrecompiledExpression{
-      reference: #Reference<0.2278913865.304611331.189837>,
-      resource: #Reference<0.2278913865.304742403.189834>
-      }}
-
-      iex> Rhai.eval(precompiled_expression)
-      {:ok, 2}
+      {:error, {:variable_not_found, "Variable not found: b (line 1, position 5)"}}
   """
   @doc since: "0.1.0"
   @spec eval(String.t() | Rhai.PrecompiledExpression.t(), map()) ::
           {:ok, rhai_any()} | {:error, {rhai_error(), String.t()}}
-  def eval(expression, context \\ %{})
-
-  def eval(%Rhai.PrecompiledExpression{resource: resource}, %{} = context),
-    do: Rhai.Native.eval_precompiled_expression(resource, context)
-
-  def eval(expression, context) when is_binary(expression),
-    do: Rhai.Native.eval(expression, %{} = context)
-
-  @doc """
-  Precompiles the given expression.
-  """
-  @doc since: "0.1.0"
-  @spec precompile_expression(String.t()) ::
-          {:ok, Rhai.PrecompiledExpression.t()} | {:error, {rhai_error(), String.t()}}
-  def precompile_expression(expression) do
-    case Rhai.Native.precompile_expression(expression) do
-      {:ok, resource} ->
-        {:ok, Rhai.PrecompiledExpression.wrap_resource(resource)}
-
-      {:error, error} ->
-        {:error, error}
-    end
+  def eval(expression, context \\ %{}) do
+    Rhai.Native.eval(expression, %{} = context)
   end
 end
