@@ -58,6 +58,9 @@ defmodule Rhai do
       iex> Rhai.eval("a.len()", %{"a" => [1, 2, 3]})
       {:ok, 3}
 
+      iex> Rhai.eval("a.filter(|v| v > 3)", %{"a" => [1, 2, 3, 5, 8, 13]})
+      {:ok, [5, 8, 13]}
+
       iex> Rhai.eval("a.b", %{"a" => %{"b" => 1}})
       {:ok, 1}
 

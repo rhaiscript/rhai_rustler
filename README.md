@@ -1,12 +1,12 @@
 # Rhai rustler
 
-[![CI](https://github.com/fabriziosestito/evalex/actions/workflows/main.yaml/badge.svg)](https://github.com/fabriziosestito/rhai_rustler/actions/workflows/main.yaml)
-[![Rust CI](https://github.com/fabriziosestito/evalex/actions/workflows/rust-ci.yaml/badge.svg)](https://github.com/fabriziosestito/evalex/actions/workflows/rust-ci.yaml)
-[![NIFs precompilation](https://github.com/fabriziosestito/evalex/actions/workflows/release.yaml/badge.svg)](https://github.com/fabriziosestito/evalex/actions/workflows/release.yaml)
-[![Hex.pm](https://img.shields.io/hexpm/v/evalex.svg)](https://hex.pm/packages/evalex)
-[![Hex Docs](https://img.shields.io/badge/hex-docs-purple.svg)](https://hexdocs.pm/evalex/)
+[![CI](https://github.com/fabriziosestito/rhai_rustler/actions/workflows/main.yaml/badge.svg)](https://github.com/fabriziosestito/rhai_rustler/actions/workflows/main.yaml)
+[![Rust CI](https://github.com/fabriziosestito/rhai_rustler/actions/workflows/rust-ci.yaml/badge.svg)](https://github.com/fabriziosestito/rhai_rustler/actions/workflows/rust-ci.yaml)
+[![NIFs precompilation](https://github.com/fabriziosestito/rhai_rustler/actions/workflows/release.yaml/badge.svg)](https://github.com/fabriziosestito/rhai_rustler/actions/workflows/release.yaml)
+[![Hex.pm](https://img.shields.io/hexpm/v/rhai_rustler.svg)](https://hex.pm/packages/rhai_rustler)
+[![Hex Docs](https://img.shields.io/badge/hex-docs-purple.svg)](https://hexdocs.pm/rhai_rustler/)
 
-Elixir NIF bindings for Rhai, Embedded scripting language and engine for Rust
+Elixir NIF bindings for Rhai, an embedded scripting language and engine for Rust
 
 Please refer to [The Rhai Book](https://rhai.rs/book/index.html) for extended information about the language.
 
@@ -40,6 +40,9 @@ iex> Rhai.eval("a != b", %{"a" => "tonio", "b" => "wanda"})
 iex> Rhai.eval("a.len()", %{"a" => [1, 2, 3]})
 {:ok, 3}
 
+iex> Rhai.eval("a.filter(|v| v > 3)", %{"a" => [1, 2, 3, 5, 8, 13]})
+{:ok, [5, 8, 13]}
+
 iex> Rhai.eval("a.b", %{"a" => %{"b" => 1}})
 {:ok, 1}
 
@@ -51,22 +54,22 @@ iex> Rhai.eval("a + b", %{"a" => 10})
 
 Elixir Types are converted to Rhai types (and back) as follows:
 
-| Elixir                       | Rhai                  |
-| ---------------------------- | --------------------- |
-| integer()                    | Integer               |
-| float()                      | Float                 |
-| float()                      | Decimal               |
-| bool()                       | Boolean               |
-| String.t()                   | String                |
-| String.t()                   | Char                  |
-| list()                       | Array                 |
-| tuple()                      | Array                 |
-| %{ String.t() => rhai_any()} | Object map            |
-| nil()                        | Empty                 |
-| pid()                        | Empty (not supported) |
-| ref()                        | Empty (not supported) |
-| fun()                        | Empty (not supported) |
-| map()                        | Empty (not supported) |
+| Elixir                        | Rhai                  |
+| ----------------------------- | --------------------- |
+| integer()                     | Integer               |
+| float()                       | Float                 |
+| float()                       | Decimal               |
+| bool()                        | Boolean               |
+| String.t()                    | String                |
+| String.t()                    | Char                  |
+| list()                        | Array                 |
+| tuple()                       | Array                 |
+| %{ String.t() => rhai_any() } | Object map            |
+| nil()                         | Empty                 |
+| pid()                         | Empty (not supported) |
+| ref()                         | Empty (not supported) |
+| fun()                         | Empty (not supported) |
+| map()                         | Empty (not supported) |
 
 ## Rustler precompiled
 
