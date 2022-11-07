@@ -13,7 +13,10 @@ fn eval<'a>(
     expression_scope: HashMap<String, Term<'a>>,
 ) -> Result<Term<'a>, Term<'a>> {
     // Create an 'Engine'
-    let engine = Engine::new();
+    let mut engine = Engine::new();
+    engine.set_fail_on_invalid_map_property(true);
+    let engine = engine;
+
     let mut scope = Scope::new();
 
     // Add variables to the scope
