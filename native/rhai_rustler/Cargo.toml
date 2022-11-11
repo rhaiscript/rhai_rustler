@@ -11,4 +11,4 @@ crate-type = ["cdylib"]
 
 [dependencies]
 rustler = "0.26.0"
-rhai = "1.10.1"
+rhai = "1.11.0"
