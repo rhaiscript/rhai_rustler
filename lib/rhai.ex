@@ -37,6 +37,7 @@ defmodule Rhai do
           | :terminated
           | :custom_syntax
           | :runtime
+          | :non_pure_method_call_on_constant
 
   @doc """
   Evaluates the given expression and returns the result.
