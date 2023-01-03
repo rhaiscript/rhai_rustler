@@ -33,6 +33,7 @@ mod atoms {
         terminated,
         custom_syntax,
         runtime,
+        non_pure_method_call_on_constant,
     }
 }
 
@@ -68,6 +69,9 @@ pub fn to_error(env: Env, err: EvalAltResult) -> Term {
         EvalAltResult::ErrorTerminated(_, _) => atoms::terminated(),
         EvalAltResult::ErrorCustomSyntax(_, _, _) => atoms::custom_syntax(),
         EvalAltResult::ErrorRuntime(_, _) => atoms::runtime(),
+        EvalAltResult::ErrorNonPureMethodCallOnConstant(_, _) => {
+            atoms::non_pure_method_call_on_constant()
+        }
         _ => panic!("Not an error"),
     };
 
