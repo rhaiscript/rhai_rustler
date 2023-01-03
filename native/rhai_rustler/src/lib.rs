@@ -21,7 +21,7 @@ fn eval<'a>(
 
     // Add variables to the scope
     for (k, v) in &expression_scope {
-        scope.push_constant_dynamic(k, types::to_dynamic(env, v));
+        scope.push_dynamic(k, types::to_dynamic(env, v));
     }
 
     match engine.eval_with_scope::<Dynamic>(&mut scope, expression) {
