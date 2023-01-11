@@ -86,4 +86,93 @@ defmodule RhaiTest do
       end
     end
   end
+
+  describe "Version Comparison support" do
+    test "should detect equal versions" do
+      assert {:ok, true} ==
+               Rhai.eval(~s"""
+               version_eq("1.1.1", "1.1.1")
+               """)
+
+      assert {:ok, true} ==
+               Rhai.eval(~s"""
+               version_eq("1.1.3-dev", "1.1.3-dev")
+               """)
+
+      assert {:ok, false} ==
+               Rhai.eval(~s"""
+               version_eq("1.1.1", "1.1.2")
+               """)
+    end
+
+    test "should detect not equal versions" do
+      assert {:ok, true} ==
+               Rhai.eval(~s"""
+               version_ne("1.1.1", "1.1.2")
+               """)
+
+      assert {:ok, false} ==
+               Rhai.eval(~s"""
+               version_ne("1.1.3-dev", "1.1.3-dev")
+               """)
+    end
+
+    test "should detect a version is greater than another" do
+      assert {:ok, true} ==
+               Rhai.eval(~s"""
+               version_gt("3.6.15", "3.6.5")
+               """)
+
+      assert {:ok, false} ==
+               Rhai.eval(~s"""
+               version_gt("3.6.15", "3.6.15")
+               """)
+    end
+
+    test "should detect a version is greater or equal than another" do
+      assert {:ok, true} ==
+               Rhai.eval(~s"""
+               version_ge("3.6.15", "3.6.5")
+               """)
+
+      assert {:ok, true} ==
+               Rhai.eval(~s"""
+               version_ge("3.6.15", "3.6.15")
+               """)
+
+      assert {:ok, false} ==
+               Rhai.eval(~s"""
+               version_ge("3.6.15", "3.6.17")
+               """)
+    end
+
+    test "should detect a version is less than another" do
+      assert {:ok, true} ==
+               Rhai.eval(~s"""
+               version_lt("3.6.5", "3.6.15")
+               """)
+
+      assert {:ok, false} ==
+               Rhai.eval(~s"""
+               version_lt("3.6.15", "3.6.15")
+               """)
+    end
+
+    test "should detect a version is less or equal than another" do
+      assert {:ok, true} ==
+               Rhai.eval(~s"""
+               version_le("3.6.5", "3.6.15")
+               """)
+
+      assert {:ok, true} ==
+               Rhai.eval(~s"""
+               version_le("3.6.15", "3.6.15")
+               """)
+
+      assert {:ok, false} ==
+               Rhai.eval(~s"""
+               version_le("3.6.17", "3.6.15")
+               """)
+    end
+  end
 end
