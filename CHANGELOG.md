@@ -1,9 +1,17 @@
 # Changelog
 
+## [v0.1.4](https://github.com/fabriziosestito/rhai_rustler/tree/v0.1.4) (2023-01-16)
+
+[Full Changelog](https://github.com/fabriziosestito/rhai_rustler/compare/v0.1.3...v0.1.4)
+
+- Use config to set force build [\#22](https://github.com/fabriziosestito/rhai_rustler/pull/22) ([fabriziosestito](https://github.com/fabriziosestito))
+- Pin ubuntu version in release workflow [\#21](https://github.com/fabriziosestito/rhai_rustler/pull/21) ([fabriziosestito](https://github.com/fabriziosestito))
+
 ## [v0.1.3](https://github.com/fabriziosestito/rhai_rustler/tree/v0.1.3) (2023-01-03)
 
 [Full Changelog](https://github.com/fabriziosestito/rhai_rustler/compare/v0.1.1...v0.1.3)
 
+- Bump to v0.1.3 [\#19](https://github.com/fabriziosestito/rhai_rustler/pull/19) ([fabriziosestito](https://github.com/fabriziosestito))
 - Bump rustler\_precompiled from 0.5.4 to 0.5.5 [\#12](https://github.com/fabriziosestito/rhai_rustler/pull/12) ([dependabot[bot]](https://github.com/apps/dependabot))
 - Bump ex\_doc from 0.29.0 to 0.29.1 [\#11](https://github.com/fabriziosestito/rhai_rustler/pull/11) ([dependabot[bot]](https://github.com/apps/dependabot))
 - Bump rhai from 1.10.1 to 1.11.0 in /native/rhai\_rustler [\#10](https://github.com/fabriziosestito/rhai_rustler/pull/10) ([dependabot[bot]](https://github.com/apps/dependabot))
