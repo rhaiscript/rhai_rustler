@@ -92,7 +92,7 @@ jobs:
           rustc -V
           rustc --print=cfg
       - name: Download cross from GitHub releases
-        uses: giantswarm/install-binary-action@v1.0.0
+        uses: giantswarm/install-binary-action@v1.1.0
         if: ${{ matrix.job.use-cross && matrix.job.target != 'aarch64-unknown-linux-musl' }}
         with:
           binary: "cross"
