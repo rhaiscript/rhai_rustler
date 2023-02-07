@@ -11,4 +11,4 @@ crate-type = ["cdylib"]
 
 [dependencies]
 rustler = "0.27.0"
-rhai = "1.12.0"
+rhai =  { version ="1.12.0", features = ["sync"] }
