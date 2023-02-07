@@ -28,4 +28,16 @@ defmodule Rhai.Native do
   def eval(_, _) do
     :erlang.nif_error(:nif_not_loaded)
   end
+
+  def new do
+    :erlang.nif_error(:nif_not_loaded)
+  end
+
+  def set_fail_on_invalid_map_property(_, _) do
+    :erlang.nif_error(:nif_not_loaded)
+  end
+
+  def eval_engine(_, _) do
+    :erlang.nif_error(:nif_not_loaded)
+  end
 end

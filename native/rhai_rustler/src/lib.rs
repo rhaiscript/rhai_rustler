@@ -1,3 +1,4 @@
+mod engine;
 mod errors;
 mod types;
 
@@ -5,6 +6,8 @@ use std::collections::HashMap;
 
 use rhai::{Dynamic, Engine, Scope};
 use rustler::{Env, Term};
+
+use crate::engine::EngineResource;
 
 #[rustler::nif]
 fn eval<'a>(
@@ -31,4 +34,18 @@ fn eval<'a>(
     }
 }
 
-rustler::init!("Elixir.Rhai.Native", [eval]); //, load = load);
+fn load(env: Env, _: Term) -> bool {
+    rustler::resource!(EngineResource, env);
+    true
+}
+
+rustler::init!(
+    "Elixir.Rhai.Native",
+    [
+        eval,
+        engine::new,
+        engine::set_fail_on_invalid_map_property,
+        engine::eval
+    ],
+    load = load
+);
