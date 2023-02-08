@@ -27,11 +27,11 @@ defmodule Rhai.Native do
 
   # legacy
   def eval(_, _), do: err()
-
   # engine
   def engine_new, do: err()
   def engine_eval(_engine, _script), do: err()
   def engine_set_fail_on_invalid_map_property(_engine, _flag), do: err()
+  def engine_fail_on_invalid_map_property(_engine), do: err()
 
-  defp err(), do: :erlang.nif_error(:nif_not_loaded)
+  defp err, do: :erlang.nif_error(:nif_not_loaded)
 end

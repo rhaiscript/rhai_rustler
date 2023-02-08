@@ -47,7 +47,8 @@ rustler::init!(
         // engine
         engine_new,
         engine_eval,
-        engine_set_fail_on_invalid_map_property
+        engine_set_fail_on_invalid_map_property,
+        engine_fail_on_invalid_map_property
     ],
     load = load
 );

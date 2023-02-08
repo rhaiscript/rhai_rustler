@@ -33,5 +33,13 @@ fn engine_eval<'a>(
 #[rustler::nif]
 fn engine_set_fail_on_invalid_map_property(resource: ResourceArc<EngineResource>, enable: bool) {
     let mut engine = resource.engine.try_lock().unwrap();
+
     engine.set_fail_on_invalid_map_property(enable);
+}
+
+#[rustler::nif]
+fn engine_fail_on_invalid_map_property(resource: ResourceArc<EngineResource>) -> bool {
+    let engine = resource.engine.try_lock().unwrap();
+
+    engine.fail_on_invalid_map_property()
 }
