@@ -1,7 +1,7 @@
 use rhai::EvalAltResult;
 use rustler::{Encoder, Env, Term};
 
-mod atoms {
+pub mod atoms {
     rustler::atoms! {
         system,
         parsing,

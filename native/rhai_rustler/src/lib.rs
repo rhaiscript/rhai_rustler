@@ -36,6 +36,7 @@ fn eval<'a>(
 
 fn load(env: Env, _: Term) -> bool {
     rustler::resource!(EngineResource, env);
+    rustler::resource!(ASTResource, env);
     true
 }
 

@@ -1,12 +1,19 @@
 use std::sync::Mutex;
 
-use rhai::{Dynamic, Engine};
-use rustler::{Env, ResourceArc, Term};
+use rhai::{Dynamic, Engine, AST};
+use rustler::{Encoder, Env, ResourceArc, Term};
 
-use crate::{errors::to_error, types::from_dynamic};
+use crate::{
+    errors::{atoms, to_error},
+    types::from_dynamic,
+};
 
 pub struct EngineResource {
     pub engine: Mutex<Engine>,
+}
+
+pub struct ASTResource {
+    pub ast: Mutex<AST>,
 }
 
 #[rustler::nif]
@@ -27,6 +34,25 @@ fn engine_eval<'a>(
     match engine.eval::<Dynamic>(script) {
         Ok(result) => Ok(from_dynamic(env, result)),
         Err(e) => Err(to_error(env, *e)),
+    }
+}
+
+#[rustler::nif]
+fn engine_compile<'a>(
+    env: Env<'a>,
+    resource: ResourceArc<EngineResource>,
+    script: &str,
+) -> Result<ResourceArc<ASTResource>, Term<'a>> {
+    let engine = resource.engine.try_lock().unwrap();
+
+    match engine.compile(script) {
+        Ok(result) => {
+            let ast_resource = ResourceArc::new(ASTResource {
+                ast: Mutex::new(result),
+            });
+            Ok(ast_resource)
+        }
+        Err(_) => Err((atoms::parsing(), "parsing error".to_string().encode(env)).encode(env)),
     }
 }
 
