@@ -11,11 +11,9 @@ pub struct EngineResource {
 
 #[rustler::nif]
 fn engine_new() -> ResourceArc<EngineResource> {
-    let resource = ResourceArc::new(EngineResource {
+    ResourceArc::new(EngineResource {
         engine: Mutex::new(Engine::new()),
-    });
-
-    resource
+    })
 }
 
 #[rustler::nif]
