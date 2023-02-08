@@ -69,6 +69,7 @@ defmodule Rhai do
       {:error, {:variable_not_found, "Variable not found: b (line 1, position 5)"}}
   """
   @doc since: "0.1.0"
+  @deprecated "Use Rhai.Engine instead"
   @spec eval(String.t() | Rhai.PrecompiledExpression.t(), map()) ::
           {:ok, rhai_any()} | {:error, {rhai_error(), String.t()}}
   def eval(expression, context \\ %{}) do

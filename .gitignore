@@ -29,3 +29,5 @@ rhai_rustler-*.tar
 /priv/native/*
 
 checksum-Elixir.Rhai.Native.exs
+
+.elixir-ls
