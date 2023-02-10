@@ -48,6 +48,7 @@ rustler::init!(
         // legacy
         eval,
         // engine
+        engine_compile,
         engine_new,
         engine_eval,
         engine_set_fail_on_invalid_map_property,

@@ -29,6 +29,7 @@ defmodule Rhai.Native do
   def eval(_, _), do: err()
   # engine
   def engine_new, do: err()
+  def engine_compile(_engine, _script), do: err()
   def engine_eval(_engine, _script), do: err()
   def engine_set_fail_on_invalid_map_property(_engine, _flag), do: err()
   def engine_fail_on_invalid_map_property(_engine), do: err()

@@ -30,4 +30,18 @@ defmodule Rhai.EngineTest do
              |> Engine.fail_on_invalid_map_property?()
     end
   end
+
+  describe "compile/2" do
+    test "should compile a valid expression into AST" do
+      engine = Engine.new()
+
+      assert {:ok, %Rhai.AST{}} = Engine.compile(engine, "1+1")
+    end
+
+    test "should not compile an invalid expression" do
+      engine = Engine.new()
+
+      assert {:error, {:parsing, "parsing error"}}
+    end
+  end
 end
