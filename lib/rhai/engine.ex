@@ -3,6 +3,8 @@ defmodule Rhai.Engine do
   Rhai main scripting engine.
   """
 
+  alias Rhai.AST
+
   defstruct [
     # The actual NIF Resource.
     resource: nil,
@@ -22,6 +24,19 @@ defmodule Rhai.Engine do
   @spec new :: t()
   def new do
     wrap_resource(Rhai.Native.engine_new())
+  end
+
+  @doc """
+  Compile a string into an AST, which can be used later for evaluation.
+  """
+  @spec compile(t(), String.t()) :: {:ok, Rhai.rhai_any()} | {:error, Rhai.rhai_error()}
+  def compile(%__MODULE__{resource: resource}, script) do
+    resource
+    |> Rhai.Native.engine_compile(script)
+    |> case do
+      {:ok, ast} -> {:ok, AST.wrap_resource(ast)}
+      error -> error
+    end
   end
 
   @doc """
@@ -50,7 +65,7 @@ defmodule Rhai.Engine do
     Rhai.Native.engine_fail_on_invalid_map_property(resource)
   end
 
-  defp wrap_resource(resource) do
+  def wrap_resource(resource) do
     %__MODULE__{
       resource: resource,
       reference: make_ref()

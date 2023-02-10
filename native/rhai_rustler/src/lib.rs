@@ -1,3 +1,4 @@
+mod ast;
 mod engine;
 mod errors;
 mod types;
@@ -7,6 +8,7 @@ use std::collections::HashMap;
 use rhai::{Dynamic, Engine, Scope};
 use rustler::{Env, Term};
 
+use crate::ast::*;
 use crate::engine::*;
 
 #[rustler::nif]
@@ -36,6 +38,7 @@ fn eval<'a>(
 
 fn load(env: Env, _: Term) -> bool {
     rustler::resource!(EngineResource, env);
+    rustler::resource!(ASTResource, env);
     true
 }
 
@@ -45,6 +48,7 @@ rustler::init!(
         // legacy
         eval,
         // engine
+        engine_compile,
         engine_new,
         engine_eval,
         engine_set_fail_on_invalid_map_property,
