@@ -1,3 +1,4 @@
+mod ast;
 mod engine;
 mod errors;
 mod types;
@@ -7,6 +8,7 @@ use std::collections::HashMap;
 use rhai::{Dynamic, Engine, Scope};
 use rustler::{Env, Term};
 
+use crate::ast::*;
 use crate::engine::*;
 
 #[rustler::nif]

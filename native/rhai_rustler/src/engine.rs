@@ -1,19 +1,16 @@
 use std::sync::Mutex;
 
-use rhai::{Dynamic, Engine, AST};
+use rhai::{Dynamic, Engine};
 use rustler::{Encoder, Env, ResourceArc, Term};
 
 use crate::{
+    ast::ASTResource,
     errors::{atoms, to_error},
     types::from_dynamic,
 };
 
 pub struct EngineResource {
     pub engine: Mutex<Engine>,
-}
-
-pub struct ASTResource {
-    pub ast: Mutex<AST>,
 }
 
 #[rustler::nif]
