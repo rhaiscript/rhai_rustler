@@ -1,7 +1,7 @@
-use std::sync::Mutex;
+use std::sync::RwLock;
 
 use rhai::AST;
 
 pub struct ASTResource {
-    pub ast: Mutex<AST>,
+    pub ast: RwLock<AST>,
 }

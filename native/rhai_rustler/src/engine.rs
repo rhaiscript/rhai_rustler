@@ -1,4 +1,4 @@
-use std::sync::Mutex;
+use std::sync::{Mutex, RwLock};
 
 use rhai::{Dynamic, Engine};
 use rustler::{Encoder, Env, ResourceArc, Term};
@@ -45,7 +45,7 @@ fn engine_compile<'a>(
     match engine.compile(script) {
         Ok(result) => {
             let ast_resource = ResourceArc::new(ASTResource {
-                ast: Mutex::new(result),
+                ast: RwLock::new(result),
             });
             Ok(ast_resource)
         }
