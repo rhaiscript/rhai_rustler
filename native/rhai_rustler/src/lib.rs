@@ -1,6 +1,6 @@
 mod ast;
 mod engine;
-mod errors;
+mod error;
 mod types;
 
 use std::collections::HashMap;
@@ -10,13 +10,14 @@ use rustler::{Env, Term};
 
 use crate::ast::*;
 use crate::engine::*;
+use crate::error::RhaiRustlerError;
 
 #[rustler::nif]
 fn eval<'a>(
     env: Env<'a>,
     expression: &str,
     expression_scope: HashMap<String, Term<'a>>,
-) -> Result<Term<'a>, Term<'a>> {
+) -> Result<Term<'a>, RhaiRustlerError> {
     // Create an 'Engine'
     let mut engine = Engine::new();
     engine.set_fail_on_invalid_map_property(true);
@@ -29,11 +30,9 @@ fn eval<'a>(
         scope.push_dynamic(k, types::to_dynamic(env, v));
     }
 
-    match engine.eval_with_scope::<Dynamic>(&mut scope, expression) {
-        Ok(result) => Ok(types::from_dynamic(env, result)),
+    let result = engine.eval_with_scope::<Dynamic>(&mut scope, expression)?;
 
-        Err(e) => Err(errors::to_error(env, *e)),
-    }
+    Ok(types::from_dynamic(env, result))
 }
 
 fn load(env: Env, _: Term) -> bool {

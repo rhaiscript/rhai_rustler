@@ -41,7 +41,7 @@ defmodule Rhai.EngineTest do
     test "should not compile an invalid expression" do
       engine = Engine.new()
 
-      assert {:error, {:parsing, "parsing error"}} == Engine.compile(engine, "???")
+      assert {:error, {:parsing, _}} = Engine.compile(engine, "???")
     end
   end
 end
