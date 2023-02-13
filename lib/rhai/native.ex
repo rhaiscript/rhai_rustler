@@ -31,8 +31,12 @@ defmodule Rhai.Native do
   def engine_new, do: err()
   def engine_compile(_engine, _script), do: err()
   def engine_eval(_engine, _script), do: err()
+  def engine_eval_with_scope(_engine, _scope, _script), do: err()
   def engine_set_fail_on_invalid_map_property(_engine, _flag), do: err()
   def engine_fail_on_invalid_map_property(_engine), do: err()
+  # scope
+  def scope_new, do: err()
+  def scope_push_dynamic(_scope, _name, _value), do: err()
 
   defp err, do: :erlang.nif_error(:nif_not_loaded)
 end
