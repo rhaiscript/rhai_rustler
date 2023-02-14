@@ -3,7 +3,7 @@ use std::sync::Mutex;
 use rhai::Scope;
 use rustler::{Env, ResourceArc, Term};
 
-use crate::types::to_dynamic;
+use crate::types::{from_dynamic, to_dynamic};
 
 pub struct ScopeResource {
     pub scope: Mutex<Scope<'static>>,
@@ -25,4 +25,37 @@ fn scope_push_dynamic<'a>(
 ) {
     let mut scope = resource.scope.try_lock().unwrap();
     _ = scope.push_dynamic(name, to_dynamic(env, &value));
+}
+
+#[rustler::nif]
+fn scope_push_constant_dynamic<'a>(
+    env: Env<'a>,
+    resource: ResourceArc<ScopeResource>,
+    name: &str,
+    value: Term<'a>,
+) {
+    let mut scope = resource.scope.try_lock().unwrap();
+    _ = scope.push_constant_dynamic(name, to_dynamic(env, &value));
+}
+
+#[rustler::nif]
+fn scope_contains(resource: ResourceArc<ScopeResource>, name: &str) -> bool {
+    let scope = resource.scope.try_lock().unwrap();
+    scope.contains(name)
+}
+
+#[rustler::nif]
+fn scope_is_constant(resource: ResourceArc<ScopeResource>, name: &str) -> Option<bool> {
+    let scope = resource.scope.try_lock().unwrap();
+    scope.is_constant(name)
+}
+
+#[rustler::nif]
+fn scope_get<'a>(
+    env: Env<'a>,
+    resource: ResourceArc<ScopeResource>,
+    name: &str,
+) -> Option<Term<'a>> {
+    let scope = resource.scope.try_lock().unwrap();
+    scope.get(name).map(|v| from_dynamic(env, v.clone()))
 }

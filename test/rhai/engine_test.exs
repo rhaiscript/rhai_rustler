@@ -1,7 +1,7 @@
 defmodule Rhai.EngineTest do
   use ExUnit.Case
 
-  alias Rhai.Engine
+  alias Rhai.{Engine, Scope}
 
   describe "new/0" do
     test "should create a new engine" do
@@ -14,6 +14,15 @@ defmodule Rhai.EngineTest do
       engine = Engine.new()
 
       assert {:ok, 2} = Engine.eval(engine, "1 + 1")
+    end
+  end
+
+  describe "eval_with_scope/3" do
+    test "should eval a script with scope" do
+      engine = Engine.new()
+      scope = Scope.new() |> Scope.push_constant_dynamic("a", 1) |> Scope.push_dynamic("b", 1)
+
+      assert {:ok, 2} = Engine.eval_with_scope(engine, scope, "a + b")
     end
   end
 
