@@ -1,6 +1,7 @@
 mod ast;
 mod engine;
 mod error;
+mod scope;
 mod types;
 
 use std::collections::HashMap;
@@ -11,6 +12,7 @@ use rustler::{Env, Term};
 use crate::ast::*;
 use crate::engine::*;
 use crate::error::RhaiRustlerError;
+use crate::scope::*;
 
 #[rustler::nif]
 fn eval<'a>(
@@ -37,6 +39,7 @@ fn eval<'a>(
 
 fn load(env: Env, _: Term) -> bool {
     rustler::resource!(EngineResource, env);
+    rustler::resource!(ScopeResource, env);
     rustler::resource!(ASTResource, env);
     true
 }
@@ -50,8 +53,16 @@ rustler::init!(
         engine_compile,
         engine_new,
         engine_eval,
+        engine_eval_with_scope,
         engine_set_fail_on_invalid_map_property,
-        engine_fail_on_invalid_map_property
+        engine_fail_on_invalid_map_property,
+        // scope
+        scope_new,
+        scope_push_dynamic,
+        scope_push_constant_dynamic,
+        scope_contains,
+        scope_is_constant,
+        scope_get
     ],
     load = load
 );

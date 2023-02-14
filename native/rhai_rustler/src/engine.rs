@@ -3,7 +3,7 @@ use std::sync::{Mutex, RwLock};
 use rhai::{Dynamic, Engine};
 use rustler::{Env, ResourceArc, Term};
 
-use crate::{ast::ASTResource, error::RhaiRustlerError, types::from_dynamic};
+use crate::{ast::ASTResource, error::RhaiRustlerError, scope::ScopeResource, types::from_dynamic};
 
 pub struct EngineResource {
     pub engine: Mutex<Engine>,
@@ -24,6 +24,20 @@ fn engine_eval<'a>(
 ) -> Result<Term<'a>, RhaiRustlerError> {
     let engine = resource.engine.try_lock().unwrap();
     let result = engine.eval::<Dynamic>(script)?;
+
+    Ok(from_dynamic(env, result))
+}
+
+#[rustler::nif]
+fn engine_eval_with_scope<'a>(
+    env: Env<'a>,
+    engine_resource: ResourceArc<EngineResource>,
+    scope_resource: ResourceArc<ScopeResource>,
+    script: &str,
+) -> Result<Term<'a>, RhaiRustlerError> {
+    let engine = engine_resource.engine.try_lock().unwrap();
+    let mut scope = scope_resource.scope.try_lock().unwrap();
+    let result = engine.eval_with_scope::<Dynamic>(&mut scope, script)?;
 
     Ok(from_dynamic(env, result))
 }

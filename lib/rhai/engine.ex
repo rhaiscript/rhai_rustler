@@ -48,6 +48,19 @@ defmodule Rhai.Engine do
   end
 
   @doc """
+  Evaluate a string as a script with own scope, returning the result value or an error.
+  """
+  @spec eval_with_scope(t(), Rhai.Scope.t(), String.t()) ::
+          {:ok, Rhai.rhai_any()} | {:error, Rhai.rhai_error()}
+  def eval_with_scope(
+        %__MODULE__{resource: engine_resource},
+        %Rhai.Scope{resource: scope_resource},
+        script
+      ) do
+    Rhai.Native.engine_eval_with_scope(engine_resource, scope_resource, script)
+  end
+
+  @doc """
   Set whether to raise error if an object map property does not exist.
   """
   @spec set_fail_on_invalid_map_property(t(), boolean) :: t()
