@@ -36,7 +36,6 @@ defmodule Rhai.Scope do
 
   @doc """
   Add (push) a new constant with a Dynamic value to the Scope.
-
   Constants are immutable and cannot be assigned to. Their values never change.
   Constants propagation is a technique used to optimize an AST.
   """
@@ -56,7 +55,9 @@ defmodule Rhai.Scope do
   end
 
   @doc """
-  Does the Scope contain the entry?
+  Check if the named entry in the Scope is constant.
+  Search starts backwards from the last, stopping at the first entry matching the specified name.
+  Returns nil if no entry matching the specified name is found.
   """
   @spec is_constant(t(), String.t()) :: nil | bool()
   def is_constant(%__MODULE__{resource: resource}, name) do
@@ -64,8 +65,7 @@ defmodule Rhai.Scope do
   end
 
   @doc """
-  Get a reference to an entry in the Scope.
-
+  Get the value of an entry in the Scope.
   If the entry by the specified name is not found, nil is returned.
   """
   @spec get(t(), String.t()) :: nil | Rhai.rhai_any()
