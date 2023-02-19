@@ -72,4 +72,16 @@ defmodule ScopeTest do
       refute Scope.contains?(scope, "a")
     end
   end
+
+  describe "clone_visible/1" do
+    test "should clone the scope" do
+      scope =
+        Scope.new()
+        |> Scope.push_dynamic("a", 1)
+        |> Scope.push_dynamic("a", 2)
+        |> Scope.clone_visible()
+
+      assert 2 == Scope.get_value(scope, "a")
+    end
+  end
 end
