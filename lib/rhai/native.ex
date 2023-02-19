@@ -76,6 +76,7 @@ defmodule Rhai.Native do
   def scope_is_constant(_scope, _name), do: err()
   def scope_get_value(_scope, _name), do: err()
   def scope_clear(_scope), do: err()
+  def scope_clone_visible(_scope), do: err()
 
   defp err, do: :erlang.nif_error(:nif_not_loaded)
 end

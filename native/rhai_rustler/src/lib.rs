@@ -96,7 +96,8 @@ rustler::init!(
         scope_contains,
         scope_is_constant,
         scope_get_value,
-        scope_clear
+        scope_clear,
+        scope_clone_visible
     ],
     load = load
 );

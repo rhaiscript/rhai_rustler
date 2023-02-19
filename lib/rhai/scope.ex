@@ -83,6 +83,16 @@ defmodule Rhai.Scope do
     scope
   end
 
+  @doc """
+  Clone the Scope, keeping only the last instances of each variable name. Shadowed variables are omitted in the copy.
+  """
+  @spec clone_visible(t()) :: t()
+  def clone_visible(%__MODULE__{resource: resource}) do
+    resource
+    |> Rhai.Native.scope_clone_visible()
+    |> wrap_resource()
+  end
+
   @doc false
   def wrap_resource(resource) do
     %__MODULE__{

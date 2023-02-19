@@ -66,3 +66,11 @@ fn scope_clear(resource: ResourceArc<ScopeResource>) {
     let mut scope = resource.scope.try_lock().unwrap();
     scope.clear();
 }
+
+#[rustler::nif]
+fn scope_clone_visible(resource: ResourceArc<ScopeResource>) -> ResourceArc<ScopeResource> {
+    let scope = resource.scope.try_lock().unwrap();
+    ResourceArc::new(ScopeResource {
+        scope: Mutex::new(scope.clone_visible()),
+    })
+}
