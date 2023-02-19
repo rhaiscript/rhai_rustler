@@ -406,6 +406,7 @@ defmodule Rhai.Engine do
     Rhai.Native.engine_strict_variables(resource)
   end
 
+  @doc false
   def wrap_resource(resource) do
     %__MODULE__{
       resource: resource,
