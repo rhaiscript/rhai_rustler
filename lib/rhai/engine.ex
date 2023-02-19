@@ -297,7 +297,7 @@ defmodule Rhai.Engine do
 
   Zero under `no_function`.
   """
-  @spec max_expr_depth(t()) :: non_neg_integer()
+  @spec max_function_expr_depth(t()) :: non_neg_integer()
   def max_function_expr_depth(%__MODULE__{resource: resource}) do
     Rhai.Native.engine_max_function_expr_depth(resource)
   end

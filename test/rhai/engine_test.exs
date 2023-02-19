@@ -26,20 +26,6 @@ defmodule Rhai.EngineTest do
     end
   end
 
-  describe "set_fail_on_invalid_map_property/2, fail_on_invalid_map_property?/1" do
-    test "should return false by default" do
-      engine = Engine.new()
-
-      refute Engine.fail_on_invalid_map_property?(engine)
-    end
-
-    test "should set fail on invalid map property to enabled" do
-      assert Engine.new()
-             |> Engine.set_fail_on_invalid_map_property(true)
-             |> Engine.fail_on_invalid_map_property?()
-    end
-  end
-
   describe "compile/2" do
     test "should compile a valid expression into AST" do
       engine = Engine.new()
@@ -51,6 +37,20 @@ defmodule Rhai.EngineTest do
       engine = Engine.new()
 
       assert {:error, {:parsing, _}} = Engine.compile(engine, "???")
+    end
+  end
+
+  describe "set_fail_on_invalid_map_property/2, fail_on_invalid_map_property?/1" do
+    test "should return false by default" do
+      engine = Engine.new()
+
+      refute Engine.fail_on_invalid_map_property?(engine)
+    end
+
+    test "should set fail on invalid map property to enabled" do
+      assert Engine.new()
+             |> Engine.set_fail_on_invalid_map_property(true)
+             |> Engine.fail_on_invalid_map_property?()
     end
   end
 
