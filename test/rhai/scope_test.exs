@@ -84,4 +84,18 @@ defmodule ScopeTest do
       assert 2 == Scope.get_value(scope, "a")
     end
   end
+
+  describe "is_empty/1" do
+    test "should return true if the scope is empty" do
+      scope = Scope.new()
+
+      assert Scope.is_empty(scope)
+    end
+
+    test "should return false if the scope is not empty" do
+      scope = Scope.new() |> Scope.push_dynamic("a", 1)
+
+      refute Scope.is_empty(scope)
+    end
+  end
 end

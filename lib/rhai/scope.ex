@@ -93,6 +93,14 @@ defmodule Rhai.Scope do
     |> wrap_resource()
   end
 
+  @doc """
+  Returns true if this Scope contains no variables.
+  """
+  @spec is_empty(t()) :: bool()
+  def is_empty(%__MODULE__{resource: resource}) do
+    Rhai.Native.scope_is_empty(resource)
+  end
+
   @doc false
   def wrap_resource(resource) do
     %__MODULE__{
