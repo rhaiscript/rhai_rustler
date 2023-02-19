@@ -51,13 +51,14 @@ fn scope_is_constant(resource: ResourceArc<ScopeResource>, name: &str) -> Option
 }
 
 #[rustler::nif]
-fn scope_get<'a>(
+fn scope_get_value<'a>(
     env: Env<'a>,
     resource: ResourceArc<ScopeResource>,
     name: &str,
 ) -> Option<Term<'a>> {
     let scope = resource.scope.try_lock().unwrap();
-    scope.get(name).map(|v| from_dynamic(env, v.clone()))
+
+    scope.get_value(name).map(|v| from_dynamic(env, v))
 }
 
 #[rustler::nif]

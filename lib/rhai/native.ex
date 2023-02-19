@@ -74,7 +74,7 @@ defmodule Rhai.Native do
   def scope_push_constant_dynamic(_scope, _name, _value), do: err()
   def scope_contains(_scope, _name), do: err()
   def scope_is_constant(_scope, _name), do: err()
-  def scope_get(_scope, _name), do: err()
+  def scope_get_value(_scope, _name), do: err()
   def scope_clear(_scope), do: err()
 
   defp err, do: :erlang.nif_error(:nif_not_loaded)
