@@ -3,6 +3,18 @@ defmodule ScopeTest do
 
   alias Rhai.Scope
 
+  describe "new/0" do
+    test "should create a new scope" do
+      assert %Scope{} = Scope.new()
+    end
+  end
+
+  describe "with_capacity/1" do
+    test "should create a new scope with a particular capacity" do
+      assert %Scope{} = Scope.with_capacity(10)
+    end
+  end
+
   describe "push_dynamic/3" do
     test "should push a dynamic variable" do
       scope = Scope.new() |> Scope.push_dynamic("a", 1)

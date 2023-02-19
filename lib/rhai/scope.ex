@@ -25,6 +25,16 @@ defmodule Rhai.Scope do
   end
 
   @doc """
+  Create a new Scope with a particular capacity.
+  """
+  @spec with_capacity(non_neg_integer()) :: t()
+  def with_capacity(capacity) do
+    capacity
+    |> Rhai.Native.scope_with_capacity()
+    |> wrap_resource()
+  end
+
+  @doc """
   Add (push) a new Dynamic entry to the Scope.
   """
   @spec push_dynamic(t(), String.t(), Rhai.rhai_any()) :: t()

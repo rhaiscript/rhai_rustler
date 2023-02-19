@@ -91,6 +91,7 @@ rustler::init!(
         engine_strict_variables,
         // scope
         scope_new,
+        scope_with_capacity,
         scope_push_dynamic,
         scope_push_constant_dynamic,
         scope_contains,

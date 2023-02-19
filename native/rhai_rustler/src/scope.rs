@@ -17,6 +17,13 @@ fn scope_new() -> ResourceArc<ScopeResource> {
 }
 
 #[rustler::nif]
+fn scope_with_capacity(capacity: usize) -> ResourceArc<ScopeResource> {
+    ResourceArc::new(ScopeResource {
+        scope: Mutex::new(Scope::with_capacity(capacity)),
+    })
+}
+
+#[rustler::nif]
 fn scope_push_dynamic<'a>(
     env: Env<'a>,
     resource: ResourceArc<ScopeResource>,

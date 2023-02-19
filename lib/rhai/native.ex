@@ -70,6 +70,7 @@ defmodule Rhai.Native do
 
   # scope
   def scope_new, do: err()
+  def scope_with_capacity(_capacity), do: err()
   def scope_push_dynamic(_scope, _name, _value), do: err()
   def scope_push_constant_dynamic(_scope, _name, _value), do: err()
   def scope_contains(_scope, _name), do: err()
