@@ -7,7 +7,7 @@ defmodule ScopeTest do
     test "should push a dynamic variable" do
       scope = Scope.new() |> Scope.push_dynamic("a", 1)
 
-      assert 1 = Scope.get(scope, "a")
+      assert 1 = Scope.get_value(scope, "a")
       assert Scope.contains?(scope, "a")
       refute Scope.is_constant(scope, "a")
     end
@@ -17,23 +17,23 @@ defmodule ScopeTest do
     test "should push a dynamic variable" do
       scope = Scope.new() |> Scope.push_constant_dynamic("a", 1)
 
-      assert 1 = Scope.get(scope, "a")
+      assert 1 = Scope.get_value(scope, "a")
       assert Scope.contains?(scope, "a")
       assert Scope.is_constant(scope, "a")
     end
   end
 
-  describe "get/2" do
+  describe "get_value/2" do
     test "should return the value of the variable" do
       scope = Scope.new() |> Scope.push_dynamic("a", 1)
 
-      assert 1 == Scope.get(scope, "a")
+      assert 1 == Scope.get_value(scope, "a")
     end
 
     test "should return nil if the variable is not found" do
       scope = Scope.new()
 
-      assert nil == Scope.get(scope, "a")
+      assert nil == Scope.get_value(scope, "a")
     end
   end
 

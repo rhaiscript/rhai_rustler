@@ -66,16 +66,15 @@ defmodule Rhai.Scope do
   end
 
   @doc """
-  Get the value of an entry in the Scope.
-  If the entry by the specified name is not found, nil is returned.
+  Get the value of an entry in the Scope, starting from the last.
   """
-  @spec get(t(), String.t()) :: nil | Rhai.rhai_any()
-  def get(%__MODULE__{resource: resource}, name) do
-    Rhai.Native.scope_get(resource, name)
+  @spec get_value(t(), String.t()) :: nil | Rhai.rhai_any()
+  def get_value(%__MODULE__{resource: resource}, name) do
+    Rhai.Native.scope_get_value(resource, name)
   end
 
   @doc """
-    Empty the Scope.
+  Empty the Scope.
   """
   @spec clear(t()) :: t()
   def clear(%__MODULE__{resource: resource} = scope) do

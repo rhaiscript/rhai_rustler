@@ -95,7 +95,7 @@ rustler::init!(
         scope_push_constant_dynamic,
         scope_contains,
         scope_is_constant,
-        scope_get,
+        scope_get_value,
         scope_clear
     ],
     load = load
