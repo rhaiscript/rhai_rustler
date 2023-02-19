@@ -74,3 +74,9 @@ fn scope_clone_visible(resource: ResourceArc<ScopeResource>) -> ResourceArc<Scop
         scope: Mutex::new(scope.clone_visible()),
     })
 }
+
+#[rustler::nif]
+fn scope_is_empty(resource: ResourceArc<ScopeResource>) -> bool {
+    let scope = resource.scope.try_lock().unwrap();
+    scope.is_empty()
+}
