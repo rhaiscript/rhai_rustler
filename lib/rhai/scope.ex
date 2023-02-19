@@ -101,6 +101,14 @@ defmodule Rhai.Scope do
     Rhai.Native.scope_is_empty(resource)
   end
 
+  @doc """
+  Get the number of entries inside the Scope.
+  """
+  @spec len(t()) :: non_neg_integer()
+  def len(%__MODULE__{resource: resource}) do
+    Rhai.Native.scope_len(resource)
+  end
+
   @doc false
   def wrap_resource(resource) do
     %__MODULE__{
