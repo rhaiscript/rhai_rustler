@@ -98,4 +98,19 @@ defmodule ScopeTest do
       refute Scope.is_empty(scope)
     end
   end
+
+  describe "len/1" do
+    test "should return the number of entries inside the scope" do
+      scope = Scope.new()
+
+      assert 0 == Scope.len(scope)
+
+      scope =
+        scope
+        |> Scope.push_dynamic("a", 1)
+        |> Scope.push_dynamic("b", 2)
+
+      assert 2 == Scope.len(scope)
+    end
+  end
 end

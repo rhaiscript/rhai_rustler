@@ -80,3 +80,9 @@ fn scope_is_empty(resource: ResourceArc<ScopeResource>) -> bool {
     let scope = resource.scope.try_lock().unwrap();
     scope.is_empty()
 }
+
+#[rustler::nif]
+fn scope_len(resource: ResourceArc<ScopeResource>) -> usize {
+    let scope = resource.scope.try_lock().unwrap();
+    scope.len()
+}
