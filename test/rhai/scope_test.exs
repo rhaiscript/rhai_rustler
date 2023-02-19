@@ -125,4 +125,20 @@ defmodule ScopeTest do
       assert 2 == Scope.len(scope)
     end
   end
+
+  describe "remove/2" do
+    test "should remove and return the variable from the scope" do
+      scope = Scope.new()
+
+      assert 1 == scope |> Scope.push_dynamic("a", 1) |> Scope.remove("a")
+      refute Scope.contains?(scope, "a")
+    end
+
+    test "should do nothing and return nil if the variable is not found" do
+      scope = Scope.new()
+
+      assert nil == Scope.remove(scope, "a")
+      refute Scope.contains?(scope, "a")
+    end
+  end
 end

@@ -93,3 +93,13 @@ fn scope_len(resource: ResourceArc<ScopeResource>) -> usize {
     let scope = resource.scope.try_lock().unwrap();
     scope.len()
 }
+
+#[rustler::nif]
+fn scope_remove<'a>(
+    env: Env<'a>,
+    resource: ResourceArc<ScopeResource>,
+    name: &str,
+) -> Option<Term<'a>> {
+    let mut scope = resource.scope.try_lock().unwrap();
+    scope.remove(name).map(|v| from_dynamic(env, v))
+}
