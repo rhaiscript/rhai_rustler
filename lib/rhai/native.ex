@@ -80,6 +80,7 @@ defmodule Rhai.Native do
   def scope_clone_visible(_scope), do: err()
   def scope_is_empty(_scope), do: err()
   def scope_len(_scope), do: err()
+  def scope_remove(_scope, _name), do: err()
 
   defp err, do: :erlang.nif_error(:nif_not_loaded)
 end

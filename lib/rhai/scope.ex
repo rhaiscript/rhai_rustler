@@ -119,6 +119,16 @@ defmodule Rhai.Scope do
     Rhai.Native.scope_len(resource)
   end
 
+  @doc """
+  Remove the last entry in the Scope by the specified name and return its value.
+
+  If the entry by the specified name is not found, None is returned.
+  """
+  @spec remove(t(), String.t()) :: nil | Rhai.rhai_any()
+  def remove(%__MODULE__{resource: resource}, name) do
+    Rhai.Native.scope_remove(resource, name)
+  end
+
   @doc false
   def wrap_resource(resource) do
     %__MODULE__{

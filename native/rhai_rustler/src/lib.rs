@@ -100,7 +100,8 @@ rustler::init!(
         scope_clear,
         scope_clone_visible,
         scope_is_empty,
-        scope_len
+        scope_len,
+        scope_remove,
     ],
     load = load
 );
