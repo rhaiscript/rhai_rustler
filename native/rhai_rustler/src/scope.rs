@@ -59,3 +59,9 @@ fn scope_get<'a>(
     let scope = resource.scope.try_lock().unwrap();
     scope.get(name).map(|v| from_dynamic(env, v.clone()))
 }
+
+#[rustler::nif]
+fn scope_clear(resource: ResourceArc<ScopeResource>) {
+    let mut scope = resource.scope.try_lock().unwrap();
+    scope.clear();
+}

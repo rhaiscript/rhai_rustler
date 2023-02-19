@@ -36,6 +36,7 @@ defmodule Rhai.Scope do
 
   @doc """
   Add (push) a new constant with a Dynamic value to the Scope.
+
   Constants are immutable and cannot be assigned to. Their values never change.
   Constants propagation is a technique used to optimize an AST.
   """
@@ -73,6 +74,17 @@ defmodule Rhai.Scope do
     Rhai.Native.scope_get(resource, name)
   end
 
+  @doc """
+    Empty the Scope.
+  """
+  @spec clear(t()) :: t()
+  def clear(%__MODULE__{resource: resource} = scope) do
+    Rhai.Native.scope_clear(resource)
+
+    scope
+  end
+
+  @doc false
   def wrap_resource(resource) do
     %__MODULE__{
       resource: resource,

@@ -17,6 +17,7 @@ defmodule Rhai.AST do
 
   @type t :: %__MODULE__{}
 
+  @doc false
   def wrap_resource(resource) do
     %__MODULE__{
       resource: resource,
