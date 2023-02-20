@@ -102,6 +102,7 @@ rustler::init!(
         scope_is_empty,
         scope_len,
         scope_remove,
+        scope_rewind
     ],
     load = load
 );

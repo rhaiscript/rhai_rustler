@@ -141,4 +141,24 @@ defmodule ScopeTest do
       refute Scope.contains?(scope, "a")
     end
   end
+
+  describe "rewind/2" do
+    test "should rewind the scope to a previous size" do
+      scope =
+        Scope.new()
+        |> Scope.push_dynamic("a", 1)
+        |> Scope.push_dynamic("b", 2)
+        |> Scope.push_dynamic("c", 3)
+        |> Scope.rewind(2)
+
+      assert 2 == Scope.len(scope)
+      assert 1 == Scope.get_value(scope, "a")
+      assert 2 == Scope.get_value(scope, "b")
+      refute Scope.contains?(scope, "c")
+
+      scope = Scope.rewind(scope, 0)
+
+      assert Scope.is_empty(scope)
+    end
+  end
 end

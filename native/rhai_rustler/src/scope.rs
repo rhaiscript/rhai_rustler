@@ -103,3 +103,9 @@ fn scope_remove<'a>(
     let mut scope = resource.scope.try_lock().unwrap();
     scope.remove(name).map(|v| from_dynamic(env, v))
 }
+
+#[rustler::nif]
+fn scope_rewind(resource: ResourceArc<ScopeResource>, size: usize) {
+    let mut scope = resource.scope.try_lock().unwrap();
+    _ = scope.rewind(size);
+}

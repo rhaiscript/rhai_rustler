@@ -67,7 +67,6 @@ defmodule Rhai.Native do
   def engine_max_string_size(_engine), do: err()
   def engine_set_strict_variables(_engine, _flag), do: err()
   def engine_strict_variables(_engine), do: err()
-
   # scope
   def scope_new, do: err()
   def scope_with_capacity(_capacity), do: err()
@@ -81,6 +80,7 @@ defmodule Rhai.Native do
   def scope_is_empty(_scope), do: err()
   def scope_len(_scope), do: err()
   def scope_remove(_scope, _name), do: err()
+  def scope_rewind(_scope, _size), do: err()
 
   defp err, do: :erlang.nif_error(:nif_not_loaded)
 end
