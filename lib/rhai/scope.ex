@@ -129,6 +129,16 @@ defmodule Rhai.Scope do
     Rhai.Native.scope_remove(resource, name)
   end
 
+  @doc """
+  Truncate (rewind) the Scope to a previous size.
+  """
+  @spec rewind(t(), non_neg_integer()) :: t()
+  def rewind(%__MODULE__{resource: resource} = scope, size) do
+    Rhai.Native.scope_rewind(resource, size)
+
+    scope
+  end
+
   @doc false
   def wrap_resource(resource) do
     %__MODULE__{
