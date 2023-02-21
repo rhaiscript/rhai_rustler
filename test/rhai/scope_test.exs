@@ -162,6 +162,94 @@ defmodule ScopeTest do
     end
   end
 
+  describe "pop/1" do
+    test "should pop remove the last entry from the Scope" do
+      scope =
+        Scope.new()
+        |> Scope.push_dynamic("a", 1)
+        |> Scope.push_dynamic("b", 2)
+        |> Scope.push_dynamic("c", 3)
+
+      assert {:ok, scope} = Scope.pop(scope)
+      assert 2 == Scope.len(scope)
+      refute Scope.contains?(scope, "c")
+    end
+
+    test "should return an error if the scope is empty" do
+      assert {:error, {:scope_is_empty, _}} = Scope.new() |> Scope.pop()
+    end
+  end
+
+  describe "pop!/1" do
+    test "should pop remove the last entry from the Scope" do
+      scope =
+        Scope.new()
+        |> Scope.push_dynamic("a", 1)
+        |> Scope.push_dynamic("b", 2)
+        |> Scope.push_dynamic("c", 3)
+
+      scope = Scope.pop!(scope)
+
+      assert 2 == Scope.len(scope)
+      refute Scope.contains?(scope, "c")
+    end
+
+    test "should raise if the scope is empty" do
+      assert_raise RuntimeError, fn ->
+        Scope.new() |> Scope.pop!()
+      end
+    end
+  end
+
+  describe "set_value/1" do
+    test "should update the value of the named entry in the Scope" do
+      assert {:ok, scope} =
+               Scope.new()
+               |> Scope.push_dynamic("a", 1)
+               |> Scope.set_value("a", 2)
+
+      assert 2 == Scope.get_value(scope, "a")
+    end
+
+    test "should add a new entry if no entry matching the specified name is found" do
+      assert {:ok, scope} = Scope.new() |> Scope.set_value("a", 1)
+
+      assert 1 == Scope.get_value(scope, "a")
+    end
+
+    test "should return an error when trying to update the value of a constant" do
+      assert {:error, {:cannot_update_value_of_constant, _}} =
+               Scope.new()
+               |> Scope.push_constant_dynamic("a", 1)
+               |> Scope.set_value("a", 2)
+    end
+  end
+
+  describe "set_value!/1" do
+    test "should update the value of the named entry in the Scope" do
+      scope =
+        Scope.new()
+        |> Scope.push_dynamic("a", 1)
+        |> Scope.set_value!("a", 2)
+
+      assert 2 == Scope.get_value(scope, "a")
+    end
+
+    test "should add a new entry if no entry matching the specified name is found" do
+      scope = Scope.new() |> Scope.set_value!("a", 1)
+
+      assert 1 == Scope.get_value(scope, "a")
+    end
+
+    test "should raise when trying to update the value of a constant" do
+      assert_raise RuntimeError, fn ->
+        Scope.new()
+        |> Scope.push_constant_dynamic("a", 1)
+        |> Scope.set_value!("a", 2)
+      end
+    end
+  end
+
   describe "Enumerable" do
     setup do
       scope =
