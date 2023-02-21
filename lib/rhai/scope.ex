@@ -208,6 +208,19 @@ defmodule Rhai.Scope do
     end
   end
 
+  @doc """
+  Add an alias to a variable in the Scope so that it is exported under that name. This is an advanced API.
+  If the alias is empty, then the variable is exported under its original name.
+  Multiple aliases can be added to any variable.
+  Only the last variable matching the name (and not other shadowed versions) is aliased by this call.
+  """
+  @spec set_alias(t(), String.t(), String.t()) :: t()
+  def set_alias(%__MODULE__{resource: resource} = scope, name, alias_name) do
+    Rhai.Native.scope_set_alias(resource, name, alias_name)
+
+    scope
+  end
+
   @doc false
   def wrap_resource(resource) do
     %__MODULE__{

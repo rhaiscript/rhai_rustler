@@ -250,6 +250,10 @@ defmodule ScopeTest do
     end
   end
 
+  # TODO: test set_alias/1
+  # describe "set_alias/1" do
+  # end
+
   describe "Enumerable" do
     setup do
       scope =

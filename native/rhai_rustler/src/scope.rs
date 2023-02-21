@@ -34,7 +34,8 @@ fn scope_push_dynamic<'a>(
     value: Term<'a>,
 ) {
     let mut scope = resource.scope.try_lock().unwrap();
-    _ = scope.push_dynamic(name, to_dynamic(env, &value));
+
+    scope.push_dynamic(name, to_dynamic(env, &value));
 }
 
 #[rustler::nif]
@@ -45,18 +46,21 @@ fn scope_push_constant_dynamic<'a>(
     value: Term<'a>,
 ) {
     let mut scope = resource.scope.try_lock().unwrap();
-    _ = scope.push_constant_dynamic(name, to_dynamic(env, &value));
+
+    scope.push_constant_dynamic(name, to_dynamic(env, &value));
 }
 
 #[rustler::nif]
 fn scope_contains(resource: ResourceArc<ScopeResource>, name: &str) -> bool {
     let scope = resource.scope.try_lock().unwrap();
+
     scope.contains(name)
 }
 
 #[rustler::nif]
 fn scope_is_constant(resource: ResourceArc<ScopeResource>, name: &str) -> Option<bool> {
     let scope = resource.scope.try_lock().unwrap();
+
     scope.is_constant(name)
 }
 
@@ -74,12 +78,14 @@ fn scope_get_value<'a>(
 #[rustler::nif]
 fn scope_clear(resource: ResourceArc<ScopeResource>) {
     let mut scope = resource.scope.try_lock().unwrap();
+
     scope.clear();
 }
 
 #[rustler::nif]
 fn scope_clone_visible(resource: ResourceArc<ScopeResource>) -> ResourceArc<ScopeResource> {
     let scope = resource.scope.try_lock().unwrap();
+
     ResourceArc::new(ScopeResource {
         scope: Mutex::new(scope.clone_visible()),
     })
@@ -88,12 +94,14 @@ fn scope_clone_visible(resource: ResourceArc<ScopeResource>) -> ResourceArc<Scop
 #[rustler::nif]
 fn scope_is_empty(resource: ResourceArc<ScopeResource>) -> bool {
     let scope = resource.scope.try_lock().unwrap();
+
     scope.is_empty()
 }
 
 #[rustler::nif]
 fn scope_len(resource: ResourceArc<ScopeResource>) -> usize {
     let scope = resource.scope.try_lock().unwrap();
+
     scope.len()
 }
 
@@ -104,13 +112,15 @@ fn scope_remove<'a>(
     name: &str,
 ) -> Option<Term<'a>> {
     let mut scope = resource.scope.try_lock().unwrap();
+
     scope.remove(name).map(|v| from_dynamic(env, v))
 }
 
 #[rustler::nif]
 fn scope_rewind(resource: ResourceArc<ScopeResource>, size: usize) {
     let mut scope = resource.scope.try_lock().unwrap();
-    _ = scope.rewind(size);
+
+    scope.rewind(size);
 }
 
 #[rustler::nif]
@@ -127,11 +137,12 @@ fn scope_iter_collect<'a>(env: Env<'a>, resource: ResourceArc<ScopeResource>) ->
 #[rustler::nif]
 fn scope_pop(resource: ResourceArc<ScopeResource>) -> Result<(), RhaiRustlerError> {
     let mut scope = resource.scope.try_lock().unwrap();
+
     if scope.is_empty() {
         return Err(ScopeError::ErrorScopeIsEmpty.into());
     }
+    scope.pop();
 
-    _ = scope.pop();
     Ok(())
 }
 
@@ -143,10 +154,18 @@ fn scope_set_value<'a>(
     value: Term<'a>,
 ) -> Result<(), RhaiRustlerError> {
     let mut scope = resource.scope.try_lock().unwrap();
+
     if scope.is_constant(name).unwrap_or(false) {
         return Err(ScopeError::ErrorCannotUpdateValueOfConstant.into());
     }
+    scope.set_value(name, to_dynamic(env, &value));
 
-    _ = scope.set_value(name, to_dynamic(env, &value));
     Ok(())
+}
+
+#[rustler::nif]
+fn scope_set_alias(resource: ResourceArc<ScopeResource>, name: &str, alias: &str) {
+    let mut scope = resource.scope.try_lock().unwrap();
+
+    scope.set_alias(name, alias);
 }
