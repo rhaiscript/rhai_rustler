@@ -1,6 +1,7 @@
 defmodule Rhai.Scope do
   @moduledoc """
   Type containing information about the current scope. Useful for keeping state between Engine evaluation runs.
+  Scope implements the [https://hexdocs.pm/elixir/1.12/Enumerable.html](Enumerable) protocol.
   """
 
   defstruct [
@@ -145,5 +146,24 @@ defmodule Rhai.Scope do
       resource: resource,
       reference: make_ref()
     }
+  end
+
+  defimpl Enumerable do
+    def count(scope) do
+      {:ok, Rhai.Scope.len(scope)}
+    end
+
+    def member?(scope, {name, value}) do
+      {:ok, value == Rhai.Scope.get_value(scope, name)}
+    end
+
+    def reduce(%Rhai.Scope{resource: resource}, acc, fun) do
+      resource
+      |> Rhai.Native.scope_iter_collect()
+      |> Enumerable.List.reduce(acc, fun)
+    end
+
+    # Since we return {:error, __MODULE__} a default implementation will be used.
+    def slice(_), do: {:error, __MODULE__}
   end
 end

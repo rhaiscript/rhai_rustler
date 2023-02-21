@@ -81,6 +81,7 @@ defmodule Rhai.Native do
   def scope_len(_scope), do: err()
   def scope_remove(_scope, _name), do: err()
   def scope_rewind(_scope, _size), do: err()
+  def scope_iter_collect(_scope), do: err()
 
   defp err, do: :erlang.nif_error(:nif_not_loaded)
 end
