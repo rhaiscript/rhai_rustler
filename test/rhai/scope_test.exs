@@ -161,4 +161,47 @@ defmodule ScopeTest do
       assert Scope.is_empty(scope)
     end
   end
+
+  describe "Enumerable" do
+    setup do
+      scope =
+        Scope.new()
+        |> Scope.push_dynamic("a", 1)
+        |> Scope.push_dynamic("b", 2)
+        |> Scope.push_dynamic("c", 3)
+
+      {:ok, %{scope: scope}}
+    end
+
+    test "Enum.to_list/1", %{scope: scope} do
+      assert [
+               {"a", 1},
+               {"b", 2},
+               {"c", 3}
+             ] = Enum.to_list(scope)
+    end
+
+    test "Enum.count/1", %{scope: scope} do
+      assert 3 = Enum.count(scope)
+    end
+
+    test "left in right", %{scope: scope} do
+      assert {"a", 1} in scope
+    end
+
+    test "Enum.map/2", %{scope: scope} do
+      assert [
+               {"a", 2},
+               {"b", 4},
+               {"c", 6}
+             ] = Enum.map(scope, fn {k, v} -> {k, v * 2} end)
+    end
+
+    test "Enum.slice/2", %{scope: scope} do
+      assert [
+               {"a", 1},
+               {"b", 2}
+             ] = Enum.slice(scope, 0..1)
+    end
+  end
 end

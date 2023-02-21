@@ -1,7 +1,7 @@
 use std::sync::Mutex;
 
 use rhai::Scope;
-use rustler::{Env, ResourceArc, Term};
+use rustler::{Encoder, Env, ResourceArc, Term};
 
 use crate::types::{from_dynamic, to_dynamic};
 
@@ -108,4 +108,15 @@ fn scope_remove<'a>(
 fn scope_rewind(resource: ResourceArc<ScopeResource>, size: usize) {
     let mut scope = resource.scope.try_lock().unwrap();
     _ = scope.rewind(size);
+}
+
+#[rustler::nif]
+fn scope_iter_collect<'a>(env: Env<'a>, resource: ResourceArc<ScopeResource>) -> Vec<Term<'a>> {
+    let scope = resource.scope.try_lock().unwrap();
+    let value: Vec<Term<'a>> = scope
+        .iter()
+        .map(|(n, _, v)| (n, from_dynamic(env, v)).encode(env))
+        .collect();
+
+    value
 }

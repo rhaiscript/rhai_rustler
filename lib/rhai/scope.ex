@@ -146,4 +146,23 @@ defmodule Rhai.Scope do
       reference: make_ref()
     }
   end
+
+  defimpl Enumerable do
+    def count(scope) do
+      {:ok, Rhai.Scope.len(scope)}
+    end
+
+    def member?(scope, {name, value}) do
+      {:ok, value == Rhai.Scope.get_value(scope, name)}
+    end
+
+    def reduce(%Rhai.Scope{resource: resource}, acc, fun) do
+      resource
+      |> Rhai.Native.scope_iter_collect()
+      |> Enumerable.List.reduce(acc, fun)
+    end
+
+    # Since we return {:error, __MODULE__} a default implementation will be used.
+    def slice(_), do: {:error, __MODULE__}
+  end
 end
