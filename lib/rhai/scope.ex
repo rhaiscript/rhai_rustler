@@ -140,6 +140,74 @@ defmodule Rhai.Scope do
     scope
   end
 
+  @doc """
+  Remove the last entry from the Scope.
+
+  Returns an error if the Scope is empty.
+  """
+  @spec pop(t()) :: {:ok, t()} | {:error, {:scope_is_empty, String.t()}}
+  def pop(%__MODULE__{resource: resource} = scope) do
+    case Rhai.Native.scope_pop(resource) do
+      {:ok, _} ->
+        {:ok, scope}
+
+      error ->
+        error
+    end
+  end
+
+  @doc """
+  Remove the last entry from the Scope.
+
+  Raises if the Scope is empty.
+  """
+  @spec pop!(t()) :: t()
+  def pop!(%__MODULE__{} = scope) do
+    case pop(scope) do
+      {:ok, _} ->
+        scope
+
+      {:error, {:scope_is_empty, message}} ->
+        raise message
+    end
+  end
+
+  @doc """
+  Update the value of the named entry in the Scope.
+
+  Search starts backwards from the last, and only the first entry matching the specified name is updated.
+  If no entry matching the specified name is found, a new one is added.
+
+  Returns an error when trying to update the value of a constant.
+  """
+  def set_value(%__MODULE__{resource: resource} = scope, name, value) do
+    case Rhai.Native.scope_set_value(resource, name, value) do
+      {:ok, _} ->
+        {:ok, scope}
+
+      error ->
+        error
+    end
+  end
+
+  @doc """
+  Update the value of the named entry in the Scope.
+
+  Search starts backwards from the last, and only the first entry matching the specified name is updated.
+  If no entry matching the specified name is found, a new one is added.
+
+  Raises when trying to update the value of a constant.
+  """
+  def set_value!(%__MODULE__{} = scope, name, value) do
+    case set_value(scope, name, value) do
+      {:ok, _} ->
+        scope
+
+      {:error, {:cannot_update_value_of_constant, message}} ->
+        raise message
+    end
+  end
+
   @doc false
   def wrap_resource(resource) do
     %__MODULE__{
@@ -163,7 +231,7 @@ defmodule Rhai.Scope do
       |> Enumerable.List.reduce(acc, fun)
     end
 
-    # Since we return {:error, __MODULE__} a default implementation will be used.
+    # Since it returns `{:error, __MODULE__}`, a default implementation will be used.
     def slice(_), do: {:error, __MODULE__}
   end
 end

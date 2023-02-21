@@ -35,15 +35,27 @@ mod atoms {
         custom_syntax,
         runtime,
         non_pure_method_call_on_constant,
+        scope_is_empty,
+        cannot_update_value_of_constant,
     }
 }
 
 #[derive(Error, Debug)]
+pub enum ScopeError {
+    #[error("The Scope is empty.")]
+    ErrorScopeIsEmpty,
+    #[error("Cannot update the value of a constant.")]
+    ErrorCannotUpdateValueOfConstant,
+}
+
+#[derive(Error, Debug)]
 pub enum RhaiRustlerError {
-    #[error("Error in evaluation: {0}")]
+    #[error("Error in evaluation: {0}.")]
     EvalAltResult(#[from] Box<EvalAltResult>),
-    #[error("Error when parsing a script: {0}")]
+    #[error("Error when parsing a script: {0}.")]
     ParseError(#[from] ParseError),
+    #[error("Error when accessing a scope: {0}.")]
+    ScopeError(#[from] ScopeError),
 }
 
 impl Encoder for RhaiRustlerError {
@@ -95,6 +107,16 @@ impl Encoder for RhaiRustlerError {
             }
             RhaiRustlerError::ParseError(err) => {
                 make_reason_tuple(env, atoms::parsing(), err.to_string())
+            }
+            RhaiRustlerError::ScopeError(err) => {
+                let error_atom = match err {
+                    ScopeError::ErrorScopeIsEmpty => atoms::scope_is_empty(),
+                    ScopeError::ErrorCannotUpdateValueOfConstant => {
+                        atoms::cannot_update_value_of_constant()
+                    }
+                };
+
+                make_reason_tuple(env, error_atom, err.to_string())
             }
         }
     }

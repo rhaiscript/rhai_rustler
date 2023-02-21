@@ -3,7 +3,10 @@ use std::sync::Mutex;
 use rhai::Scope;
 use rustler::{Encoder, Env, ResourceArc, Term};
 
-use crate::types::{from_dynamic, to_dynamic};
+use crate::{
+    error::{RhaiRustlerError, ScopeError},
+    types::{from_dynamic, to_dynamic},
+};
 
 pub struct ScopeResource {
     pub scope: Mutex<Scope<'static>>,
@@ -119,4 +122,31 @@ fn scope_iter_collect<'a>(env: Env<'a>, resource: ResourceArc<ScopeResource>) ->
         .collect();
 
     value
+}
+
+#[rustler::nif]
+fn scope_pop(resource: ResourceArc<ScopeResource>) -> Result<(), RhaiRustlerError> {
+    let mut scope = resource.scope.try_lock().unwrap();
+    if scope.is_empty() {
+        return Err(ScopeError::ErrorScopeIsEmpty.into());
+    }
+
+    _ = scope.pop();
+    Ok(())
+}
+
+#[rustler::nif]
+fn scope_set_value<'a>(
+    env: Env<'a>,
+    resource: ResourceArc<ScopeResource>,
+    name: &str,
+    value: Term<'a>,
+) -> Result<(), RhaiRustlerError> {
+    let mut scope = resource.scope.try_lock().unwrap();
+    if scope.is_constant(name).unwrap_or(false) {
+        return Err(ScopeError::ErrorCannotUpdateValueOfConstant.into());
+    }
+
+    _ = scope.set_value(name, to_dynamic(env, &value));
+    Ok(())
 }
