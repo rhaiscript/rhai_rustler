@@ -221,6 +221,19 @@ defmodule Rhai.Scope do
     scope
   end
 
+  @doc """
+  Update the value of the named entry in the Scope if it already exists and is not constant.
+  Push a new entry with the value into the Scope if the name doesn’t exist or if the existing entry is constant.
+
+  Search starts backwards from the last, and only the first entry matching the specified name is updated.
+  """
+  @spec set_or_push(t(), String.t(), Rhai.rhai_any()) :: t()
+  def set_or_push(%__MODULE__{resource: resource} = scope, name, value) do
+    Rhai.Native.scope_set_or_push(resource, name, value)
+
+    scope
+  end
+
   @doc false
   def wrap_resource(resource) do
     %__MODULE__{

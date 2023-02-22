@@ -254,6 +254,33 @@ defmodule ScopeTest do
   # describe "set_alias/1" do
   # end
 
+  describe "set_or_push/3" do
+    test "should update the value of the named entry in the Scope" do
+      scope =
+        Scope.new()
+        |> Scope.push_dynamic("a", 1)
+        |> Scope.set_or_push("a", 2)
+
+      assert 2 == Scope.get_value(scope, "a")
+    end
+
+    test "should push a new entry into the Scope if the entry does not exist" do
+      assert 1 ==
+               Scope.new()
+               |> Scope.set_or_push("a", 1)
+               |> Scope.get_value("a")
+    end
+
+    test "should push a new entry into the Scope if the existing entry is constant" do
+      scope =
+        Scope.new()
+        |> Scope.push_constant_dynamic("a", 1)
+        |> Scope.set_or_push("a", 2)
+
+      assert 2 == Scope.get_value(scope, "a")
+    end
+  end
+
   describe "Enumerable" do
     setup do
       scope =

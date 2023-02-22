@@ -169,3 +169,15 @@ fn scope_set_alias(resource: ResourceArc<ScopeResource>, name: &str, alias: &str
 
     scope.set_alias(name, alias);
 }
+
+#[rustler::nif]
+fn scope_set_or_push<'a>(
+    env: Env<'a>,
+    resource: ResourceArc<ScopeResource>,
+    name: &str,
+    value: Term<'a>,
+) {
+    let mut scope = resource.scope.try_lock().unwrap();
+
+    scope.set_or_push(name, to_dynamic(env, &value));
+}

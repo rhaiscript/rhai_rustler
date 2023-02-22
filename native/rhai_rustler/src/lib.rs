@@ -106,6 +106,7 @@ rustler::init!(
         scope_pop,
         scope_set_value,
         scope_set_alias,
+        scope_set_or_push,
         scope_iter_collect
     ],
     load = load
