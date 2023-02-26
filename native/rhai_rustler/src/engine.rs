@@ -43,6 +43,28 @@ fn engine_eval_with_scope<'a>(
 }
 
 #[rustler::nif]
+fn engine_run(resource: ResourceArc<EngineResource>, script: &str) -> Result<(), RhaiRustlerError> {
+    let engine = resource.engine.try_lock().unwrap();
+    engine.run(script)?;
+
+    Ok(())
+}
+
+#[rustler::nif]
+fn engine_run_with_scope(
+    engine_resource: ResourceArc<EngineResource>,
+    scope_resource: ResourceArc<ScopeResource>,
+    script: &str,
+) -> Result<(), RhaiRustlerError> {
+    let engine = engine_resource.engine.try_lock().unwrap();
+    let mut scope = scope_resource.scope.try_lock().unwrap();
+
+    engine.run_with_scope(&mut scope, script)?;
+
+    Ok(())
+}
+
+#[rustler::nif]
 fn engine_compile(
     resource: ResourceArc<EngineResource>,
     script: &str,

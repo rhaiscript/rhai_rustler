@@ -54,6 +54,8 @@ rustler::init!(
         engine_new,
         engine_eval,
         engine_eval_with_scope,
+        engine_run,
+        engine_run_with_scope,
         engine_set_fail_on_invalid_map_property,
         engine_fail_on_invalid_map_property,
         engine_set_max_array_size,

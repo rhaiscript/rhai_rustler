@@ -32,6 +32,8 @@ defmodule Rhai.Native do
   def engine_compile(_engine, _script), do: err()
   def engine_eval(_engine, _script), do: err()
   def engine_eval_with_scope(_engine, _scope, _script), do: err()
+  def engine_run(_engine, _script), do: err()
+  def engine_run_with_scope(_engine, _scope, _script), do: err()
   def engine_set_fail_on_invalid_map_property(_engine, _flag), do: err()
   def engine_fail_on_invalid_map_property(_engine), do: err()
   def engine_set_max_array_size(_engine, _flag), do: err()
