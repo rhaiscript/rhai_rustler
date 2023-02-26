@@ -3,7 +3,7 @@ defmodule Rhai.Engine do
   Rhai main scripting engine.
   """
 
-  alias Rhai.AST
+  alias Rhai.{AST, Scope}
 
   defstruct [
     # The actual NIF Resource.
@@ -50,14 +50,46 @@ defmodule Rhai.Engine do
   @doc """
   Evaluate a string as a script with own scope, returning the result value or an error.
   """
-  @spec eval_with_scope(t(), Rhai.Scope.t(), String.t()) ::
+  @spec eval_with_scope(t(), Scope.t(), String.t()) ::
           {:ok, Rhai.rhai_any()} | {:error, Rhai.rhai_error()}
   def eval_with_scope(
         %__MODULE__{resource: engine_resource},
-        %Rhai.Scope{resource: scope_resource},
+        %Scope{resource: scope_resource},
         script
       ) do
     Rhai.Native.engine_eval_with_scope(engine_resource, scope_resource, script)
+  end
+
+  @doc """
+  Evaluate a string as script.
+  """
+  @spec run(t(), String.t()) :: :ok | {:error, Rhai.rhai_error()}
+  def run(%__MODULE__{resource: resource}, script) do
+    case Rhai.Native.engine_run(resource, script) do
+      {:ok, _} ->
+        :ok
+
+      error ->
+        error
+    end
+  end
+
+  @doc """
+  Evaluate a string as script with own scope.
+  """
+  @spec run_with_scope(t(), Scope.t(), String.t()) :: :ok | {:error, Rhai.rhai_error()}
+  def run_with_scope(
+        %__MODULE__{resource: engine_resource},
+        %Scope{resource: scope_resource},
+        script
+      ) do
+    case Rhai.Native.engine_run_with_scope(engine_resource, scope_resource, script) do
+      {:ok, _} ->
+        :ok
+
+      error ->
+        error
+    end
   end
 
   @doc """

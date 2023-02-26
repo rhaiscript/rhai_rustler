@@ -26,6 +26,24 @@ defmodule Rhai.EngineTest do
     end
   end
 
+  describe "run/2" do
+    test "should run a script" do
+      engine = Engine.new()
+
+      assert :ok = Engine.run(engine, "40 + 2;")
+    end
+  end
+
+  describe "run_with_scope/3" do
+    test "should run a script with scope" do
+      engine = Engine.new()
+      scope = Scope.new() |> Scope.push_dynamic("x", 40)
+
+      assert :ok = Engine.run_with_scope(engine, scope, "x += 2;")
+      assert 42 == Scope.get_value(scope, "x")
+    end
+  end
+
   describe "compile/2" do
     test "should compile a valid expression into AST" do
       engine = Engine.new()
