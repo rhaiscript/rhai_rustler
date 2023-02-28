@@ -69,6 +69,7 @@ defmodule Rhai.Native do
   def engine_max_string_size(_engine), do: err()
   def engine_set_strict_variables(_engine, _flag), do: err()
   def engine_strict_variables(_engine), do: err()
+  def engine_set_module_resolvers(_engine, _resolver), do: err()
   # scope
   def scope_new, do: err()
   def scope_with_capacity(_capacity), do: err()

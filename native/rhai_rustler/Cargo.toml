@@ -2,7 +2,7 @@
 name = "rhai_rustler"
 version = "0.2.0-dev"
 authors = ["Fabrizio Sestito <fabrizio.sestito@suse.com>"]
-edition = "2018"
+edition = "2021"
 
 [lib]
 name = "rhai_rustler"
@@ -11,5 +11,7 @@ crate-type = ["cdylib"]
 
 [dependencies]
 rhai = { version = "1.13.0", features = ["sync"] }
+rhai-dylib = { version = "0.1.6", features = ["sync"] }
 thiserror = "1.0.39"
 rustler = "0.27.0"
+
