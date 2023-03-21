@@ -1,6 +1,10 @@
 use std::sync::{Mutex, RwLock};
 
-use rhai::{Dynamic, Engine};
+use rhai::{
+    module_resolvers::{FileModuleResolver, ModuleResolversCollection},
+    Dynamic, Engine,
+};
+use rhai_dylib::module_resolvers::libloading::DylibModuleResolver;
 use rustler::{Env, ResourceArc, Term};
 
 use crate::{ast::ASTResource, error::RhaiRustlerError, scope::ScopeResource, types::from_dynamic};
@@ -11,8 +15,15 @@ pub struct EngineResource {
 
 #[rustler::nif]
 fn engine_new() -> ResourceArc<EngineResource> {
+    let mut engine = Engine::new();
+
+    let mut resolvers_collection = ModuleResolversCollection::new();
+    resolvers_collection.push(FileModuleResolver::new());
+    resolvers_collection.push(DylibModuleResolver::new());
+    engine.set_module_resolver(resolvers_collection);
+
     ResourceArc::new(EngineResource {
-        engine: Mutex::new(Engine::new()),
+        engine: Mutex::new(engine),
     })
 }
 
