@@ -1,0 +1,14 @@
+[package]
+name = "test_dylib_module"
+version = "0.1.0"
+authors = []
+edition = "2021"
+
+[lib]
+name = "test_dylib_module"
+path = "src/lib.rs"
+crate-type = ["cdylib"]
+
+[dependencies]
+rhai = { version = "1.13.0", features = ["sync"] }
+

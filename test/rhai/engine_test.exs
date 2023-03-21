@@ -9,6 +9,24 @@ defmodule Rhai.EngineTest do
     end
   end
 
+  describe "module resolvers" do
+    test "dylib module resolver" do
+      assert {:ok, [6, "inner", "value"]} =
+               Engine.new()
+               |> Engine.eval("""
+               import "#{File.cwd!()}/priv/native/libtest_dylib_module" as plugin;
+
+               let result = [];
+
+               result += plugin::triple_add(1, 2, 3);
+               result += plugin::new_plugin_object("inner").get_inner();
+               result += plugin::get_property(\#{ property: "value" });
+
+               result
+               """)
+    end
+  end
+
   describe "eval/1" do
     test "should eval a script" do
       engine = Engine.new()

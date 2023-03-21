@@ -6,6 +6,7 @@ mod types;
 
 use std::collections::HashMap;
 
+use rhai::config::hashing::set_ahash_seed;
 use rhai::{Dynamic, Engine, Scope};
 use rustler::{Env, Term};
 
@@ -38,9 +39,19 @@ fn eval<'a>(
 }
 
 fn load(env: Env, _: Term) -> bool {
+    // Set dylib ahash seed
+    if let Err(value) = set_ahash_seed(Some([1, 3, 3, 7])) {
+        eprintln!(
+            "Failed to set ahash seed, ahash seed already set: {:?}",
+            value
+        );
+        return false;
+    }
+
     rustler::resource!(EngineResource, env);
     rustler::resource!(ScopeResource, env);
     rustler::resource!(ASTResource, env);
+
     true
 }
 
