@@ -4,7 +4,10 @@ use rhai::{
     module_resolvers::{FileModuleResolver, ModuleResolversCollection},
     Dynamic, Engine,
 };
+
+use rhai_dylib::loader::{libloading::Libloading, Loader};
 use rhai_dylib::module_resolvers::libloading::DylibModuleResolver;
+
 use rustler::{Env, ResourceArc, Term};
 
 use crate::{ast::ASTResource, error::RhaiRustlerError, scope::ScopeResource, types::from_dynamic};
@@ -25,6 +28,49 @@ fn engine_new() -> ResourceArc<EngineResource> {
     ResourceArc::new(EngineResource {
         engine: Mutex::new(engine),
     })
+}
+
+#[rustler::nif]
+fn engine_register_global_module(
+    resource: ResourceArc<EngineResource>,
+    path: String,
+) -> Result<(), RhaiRustlerError> {
+    let mut engine = resource.engine.try_lock().unwrap();
+    let mut loader = Libloading::new();
+
+    // Load the plugin.
+    #[cfg(target_os = "linux")]
+    let path = format!("{}.so", path);
+    #[cfg(target_os = "macos")]
+    let path = format!("{}.dylib", path);
+    #[cfg(target_os = "windows")]
+    let path = format!("{}.dll", path);
+
+    engine.register_global_module(loader.load(path)?);
+
+    Ok(())
+}
+
+#[rustler::nif]
+fn engine_register_static_module(
+    resource: ResourceArc<EngineResource>,
+    namespace: String,
+    path: String,
+) -> Result<(), RhaiRustlerError> {
+    let mut engine = resource.engine.try_lock().unwrap();
+    let mut loader = Libloading::new();
+
+    // Load the plugin.
+    #[cfg(target_os = "linux")]
+    let path = format!("{}.so", path);
+    #[cfg(target_os = "macos")]
+    let path = format!("{}.dylib", path);
+    #[cfg(target_os = "windows")]
+    let path = format!("{}.dll", path);
+
+    engine.register_static_module(namespace, loader.load(path)?);
+
+    Ok(())
 }
 
 #[rustler::nif]

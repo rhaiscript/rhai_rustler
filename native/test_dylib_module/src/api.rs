@@ -37,8 +37,8 @@ pub mod my_plugin_api {
         a + b + c
     }
 
-    /// Using Rhai types.
-    #[rhai_fn(global)]
+    /// Using Rhai types, non-global function.
+    #[rhai_fn()]
     pub fn get_property(m: &mut Map) -> String {
         m.get("property").unwrap().clone_cast()
     }
