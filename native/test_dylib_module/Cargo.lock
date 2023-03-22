@@ -287,7 +287,6 @@ dependencies = [
 name = "test_dylib_module"
 version = "0.1.0"
 dependencies = [
- "rhai",
  "rhai-dylib",
  "rustler",
 ]

@@ -1,6 +1,6 @@
 pub mod api;
 
-use rhai::{config::hashing::set_ahash_seed, exported_module, Module, Shared};
+use rhai_dylib::rhai::{config::hashing::set_ahash_seed, exported_module, Module, Shared};
 
 #[allow(improper_ctypes_definitions)]
 #[no_mangle]

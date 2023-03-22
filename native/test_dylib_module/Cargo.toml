@@ -10,7 +10,6 @@ path = "src/lib.rs"
 crate-type = ["cdylib"]
 
 [dependencies]
-rhai = { version = "=1.13.0", features = ["sync"] }
 rhai-dylib = { version = "=0.1.6", features = ["sync"] }
 rustler = "0.27.0"
 
