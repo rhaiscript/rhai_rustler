@@ -27,7 +27,7 @@ defmodule Rhai.Engine do
   end
 
   @doc """
-  Register a shared Module into the global namespace of Engine.
+  Register a shared dylib Module into the global namespace of Engine.
 
   All functions and type iterators are automatically available to scripts without namespace qualifications.
   Sub-modules and variables are ignored.
@@ -44,7 +44,7 @@ defmodule Rhai.Engine do
   end
 
   @doc """
-  Register a shared Module into the global namespace of Engine.
+  Register a shared dylib Module into the global namespace of Engine.
 
   All functions and type iterators are automatically available to scripts without namespace qualifications.
   Sub-modules and variables are ignored.
@@ -65,7 +65,7 @@ defmodule Rhai.Engine do
 
   @doc """
   Register a shared Module into the namespace of Engine.
-
+    
   Returns an error if the module cannot be loaded. 
   """
   @spec register_static_module(t(), String.t(), String.t()) ::

@@ -34,7 +34,7 @@ defmodule Rhai.EngineTest do
       assert {:ok, engine} =
                Engine.register_global_module(
                  engine,
-                 "#{File.cwd!()}/priv/native/libtest_dylib_module"
+                 "#{File.cwd!()}/priv/native/libtest_dylib_module.so"
                )
 
       assert {:ok, [6, "inner", "value"]} =
@@ -61,7 +61,7 @@ defmodule Rhai.EngineTest do
       assert {:ok, 6} =
                Engine.new()
                |> Engine.register_global_module!(
-                 File.cwd!() <> "/priv/native/libtest_dylib_module"
+                 File.cwd!() <> "/priv/native/libtest_dylib_module.so"
                )
                |> Engine.eval("triple_add(1, 2, 3);")
     end
@@ -83,7 +83,7 @@ defmodule Rhai.EngineTest do
                Engine.register_static_module(
                  engine,
                  "plugin",
-                 "#{File.cwd!()}/priv/native/libtest_dylib_module"
+                 "#{File.cwd!()}/priv/native/libtest_dylib_module.so"
                )
 
       assert {:ok, [6, "inner", "value"]} =
@@ -112,7 +112,7 @@ defmodule Rhai.EngineTest do
                Engine.new()
                |> Engine.register_static_module!(
                  "plugin",
-                 "#{File.cwd!()}/priv/native/libtest_dylib_module"
+                 "#{File.cwd!()}/priv/native/libtest_dylib_module.so"
                )
                |> Engine.eval("plugin::get_property(\#{ property: \"value\" });")
     end
