@@ -12,6 +12,13 @@ use rustler::{Env, ResourceArc, Term};
 
 use crate::{ast::ASTResource, error::RhaiRustlerError, scope::ScopeResource, types::from_dynamic};
 
+#[cfg(target_os = "linux")]
+const DYLIB_EXTENSION: &str = "so";
+#[cfg(target_os = "macos")]
+const DYLIB_EXTENSION: &str = "dylib";
+#[cfg(target_os = "windows")]
+const DYLIB_EXTENSION: &str = "dll";
+
 pub struct EngineResource {
     pub engine: Mutex<Engine>,
 }
@@ -38,13 +45,7 @@ fn engine_register_global_module(
     let mut engine = resource.engine.try_lock().unwrap();
     let mut loader = Libloading::new();
 
-    // Load the plugin.
-    #[cfg(target_os = "linux")]
-    let path = format!("{}.so", path);
-    #[cfg(target_os = "macos")]
-    let path = format!("{}.dylib", path);
-    #[cfg(target_os = "windows")]
-    let path = format!("{}.dll", path);
+    let path = format!("{}.{}", path, DYLIB_EXTENSION);
 
     engine.register_global_module(loader.load(path)?);
 
@@ -60,13 +61,7 @@ fn engine_register_static_module(
     let mut engine = resource.engine.try_lock().unwrap();
     let mut loader = Libloading::new();
 
-    // Load the plugin.
-    #[cfg(target_os = "linux")]
-    let path = format!("{}.so", path);
-    #[cfg(target_os = "macos")]
-    let path = format!("{}.dylib", path);
-    #[cfg(target_os = "windows")]
-    let path = format!("{}.dll", path);
+    let path = format!("{}.{}", path, DYLIB_EXTENSION);
 
     engine.register_static_module(namespace, loader.load(path)?);
 
