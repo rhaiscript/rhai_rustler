@@ -128,22 +128,19 @@ defmodule Rhai.EngineTest do
     end
   end
 
-  # FIXME: At the moment Rhai has a wrong default for this one, disabling the test until it gets fixed upstream
-  # describe "set_allow_loop_expressions/2, allow_loop_expressions/1" do
-  # test "should return true by default" do
-  #  engine = Engine.new()
-  #
-  # assert Engine.allow_loop_expressions?(engine)
-  # end
-  #
-  # test "should set the flag to false" do
-  #   engine = Engine.new()
-  #
-  #  refute Engine.new()
-  #        |> Engine.set_allow_loop_expressions(false)
-  #       |> Engine.allow_loop_expressions?()
-  # end
-  # end
+  describe "set_allow_loop_expressions/2, allow_loop_expressions/1" do
+    test "should return true by default" do
+      engine = Engine.new()
+
+      assert Engine.allow_loop_expressions?(engine)
+    end
+
+    test "should set the flag to false" do
+      refute Engine.new()
+             |> Engine.set_allow_loop_expressions(false)
+             |> Engine.allow_loop_expressions?()
+    end
+  end
 
   describe "set_allow_looping/2, allow_looping?/1" do
     test "should return true by default" do
