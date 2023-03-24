@@ -6,7 +6,7 @@ defmodule Rhai do
   @type rhai_any ::
           number() | boolean() | String.t() | nil | [rhai_any()] | %{String.t() => rhai_any()}
 
-  @type rhai_error ::
+  @type rhai_error_type ::
           :system
           | :parsing
           | :variable_exists
@@ -38,6 +38,8 @@ defmodule Rhai do
           | :custom_syntax
           | :runtime
           | :non_pure_method_call_on_constant
+
+  @type rhai_error :: {rhai_error_type(), String.t()}
 
   @doc """
   Evaluates the given expression and returns the result.

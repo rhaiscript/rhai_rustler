@@ -27,6 +27,73 @@ defmodule Rhai.Engine do
   end
 
   @doc """
+  Register a shared dylib Module into the global namespace of Engine.
+
+  All functions and type iterators are automatically available to scripts without namespace qualifications.
+  Sub-modules and variables are ignored.
+  When searching for functions, modules loaded later are preferred. In other words, loaded modules are searched in reverse order.
+
+  Returns an error if the module cannot be loaded. 
+  """
+  @spec register_global_module(t(), String.t()) ::
+          {:ok, t()} | {:error, {:runtime, String.t()}}
+  def register_global_module(%__MODULE__{resource: resource} = engine, path) do
+    with {:ok, _} <- Rhai.Native.engine_register_global_module(resource, path) do
+      {:ok, engine}
+    end
+  end
+
+  @doc """
+  Register a shared dylib Module into the global namespace of Engine.
+
+  All functions and type iterators are automatically available to scripts without namespace qualifications.
+  Sub-modules and variables are ignored.
+  When searching for functions, modules loaded later are preferred. In other words, loaded modules are searched in reverse order.
+
+  Raises an error if the module cannot be loaded.
+  """
+  @spec register_global_module!(t(), String.t()) :: t()
+  def register_global_module!(%__MODULE__{} = engine, path) do
+    case register_global_module(engine, path) do
+      {:ok, _} ->
+        engine
+
+      {:error, {:runtime, message}} ->
+        raise message
+    end
+  end
+
+  @doc """
+  Register a shared Module into the namespace of Engine.
+    
+  Returns an error if the module cannot be loaded. 
+  """
+  @spec register_static_module(t(), String.t(), String.t()) ::
+          {:ok, t()} | {:error, {:runtime, String.t()}}
+  def register_static_module(%__MODULE__{resource: resource} = engine, namespace, path) do
+    with {:ok, _} <-
+           Rhai.Native.engine_register_static_module(resource, namespace, path) do
+      {:ok, engine}
+    end
+  end
+
+  @doc """
+  Register a shared Module into the namespace of Engine.
+
+  Raises an error if the module cannot be loaded.
+  """
+  @spec register_static_module!(t(), String.t(), String.t()) :: t()
+  def register_static_module!(%__MODULE__{} = engine, namespace, path) do
+    case register_static_module(engine, namespace, path) do
+      {:ok, _} ->
+        engine
+
+      {:error, {:runtime, message}} ->
+        raise message
+    end
+  end
+
+  @doc """
   Compile a string into an AST, which can be used later for evaluation.
   """
   @spec compile(t(), String.t()) :: {:ok, Rhai.rhai_any()} | {:error, Rhai.rhai_error()}

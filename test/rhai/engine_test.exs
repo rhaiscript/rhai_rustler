@@ -10,7 +10,7 @@ defmodule Rhai.EngineTest do
   end
 
   describe "module resolvers" do
-    test "dylib module resolver" do
+    test "should load a dylib module via the import directive" do
       assert {:ok, [6, "inner", "value"]} =
                Engine.new()
                |> Engine.eval("""
@@ -24,6 +24,105 @@ defmodule Rhai.EngineTest do
 
                result
                """)
+    end
+  end
+
+  describe "register_global_module/2" do
+    test "should register a module into the global namespace" do
+      engine = Engine.new()
+
+      assert {:ok, engine} =
+               Engine.register_global_module(
+                 engine,
+                 "#{File.cwd!()}/priv/native/libtest_dylib_module"
+               )
+
+      assert {:ok, [6, "inner", "value"]} =
+               Engine.eval(engine, """
+               let result = [];
+
+               result += triple_add(1, 2, 3);
+               result += new_plugin_object("inner").get_inner();
+               result += get_property(\#{ property: "value" });
+
+               result
+               """)
+    end
+
+    test "should return error if the module is not found" do
+      assert {:error, {:runtime, _}} =
+               Engine.new()
+               |> Engine.register_global_module("non_existing_module")
+    end
+  end
+
+  describe "register_global_module!/2" do
+    test "should register a module into the global namespace" do
+      assert {:ok, 6} =
+               Engine.new()
+               |> Engine.register_global_module!(
+                 File.cwd!() <> "/priv/native/libtest_dylib_module"
+               )
+               |> Engine.eval("triple_add(1, 2, 3);")
+    end
+
+    test "should raise if the module is not found" do
+      assert_raise RuntimeError, fn ->
+        engine = Engine.new()
+
+        Engine.register_global_module!(engine, "non_existing_module")
+      end
+    end
+  end
+
+  describe "register_static_module/3" do
+    test "should register a static moudle namespace" do
+      engine = Engine.new()
+
+      assert {:ok, engine} =
+               Engine.register_static_module(
+                 engine,
+                 "plugin",
+                 "#{File.cwd!()}/priv/native/libtest_dylib_module"
+               )
+
+      assert {:ok, [6, "inner", "value"]} =
+               Engine.eval(engine, """
+               let result = [];
+
+               result += triple_add(1, 2, 3);
+               result += new_plugin_object("inner").get_inner();
+               result += plugin::get_property(\#{ property: "value" });
+
+               result
+               """)
+    end
+
+    test "should return error if the module is not found" do
+      engine = Engine.new()
+
+      assert {:error, {:runtime, _}} =
+               Engine.register_static_module(engine, "plugin", "non_existing_module")
+    end
+  end
+
+  describe "register_static_module!/3" do
+    test "should register a static moudle namespace" do
+      assert {:ok, "value"} =
+               Engine.new()
+               |> Engine.register_static_module!(
+                 "plugin",
+                 "#{File.cwd!()}/priv/native/libtest_dylib_module"
+               )
+               |> Engine.eval("plugin::get_property(\#{ property: \"value\" });")
+    end
+
+    test "should raise if the module is not found" do
+      assert_raise RuntimeError, fn ->
+        engine = Engine.new()
+
+        Engine.register_static_module!(engine, "plugin", "non_existing_module")
+      end
     end
   end
 

@@ -180,6 +180,8 @@ defmodule Rhai.Scope do
 
   Returns an error when trying to update the value of a constant.
   """
+  @spec set_value(t(), String.t(), Rhai.rhai_any()) ::
+          {:ok, t()} | {:error, {:cannot_update_value_of_constant, String.t()}}
   def set_value(%__MODULE__{resource: resource} = scope, name, value) do
     case Rhai.Native.scope_set_value(resource, name, value) do
       {:ok, _} ->
@@ -198,6 +200,7 @@ defmodule Rhai.Scope do
 
   Raises when trying to update the value of a constant.
   """
+  @spec set_value!(t(), String.t(), Rhai.rhai_any()) :: t()
   def set_value!(%__MODULE__{} = scope, name, value) do
     case set_value(scope, name, value) do
       {:ok, _} ->
