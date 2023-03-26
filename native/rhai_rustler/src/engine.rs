@@ -1,4 +1,4 @@
-use std::sync::{Mutex, RwLock};
+use std::sync::Mutex;
 
 use rhai::{
     module_resolvers::{FileModuleResolver, ModuleResolversCollection},
@@ -125,7 +125,7 @@ fn engine_compile(
     let ast = engine.compile(script)?;
 
     let ast_resource = ResourceArc::new(ASTResource {
-        ast: RwLock::new(ast),
+        ast: Mutex::new(ast),
     });
 
     Ok(ast_resource)

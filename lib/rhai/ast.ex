@@ -17,6 +17,43 @@ defmodule Rhai.AST do
 
   @type t :: %__MODULE__{}
 
+  @doc """
+  Create an empty AST.
+  """
+  def empty do
+    resource = Rhai.Native.ast_empty()
+
+    wrap_resource(resource)
+  end
+
+  @doc """
+  Get the source if any.
+  """
+  @spec source(t) :: String.t() | nil
+  def source(%__MODULE__{resource: resource}) do
+    Rhai.Native.ast_source(resource)
+  end
+
+  @doc """
+  Set the source.
+  """
+  @spec set_source(t, String.t()) :: t
+  def set_source(%__MODULE__{resource: resource} = ast, source) do
+    Rhai.Native.ast_set_source(resource, source)
+
+    ast
+  end
+
+  @doc """
+  Clear the source.
+  """
+  @spec clear_source(t) :: t
+  def clear_source(%__MODULE__{resource: resource} = ast) do
+    Rhai.Native.ast_clear_source(resource)
+
+    ast
+  end
+
   @doc false
   def wrap_resource(resource) do
     %__MODULE__{

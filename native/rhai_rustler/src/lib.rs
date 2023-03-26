@@ -122,7 +122,12 @@ rustler::init!(
         scope_set_value,
         scope_set_alias,
         scope_set_or_push,
-        scope_iter_collect
+        scope_iter_collect,
+        // AST
+        ast_empty,
+        ast_source,
+        ast_set_source,
+        ast_clear_source,
     ],
     load = load
 );
