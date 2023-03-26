@@ -91,7 +91,7 @@ defmodule Rhai.Native do
   def scope_set_or_push(_scope, _name, _value), do: err()
   def scope_iter_collect(_scope), do: err()
   # AST
-  def ast_empty(), do: err()
+  def ast_empty, do: err()
   def ast_source(_ast), do: err()
   def ast_set_source(_ast, _source), do: err()
   def ast_clear_source(_ast), do: err()

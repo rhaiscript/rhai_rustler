@@ -20,7 +20,7 @@ defmodule Rhai.AST do
   @doc """
   Create an empty AST.
   """
-  def empty() do
+  def empty do
     resource = Rhai.Native.ast_empty()
 
     wrap_resource(resource)
