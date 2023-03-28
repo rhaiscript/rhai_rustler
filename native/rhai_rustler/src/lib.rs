@@ -130,7 +130,8 @@ rustler::init!(
         ast_set_source,
         ast_clear_source,
         ast_merge,
-        ast_combine
+        ast_combine,
+        ast_clear_functions,
     ],
     load = load
 );

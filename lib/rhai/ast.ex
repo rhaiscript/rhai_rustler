@@ -96,6 +96,16 @@ defmodule Rhai.AST do
     |> wrap_resource()
   end
 
+  @doc """
+  Clear all function definitions in the AST.
+  """
+  @spec clear_functions(t()) :: t()
+  def clear_functions(%__MODULE__{resource: resource} = ast) do
+    Rhai.Native.ast_clear_functions(resource)
+
+    ast
+  end
+
   @doc false
   def wrap_resource(resource) do
     %__MODULE__{
