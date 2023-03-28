@@ -60,3 +60,10 @@ fn ast_combine(
         ast: Mutex::new(ast.combine(other_ast).clone()),
     })
 }
+
+#[rustler::nif]
+fn ast_clear_functions(resource: ResourceArc<ASTResource>) {
+    let mut ast = resource.ast.try_lock().unwrap();
+
+    ast.clear_functions();
+}

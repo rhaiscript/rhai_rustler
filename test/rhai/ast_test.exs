@@ -74,4 +74,23 @@ defmodule Rhai.ASTTest do
                Engine.eval_ast(engine, ast3)
     end
   end
+
+  describe "clear_functions/1" do
+    test "should clear all functions" do
+      engine = Engine.new()
+
+      {:ok, ast} =
+        Engine.compile(engine, """
+        fn foo(x) { 42 + x }
+        foo(1)
+        """)
+
+      assert {:ok, 43} ==
+               Engine.eval_ast(engine, ast)
+
+      ast = AST.clear_functions(ast)
+
+      assert {:error, {:function_not_found, _}} = Engine.eval_ast(engine, ast)
+    end
+  end
 end
