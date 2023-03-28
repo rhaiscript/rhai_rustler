@@ -67,6 +67,7 @@ rustler::init!(
         engine_register_static_module,
         engine_eval,
         engine_eval_with_scope,
+        engine_eval_ast,
         engine_run,
         engine_run_with_scope,
         engine_set_fail_on_invalid_map_property,
@@ -128,6 +129,8 @@ rustler::init!(
         ast_source,
         ast_set_source,
         ast_clear_source,
+        ast_merge,
+        ast_combine
     ],
     load = load
 );

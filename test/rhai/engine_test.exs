@@ -143,6 +143,15 @@ defmodule Rhai.EngineTest do
     end
   end
 
+  describe "eval_ast/2" do
+    test "should eval an AST" do
+      engine = Engine.new()
+      {:ok, ast} = Engine.compile(engine, "40 + 2")
+
+      assert {:ok, 42} = Engine.eval_ast(engine, ast)
+    end
+  end
+
   describe "run/2" do
     test "should run a script" do
       engine = Engine.new()

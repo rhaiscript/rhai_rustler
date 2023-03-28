@@ -29,7 +29,7 @@ defmodule Rhai.AST do
   @doc """
   Get the source if any.
   """
-  @spec source(t) :: String.t() | nil
+  @spec source(t()) :: String.t() | nil
   def source(%__MODULE__{resource: resource}) do
     Rhai.Native.ast_source(resource)
   end
@@ -37,7 +37,7 @@ defmodule Rhai.AST do
   @doc """
   Set the source.
   """
-  @spec set_source(t, String.t()) :: t
+  @spec set_source(t(), String.t()) :: t()
   def set_source(%__MODULE__{resource: resource} = ast, source) do
     Rhai.Native.ast_set_source(resource, source)
 
@@ -47,11 +47,53 @@ defmodule Rhai.AST do
   @doc """
   Clear the source.
   """
-  @spec clear_source(t) :: t
+  @spec clear_source(t()) :: t()
   def clear_source(%__MODULE__{resource: resource} = ast) do
     Rhai.Native.ast_clear_source(resource)
 
     ast
+  end
+
+  @doc """
+  Merge two AST into one. Both AST’s are untouched and a new, merged, version is returned.
+
+  Statements in the second AST are simply appended to the end of the first without any processing. 
+  Thus, the return value of the first AST (if using expression-statement syntax) is buried.
+  Of course, if the first AST uses a return statement at the end, then the second AST will essentially be dead code.
+
+  All script-defined functions in the second AST overwrite similarly-named functions in the first AST with the same number of parameters.
+
+  See [example](https://docs.rs/rhai/latest/rhai/struct.AST.html#example-1) in the Rhai documentation. 
+  """
+  @spec merge(t(), t()) :: t()
+  def merge(
+        %__MODULE__{resource: resource},
+        %__MODULE__{resource: other_resource}
+      ) do
+    resource
+    |> Rhai.Native.ast_merge(other_resource)
+    |> wrap_resource()
+  end
+
+  @doc """
+  Combine one AST with another. The second AST is consumed.
+
+  Statements in the second AST are simply appended to the end of the first without any processing.
+  Thus, the return value of the first AST (if using expression-statement syntax) is buried.
+  Of course, if the first AST uses a return statement at the end, then the second AST will essentially be dead code.
+
+  All script-defined functions in the second AST overwrite similarly-named functions in the first AST with the same number of parameters.
+
+  See [example](https://docs.rs/rhai/latest/rhai/struct.AST.html#example-2) in the Rhai documentation. 
+  """
+  @spec combine(t(), t()) :: t()
+  def combine(
+        %__MODULE__{resource: resource},
+        %__MODULE__{resource: other_resource}
+      ) do
+    resource
+    |> Rhai.Native.ast_combine(other_resource)
+    |> wrap_resource()
   end
 
   @doc false

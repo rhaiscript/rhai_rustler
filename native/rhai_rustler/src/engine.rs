@@ -95,6 +95,20 @@ fn engine_eval_with_scope<'a>(
 }
 
 #[rustler::nif]
+fn engine_eval_ast(
+    env: Env,
+    engine_resource: ResourceArc<EngineResource>,
+    ast_resource: ResourceArc<ASTResource>,
+) -> Result<Term, RhaiRustlerError> {
+    let engine = engine_resource.engine.try_lock().unwrap();
+    let ast = ast_resource.ast.try_lock().unwrap();
+
+    let result = engine.eval_ast(&ast)?;
+
+    Ok(from_dynamic(env, result))
+}
+
+#[rustler::nif]
 fn engine_run(resource: ResourceArc<EngineResource>, script: &str) -> Result<(), RhaiRustlerError> {
     let engine = resource.engine.try_lock().unwrap();
     engine.run(script)?;
