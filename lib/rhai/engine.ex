@@ -128,6 +128,14 @@ defmodule Rhai.Engine do
   end
 
   @doc """
+  Evaluate an AST, returning the result value or an error.
+  """
+  @spec eval_ast(t(), AST.t()) :: {:ok, Rhai.rhai_any()} | {:error, Rhai.rhai_error()}
+  def eval_ast(%__MODULE__{resource: resource}, %AST{resource: ast_resource}) do
+    Rhai.Native.engine_eval_ast(resource, ast_resource)
+  end
+
+  @doc """
   Evaluate a string as script.
   """
   @spec run(t(), String.t()) :: :ok | {:error, Rhai.rhai_error()}

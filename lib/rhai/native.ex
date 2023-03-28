@@ -34,6 +34,7 @@ defmodule Rhai.Native do
   def engine_compile(_engine, _script), do: err()
   def engine_eval(_engine, _script), do: err()
   def engine_eval_with_scope(_engine, _scope, _script), do: err()
+  def engine_eval_ast(_engine, _ast), do: err()
   def engine_run(_engine, _script), do: err()
   def engine_run_with_scope(_engine, _scope, _script), do: err()
   def engine_set_fail_on_invalid_map_property(_engine, _flag), do: err()
@@ -95,6 +96,8 @@ defmodule Rhai.Native do
   def ast_source(_ast), do: err()
   def ast_set_source(_ast, _source), do: err()
   def ast_clear_source(_ast), do: err()
+  def ast_merge(_ast, _other), do: err()
+  def ast_combine(_ast, _other), do: err()
 
   defp err, do: :erlang.nif_error(:nif_not_loaded)
 end
