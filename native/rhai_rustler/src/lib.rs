@@ -131,7 +131,13 @@ rustler::init!(
         ast_clear_source,
         ast_merge,
         ast_combine,
+        // TODO: test
         ast_clear_functions,
+        ast_clear_statements,
+        ast_clone_functions_only,
+        ast_has_functions,
+        ast_doc,
+        ast_clear_doc,
     ],
     load = load
 );
