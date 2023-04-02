@@ -106,6 +106,34 @@ defmodule Rhai.AST do
     ast
   end
 
+  @doc """
+  Clear all statements in the AST, leaving only function definitions.
+  """
+  @spec clear_statements(t()) :: t()
+  def clear_statements(%__MODULE__{resource: resource} = ast) do
+    Rhai.Native.ast_clear_statements(resource)
+
+    ast
+  end
+
+  @doc """
+  Clone the AST’s functions into a new AST. No statements are cloned.
+  """
+  @spec clone_functions_only(t()) :: t()
+  def clone_functions_only(%__MODULE__{resource: resource}) do
+    resource
+    |> Rhai.Native.ast_clone_functions_only()
+    |> wrap_resource()
+  end
+
+  @doc """
+  Does this AST contain script-defined functions?
+  """
+  @spec has_functions?(t()) :: bool
+  def has_functions?(%__MODULE__{resource: resource}) do
+    Rhai.Native.ast_has_functions(resource)
+  end
+
   @doc false
   def wrap_resource(resource) do
     %__MODULE__{

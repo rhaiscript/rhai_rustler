@@ -67,3 +67,26 @@ fn ast_clear_functions(resource: ResourceArc<ASTResource>) {
 
     ast.clear_functions();
 }
+
+#[rustler::nif]
+fn ast_clear_statements(resource: ResourceArc<ASTResource>) {
+    let mut ast = resource.ast.try_lock().unwrap();
+
+    ast.clear_statements();
+}
+
+#[rustler::nif]
+fn ast_clone_functions_only(resource: ResourceArc<ASTResource>) -> ResourceArc<ASTResource> {
+    let ast = resource.ast.try_lock().unwrap();
+
+    ResourceArc::new(ASTResource {
+        ast: Mutex::new(ast.clone_functions_only()),
+    })
+}
+
+#[rustler::nif]
+fn ast_has_functions(resource: ResourceArc<ASTResource>) -> bool {
+    let ast = resource.ast.try_lock().unwrap();
+
+    ast.has_functions()
+}

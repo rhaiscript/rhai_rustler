@@ -132,6 +132,9 @@ rustler::init!(
         ast_merge,
         ast_combine,
         ast_clear_functions,
+        ast_clear_statements,
+        ast_clone_functions_only,
+        ast_has_functions,
     ],
     load = load
 );
