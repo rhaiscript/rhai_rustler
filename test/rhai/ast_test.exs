@@ -130,9 +130,7 @@ defmodule Rhai.ASTTest do
       assert {:ok, nil} = Engine.eval_ast(engine, ast)
       assert AST.has_functions?(ast)
 
-      {:ok, ast2} =
-        engine
-        |> Engine.compile("foo(1)")
+      {:ok, ast2} = Engine.compile(engine, "foo(1)")
 
       ast = AST.merge(ast, ast2)
 
