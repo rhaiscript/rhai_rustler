@@ -99,6 +99,9 @@ defmodule Rhai.Native do
   def ast_merge(_ast, _other), do: err()
   def ast_combine(_ast, _other), do: err()
   def ast_clear_functions(_ast), do: err()
+  def ast_clear_statements(_ast), do: err()
+  def ast_clone_functions_only(_ast), do: err()
+  def ast_has_functions(_ast), do: err()
 
   defp err, do: :erlang.nif_error(:nif_not_loaded)
 end

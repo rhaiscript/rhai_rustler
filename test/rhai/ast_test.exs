@@ -93,4 +93,73 @@ defmodule Rhai.ASTTest do
       assert {:error, {:function_not_found, _}} = Engine.eval_ast(engine, ast)
     end
   end
+
+  describe "clear_statements/1" do
+    test "should clear all statements" do
+      engine = Engine.new()
+
+      {:ok, ast} =
+        Engine.compile(engine, """
+        1 + 1
+        """)
+
+      assert {:ok, 2} ==
+               Engine.eval_ast(engine, ast)
+
+      ast = AST.clear_statements(ast)
+
+      assert {:ok, nil} = Engine.eval_ast(engine, ast)
+    end
+  end
+
+  describe "clone_functions_only/1" do
+    test "should clone all functions" do
+      engine = Engine.new()
+
+      {:ok, ast} =
+        Engine.compile(engine, """
+        fn foo(x) { 42 + x }
+        foo(1)
+        """)
+
+      assert {:ok, 43} ==
+               Engine.eval_ast(engine, ast)
+
+      ast = AST.clone_functions_only(ast)
+
+      assert {:ok, nil} = Engine.eval_ast(engine, ast)
+      assert AST.has_functions?(ast)
+
+      {:ok, ast2} = Engine.compile(engine, "foo(1)")
+
+      ast = AST.merge(ast, ast2)
+
+      assert {:ok, 43} = Engine.eval_ast(engine, ast)
+    end
+  end
+
+  describe "has_functions?" do
+    test "should return true if the AST has functions" do
+      engine = Engine.new()
+
+      {:ok, ast} =
+        Engine.compile(engine, """
+        fn foo(x) { 42 + x }
+        foo(1)
+        """)
+
+      assert AST.has_functions?(ast)
+    end
+
+    test "should return false if the AST has no functions" do
+      engine = Engine.new()
+
+      {:ok, ast} =
+        Engine.compile(engine, """
+        1 + 1
+        """)
+
+      assert not AST.has_functions?(ast)
+    end
+  end
 end
