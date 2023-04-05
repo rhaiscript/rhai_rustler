@@ -10,7 +10,12 @@ use rhai_dylib::module_resolvers::libloading::DylibModuleResolver;
 
 use rustler::{Env, ResourceArc, Term};
 
-use crate::{ast::ASTResource, error::RhaiRustlerError, scope::ScopeResource, types::from_dynamic};
+use crate::{
+    ast::ASTResource,
+    error::RhaiRustlerError,
+    scope::ScopeResource,
+    types::{from_dynamic, to_dynamic},
+};
 
 #[cfg(target_os = "linux")]
 const DYLIB_EXTENSION: &str = "so";
@@ -392,4 +397,24 @@ fn engine_strict_variables(resource: ResourceArc<EngineResource>) -> bool {
     let engine = resource.engine.try_lock().unwrap();
 
     engine.strict_variables()
+}
+
+#[rustler::nif]
+fn engine_call_fn<'a>(
+    env: Env<'a>,
+    resource: ResourceArc<EngineResource>,
+    scope: ResourceArc<ScopeResource>,
+    ast: ResourceArc<ASTResource>,
+    name: &str,
+    args: Vec<Term<'a>>,
+) -> Result<Term<'a>, RhaiRustlerError> {
+    let engine = resource.engine.try_lock().unwrap();
+    let mut scope = scope.scope.try_lock().unwrap();
+    let ast = ast.ast.try_lock().unwrap();
+
+    let args: Vec<Dynamic> = args.into_iter().map(|arg| to_dynamic(env, &arg)).collect();
+
+    let result = engine.call_fn(&mut scope, &ast, name, args)?;
+
+    Ok(from_dynamic(env, result))
 }

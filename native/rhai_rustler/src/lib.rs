@@ -105,6 +105,7 @@ rustler::init!(
         engine_max_string_size,
         engine_set_strict_variables,
         engine_strict_variables,
+        engine_call_fn,
         // scope
         scope_new,
         scope_with_capacity,

@@ -513,6 +513,20 @@ defmodule Rhai.Engine do
     Rhai.Native.engine_strict_variables(resource)
   end
 
+  @doc """
+  Call a script function defined in an AST with multiple arguments.
+  """
+  @spec call_fn(t(), Scope.t(), AST.t(), String.t(), list()) :: Rhai.rhai_any()
+  def call_fn(
+        %__MODULE__{resource: resource},
+        %Scope{resource: scope_resource},
+        %AST{resource: ast_resource},
+        name,
+        args
+      ) do
+    Rhai.Native.engine_call_fn(resource, scope_resource, ast_resource, name, args)
+  end
+
   @doc false
   def wrap_resource(resource) do
     %__MODULE__{
