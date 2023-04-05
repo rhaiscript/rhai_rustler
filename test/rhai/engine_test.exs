@@ -441,4 +441,14 @@ defmodule Rhai.EngineTest do
              |> Engine.strict_variables?()
     end
   end
+
+  describe "call_fn/5" do
+    test "should call a script function" do
+      engine = Engine.new()
+      {:ok, ast} = Engine.compile(engine, "fn test(x, y) { a + b + x + y }")
+      scope = Scope.new() |> Scope.push_dynamic("a", 1) |> Scope.push_dynamic("b", 2)
+
+      assert {:ok, 10} = Engine.call_fn(engine, scope, ast, "test", [3, 4])
+    end
+  end
 end
