@@ -74,6 +74,32 @@ fn engine_register_static_module(
 }
 
 #[rustler::nif]
+fn engine_compile(
+    resource: ResourceArc<EngineResource>,
+    script: &str,
+) -> Result<ResourceArc<ASTResource>, RhaiRustlerError> {
+    let engine = resource.engine.try_lock().unwrap();
+    let ast = engine.compile(script)?;
+
+    let ast_resource = ResourceArc::new(ASTResource {
+        ast: Mutex::new(ast),
+    });
+
+    Ok(ast_resource)
+}
+
+#[rustler::nif]
+fn engine_compact_script(
+    resource: ResourceArc<EngineResource>,
+    script: &str,
+) -> Result<String, RhaiRustlerError> {
+    let engine = resource.engine.try_lock().unwrap();
+    let result = engine.compact_script(script)?;
+
+    Ok(result)
+}
+
+#[rustler::nif]
 fn engine_eval<'a>(
     env: Env<'a>,
     resource: ResourceArc<EngineResource>,
@@ -136,18 +162,23 @@ fn engine_run_with_scope(
 }
 
 #[rustler::nif]
-fn engine_compile(
+fn engine_call_fn<'a>(
+    env: Env<'a>,
     resource: ResourceArc<EngineResource>,
-    script: &str,
-) -> Result<ResourceArc<ASTResource>, RhaiRustlerError> {
+    scope: ResourceArc<ScopeResource>,
+    ast: ResourceArc<ASTResource>,
+    name: &str,
+    args: Vec<Term<'a>>,
+) -> Result<Term<'a>, RhaiRustlerError> {
     let engine = resource.engine.try_lock().unwrap();
-    let ast = engine.compile(script)?;
+    let mut scope = scope.scope.try_lock().unwrap();
+    let ast = ast.ast.try_lock().unwrap();
 
-    let ast_resource = ResourceArc::new(ASTResource {
-        ast: Mutex::new(ast),
-    });
+    let args: Vec<Dynamic> = args.into_iter().map(|arg| to_dynamic(env, &arg)).collect();
 
-    Ok(ast_resource)
+    let result = engine.call_fn(&mut scope, &ast, name, args)?;
+
+    Ok(from_dynamic(env, result))
 }
 
 #[rustler::nif]
@@ -397,35 +428,4 @@ fn engine_strict_variables(resource: ResourceArc<EngineResource>) -> bool {
     let engine = resource.engine.try_lock().unwrap();
 
     engine.strict_variables()
-}
-
-#[rustler::nif]
-fn engine_call_fn<'a>(
-    env: Env<'a>,
-    resource: ResourceArc<EngineResource>,
-    scope: ResourceArc<ScopeResource>,
-    ast: ResourceArc<ASTResource>,
-    name: &str,
-    args: Vec<Term<'a>>,
-) -> Result<Term<'a>, RhaiRustlerError> {
-    let engine = resource.engine.try_lock().unwrap();
-    let mut scope = scope.scope.try_lock().unwrap();
-    let ast = ast.ast.try_lock().unwrap();
-
-    let args: Vec<Dynamic> = args.into_iter().map(|arg| to_dynamic(env, &arg)).collect();
-
-    let result = engine.call_fn(&mut scope, &ast, name, args)?;
-
-    Ok(from_dynamic(env, result))
-}
-
-#[rustler::nif]
-fn engine_compact_script(
-    resource: ResourceArc<EngineResource>,
-    script: &str,
-) -> Result<String, RhaiRustlerError> {
-    let engine = resource.engine.try_lock().unwrap();
-    let result = engine.compact_script(script)?;
-
-    Ok(result)
 }

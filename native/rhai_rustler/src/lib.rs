@@ -61,8 +61,9 @@ rustler::init!(
         // legacy
         eval,
         // engine
-        engine_compile,
         engine_new,
+        engine_compile,
+        engine_compact_script,
         engine_register_global_module,
         engine_register_static_module,
         engine_eval,
@@ -70,6 +71,7 @@ rustler::init!(
         engine_eval_ast,
         engine_run,
         engine_run_with_scope,
+        engine_call_fn,
         engine_set_fail_on_invalid_map_property,
         engine_fail_on_invalid_map_property,
         engine_set_max_array_size,
@@ -105,8 +107,6 @@ rustler::init!(
         engine_max_string_size,
         engine_set_strict_variables,
         engine_strict_variables,
-        engine_call_fn,
-        engine_compact_script,
         // scope
         scope_new,
         scope_with_capacity,

@@ -126,6 +126,35 @@ defmodule Rhai.EngineTest do
     end
   end
 
+  describe "compile/2" do
+    test "should compile a valid expression into AST" do
+      engine = Engine.new()
+
+      assert {:ok, %Rhai.AST{}} = Engine.compile(engine, "1+1")
+    end
+
+    test "should not compile an invalid expression" do
+      engine = Engine.new()
+
+      assert {:error, {:parsing, _}} = Engine.compile(engine, "???")
+    end
+  end
+
+  describe "compact_script/2" do
+    test "should compact a script" do
+      engine = Engine.new()
+
+      assert {:ok, "fn test(){a+b}"} =
+               Engine.compact_script(engine, """
+
+
+               fn test() { a + b }
+
+
+               """)
+    end
+  end
+
   describe "eval/1" do
     test "should eval a script" do
       engine = Engine.new()
@@ -170,17 +199,13 @@ defmodule Rhai.EngineTest do
     end
   end
 
-  describe "compile/2" do
-    test "should compile a valid expression into AST" do
+  describe "call_fn/5" do
+    test "should call a script function" do
       engine = Engine.new()
+      {:ok, ast} = Engine.compile(engine, "fn test(x, y) { a + b + x + y }")
+      scope = Scope.new() |> Scope.push_dynamic("a", 1) |> Scope.push_dynamic("b", 2)
 
-      assert {:ok, %Rhai.AST{}} = Engine.compile(engine, "1+1")
-    end
-
-    test "should not compile an invalid expression" do
-      engine = Engine.new()
-
-      assert {:error, {:parsing, _}} = Engine.compile(engine, "???")
+      assert {:ok, 10} = Engine.call_fn(engine, scope, ast, "test", [3, 4])
     end
   end
 
@@ -439,31 +464,6 @@ defmodule Rhai.EngineTest do
       assert Engine.new()
              |> Engine.set_strict_variables(true)
              |> Engine.strict_variables?()
-    end
-  end
-
-  describe "call_fn/5" do
-    test "should call a script function" do
-      engine = Engine.new()
-      {:ok, ast} = Engine.compile(engine, "fn test(x, y) { a + b + x + y }")
-      scope = Scope.new() |> Scope.push_dynamic("a", 1) |> Scope.push_dynamic("b", 2)
-
-      assert {:ok, 10} = Engine.call_fn(engine, scope, ast, "test", [3, 4])
-    end
-  end
-
-  describe "compact_script/2" do
-    test "should compact a script" do
-      engine = Engine.new()
-
-      assert {:ok, "fn test(){a+b}"} =
-               Engine.compact_script(engine, """
-
-
-               fn test() { a + b }
-
-
-               """)
     end
   end
 end
