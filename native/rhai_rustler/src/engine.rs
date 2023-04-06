@@ -418,3 +418,14 @@ fn engine_call_fn<'a>(
 
     Ok(from_dynamic(env, result))
 }
+
+#[rustler::nif]
+fn engine_compact_script(
+    resource: ResourceArc<EngineResource>,
+    script: &str,
+) -> Result<String, RhaiRustlerError> {
+    let engine = resource.engine.try_lock().unwrap();
+    let result = engine.compact_script(script)?;
+
+    Ok(result)
+}

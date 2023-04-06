@@ -73,6 +73,7 @@ defmodule Rhai.Native do
   def engine_set_strict_variables(_engine, _flag), do: err()
   def engine_strict_variables(_engine), do: err()
   def engine_call_fn(_engine, _scope, _ast, _name, _args), do: err()
+  def engine_compact_script(_engine, _script), do: err()
   # scope
   def scope_new, do: err()
   def scope_with_capacity(_capacity), do: err()

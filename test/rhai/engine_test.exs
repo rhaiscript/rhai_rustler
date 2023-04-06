@@ -451,4 +451,19 @@ defmodule Rhai.EngineTest do
       assert {:ok, 10} = Engine.call_fn(engine, scope, ast, "test", [3, 4])
     end
   end
+
+  describe "compact_script/2" do
+    test "should compact a script" do
+      engine = Engine.new()
+
+      assert {:ok, "fn test(){a+b}"} =
+               Engine.compact_script(engine, """
+
+
+               fn test() { a + b }
+
+
+               """)
+    end
+  end
 end
