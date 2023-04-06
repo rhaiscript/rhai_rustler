@@ -516,7 +516,8 @@ defmodule Rhai.Engine do
   @doc """
   Call a script function defined in an AST with multiple arguments.
   """
-  @spec call_fn(t(), Scope.t(), AST.t(), String.t(), list()) :: Rhai.rhai_any()
+  @spec call_fn(t(), Scope.t(), AST.t(), String.t(), list()) ::
+          {:ok, Rhai.rhai_any()} | {:error, Rhai.rhai_error()}
   def call_fn(
         %__MODULE__{resource: resource},
         %Scope{resource: scope_resource},
@@ -525,6 +526,17 @@ defmodule Rhai.Engine do
         args
       ) do
     Rhai.Native.engine_call_fn(resource, scope_resource, ast_resource, name, args)
+  end
+
+  @doc """
+  Compact a script to eliminate insignificant whitespaces and comments.
+  This is useful to prepare a script for further compressing.
+  The output script is semantically identical to the input script, except smaller in size.
+  Unlike other uglifiers and minifiers, this method does not rename variables nor perform any optimization on the input script.
+  """
+  @spec compact_script(t(), String.t()) :: String.t()
+  def compact_script(%__MODULE__{resource: resource}, script) do
+    Rhai.Native.engine_compact_script(resource, script)
   end
 
   @doc false
