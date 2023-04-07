@@ -63,6 +63,13 @@ rustler::init!(
         // engine
         engine_new,
         engine_compile,
+        engine_compile_with_scope,
+        engine_compile_expression,
+        engine_compile_expression_with_scope,
+        engine_compile_file,
+        engine_compile_file_with_scope,
+        engine_compile_into_self_contained,
+        engine_compile_scripts_with_scope,
         engine_compact_script,
         engine_register_global_module,
         engine_register_static_module,

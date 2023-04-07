@@ -96,13 +96,118 @@ defmodule Rhai.Engine do
   @doc """
   Compile a string into an AST, which can be used later for evaluation.
   """
-  @spec compile(t(), String.t()) :: {:ok, Rhai.rhai_any()} | {:error, Rhai.rhai_error()}
+  @spec compile(t(), String.t()) :: {:ok, AST.t()} | {:error, Rhai.rhai_error()}
   def compile(%__MODULE__{resource: resource}, script) do
-    resource
-    |> Rhai.Native.engine_compile(script)
-    |> case do
-      {:ok, ast} -> {:ok, AST.wrap_resource(ast)}
-      error -> error
+    with {:ok, ast_resource} <- Rhai.Native.engine_compile(resource, script) do
+      {:ok, AST.wrap_resource(ast_resource)}
+    end
+  end
+
+  @doc """
+  Compile a string into an AST using own scope, which can be used later for evaluation.
+
+  Constants Propagation:
+  If not `optimization_level = :none`, constants defined within the scope are propagated throughout the script including functions.
+  This allows functions to be optimized based on dynamic global constants.
+  """
+  @spec compile_with_scope(t(), Scope.t(), String.t()) ::
+          {:ok, AST.t()} | {:error, Rhai.rhai_error()}
+  def compile_with_scope(
+        %__MODULE__{resource: resource},
+        %Scope{resource: scope_resource},
+        script
+      ) do
+    with {:ok, ast_resource} <-
+           Rhai.Native.engine_compile_with_scope(resource, scope_resource, script) do
+      {:ok, AST.wrap_resource(ast_resource)}
+    end
+  end
+
+  @doc """
+  Compile a string containing an expression into an AST, which can be used later for evaluation.
+  """
+  @spec compile_expression(t(), String.t()) :: {:ok, AST.t()} | {:error, Rhai.rhai_error()}
+  def compile_expression(%__MODULE__{resource: resource}, script) do
+    with {:ok, ast_resource} <- Rhai.Native.engine_compile_expression(resource, script) do
+      {:ok, AST.wrap_resource(ast_resource)}
+    end
+  end
+
+  @doc """
+  Compile a string containing an expression into an AST using own scope, which can be used later for evaluation.
+  """
+  @spec compile_expression_with_scope(t(), Scope.t(), String.t()) ::
+          {:ok, AST.t()} | {:error, Rhai.rhai_error()}
+  def compile_expression_with_scope(
+        %__MODULE__{resource: resource},
+        %Scope{resource: scope_resource},
+        script
+      ) do
+    with {:ok, ast_resource} <-
+           Rhai.Native.engine_compile_expression_with_scope(resource, scope_resource, script) do
+      {:ok, AST.wrap_resource(ast_resource)}
+    end
+  end
+
+  @doc """
+  Compile a script file into an AST, which can be used later for evaluation.
+  """
+  @spec compile_file(t(), String.t()) :: {:ok, AST.t()} | {:error, Rhai.rhai_error()}
+  def compile_file(%__MODULE__{resource: resource}, path) do
+    with {:ok, ast_resource} <-
+           Rhai.Native.engine_compile_file(resource, path) do
+      {:ok, AST.wrap_resource(ast_resource)}
+    end
+  end
+
+  @doc """
+  Compile a script file into an AST using own scope, which can be used later for evaluation.
+  """
+  @spec compile_file_with_scope(t(), Scope.t(), String.t()) ::
+          {:ok, AST.t()} | {:error, Rhai.rhai_error()}
+  def compile_file_with_scope(
+        %__MODULE__{resource: resource},
+        %Scope{resource: scope_resource},
+        script
+      ) do
+    with {:ok, ast_resource} <-
+           Rhai.Native.engine_compile_file_with_scope(resource, scope_resource, script) do
+      {:ok, AST.wrap_resource(ast_resource)}
+    end
+  end
+
+  @doc """
+  Compile a string into an AST using own scope, which can be used later for evaluation, embedding all imported modules.
+  Modules referred by import statements containing literal string paths are eagerly resolved via the current module resolver and embedded into the resultant AST. When it is evaluated later, import statement directly recall pre-resolved modules and the resolution process is not performed again.
+  """
+  @spec compile_into_self_contained(t(), Scope.t(), String.t()) ::
+          {:ok, AST.t()} | {:error, Rhai.rhai_error()}
+  def compile_into_self_contained(
+        %__MODULE__{resource: resource},
+        %Scope{resource: scope_resource},
+        script
+      ) do
+    with {:ok, ast_resource} <-
+           Rhai.Native.engine_compile_into_self_contained(resource, scope_resource, script) do
+      {:ok, AST.wrap_resource(ast_resource)}
+    end
+  end
+
+  @doc """
+  When passed a list of strings, first join the strings into one large script, and then compile them into an AST using own scope, which can be used later for evaluation.
+
+  The scope is useful for passing constants into the script for optimization when using `:full` optimization level.
+  """
+  @spec compile_scripts_with_scope(t(), Scope.t(), [String.t()]) ::
+          {:ok, AST.t()} | {:error, Rhai.rhai_error()}
+  def compile_scripts_with_scope(
+        %__MODULE__{resource: resource},
+        %Scope{resource: scope_resource},
+        script
+      ) do
+    with {:ok, ast_resource} <-
+           Rhai.Native.engine_compile_scripts_with_scope(resource, scope_resource, script) do
+      {:ok, AST.wrap_resource(ast_resource)}
     end
   end
 
