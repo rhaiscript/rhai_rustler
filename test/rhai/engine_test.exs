@@ -1,7 +1,7 @@
 defmodule Rhai.EngineTest do
   use ExUnit.Case
 
-  alias Rhai.{Engine, Scope}
+  alias Rhai.{AST, Engine, Scope}
 
   describe "new/0" do
     test "should create a new engine" do
@@ -127,16 +127,108 @@ defmodule Rhai.EngineTest do
   end
 
   describe "compile/2" do
-    test "should compile a valid expression into AST" do
+    test "should compile a string into an AST" do
       engine = Engine.new()
 
-      assert {:ok, %Rhai.AST{}} = Engine.compile(engine, "1+1")
+      assert {:ok, %AST{}} = Engine.compile(engine, "1+1")
     end
 
     test "should not compile an invalid expression" do
       engine = Engine.new()
 
       assert {:error, {:parsing, _}} = Engine.compile(engine, "???")
+    end
+  end
+
+  describe "compile_with_scope/3" do
+    test "should compile a string into an AST with scope" do
+      engine = Engine.new()
+
+      scope =
+        Scope.new() |> Scope.push_constant_dynamic("a", 1) |> Scope.push_constant_dynamic("b", 2)
+
+      assert {:ok, %AST{} = ast} =
+               Engine.compile_with_scope(engine, scope, "fn test (x) { a + b + x}; test(3)")
+
+      assert {:ok, 6} = Engine.eval_ast(engine, ast)
+    end
+  end
+
+  describe "compile_expression/2" do
+    test "should compile an expression into an AST" do
+      engine = Engine.new()
+
+      assert {:ok, %AST{} = ast} = Engine.compile_expression(engine, "1 + 1")
+      assert {:ok, 2} = Engine.eval_ast(engine, ast)
+    end
+  end
+
+  describe "compile_expression_with_scope/3" do
+    test "should compile an expression into an AST with scope" do
+      engine = Engine.new()
+
+      scope =
+        Scope.new() |> Scope.push_constant_dynamic("a", 1) |> Scope.push_constant_dynamic("b", 2)
+
+      assert {:ok, %AST{} = ast} = Engine.compile_expression_with_scope(engine, scope, "a + b")
+
+      assert {:ok, 3} = Engine.eval_ast(engine, ast)
+    end
+  end
+
+  describe "compile_file/2" do
+    test "should compile a script file into an AST" do
+      engine = Engine.new()
+
+      assert {:ok, %AST{} = ast} =
+               Engine.compile_file(engine, File.cwd!() <> "/test/fixtures/script.rhai")
+
+      assert {:ok, 43} = Engine.eval_ast(engine, ast)
+    end
+  end
+
+  describe "compile_file_with_scope/3" do
+    test "should compile an expression into an AST with scope" do
+      engine = Engine.new()
+
+      scope =
+        Scope.new() |> Scope.push_constant_dynamic("a", 1) |> Scope.push_constant_dynamic("b", 2)
+
+      assert {:ok, %AST{} = ast} =
+               Engine.compile_file_with_scope(
+                 engine,
+                 scope,
+                 File.cwd!() <> "/test/fixtures/script_with_scope.rhai"
+               )
+
+      assert {:ok, 45} = Engine.eval_ast(engine, ast)
+    end
+  end
+
+  describe "compile_into_self_contained/3" do
+    test "should compile a script into an AST with scope embedding all imported modules" do
+      engine = Engine.new()
+
+      scope =
+        Scope.new()
+        |> Scope.push_constant_dynamic("a", 1)
+        |> Scope.push_constant_dynamic("b", 2)
+        |> Scope.push_constant_dynamic("c", 3)
+
+      assert {:ok, %AST{} = ast} =
+               Engine.compile_into_self_contained(engine, scope, """
+               import "#{File.cwd!()}/priv/native/libtest_dylib_module" as plugin;
+
+               let result = [];
+
+               result += plugin::triple_add(a, b, c);
+               result += plugin::new_plugin_object("inner").get_inner();
+               result += plugin::get_property(\#{ property: "value" });
+
+               result
+               """)
+
+      assert {:ok, [6, "inner", "value"]} = Engine.eval_ast(engine, ast)
     end
   end
 

@@ -89,6 +89,121 @@ fn engine_compile(
 }
 
 #[rustler::nif]
+fn engine_compile_with_scope(
+    resource: ResourceArc<EngineResource>,
+    scope_resource: ResourceArc<ScopeResource>,
+    script: &str,
+) -> Result<ResourceArc<ASTResource>, RhaiRustlerError> {
+    let engine = resource.engine.try_lock().unwrap();
+    let scope = scope_resource.scope.try_lock().unwrap();
+    let ast = engine.compile_with_scope(&scope, script)?;
+
+    let ast_resource = ResourceArc::new(ASTResource {
+        ast: Mutex::new(ast),
+    });
+
+    Ok(ast_resource)
+}
+
+#[rustler::nif]
+fn engine_compile_expression(
+    resource: ResourceArc<EngineResource>,
+    expression: &str,
+) -> Result<ResourceArc<ASTResource>, RhaiRustlerError> {
+    let engine = resource.engine.try_lock().unwrap();
+    let ast = engine.compile_expression(expression)?;
+
+    let ast_resource = ResourceArc::new(ASTResource {
+        ast: Mutex::new(ast),
+    });
+
+    Ok(ast_resource)
+}
+
+#[rustler::nif]
+fn engine_compile_expression_with_scope(
+    resource: ResourceArc<EngineResource>,
+    scope_resource: ResourceArc<ScopeResource>,
+    expression: &str,
+) -> Result<ResourceArc<ASTResource>, RhaiRustlerError> {
+    let engine = resource.engine.try_lock().unwrap();
+    let scope = scope_resource.scope.try_lock().unwrap();
+    let ast = engine.compile_expression_with_scope(&scope, expression)?;
+
+    let ast_resource = ResourceArc::new(ASTResource {
+        ast: Mutex::new(ast),
+    });
+
+    Ok(ast_resource)
+}
+
+#[rustler::nif]
+fn engine_compile_file(
+    resource: ResourceArc<EngineResource>,
+    path: &str,
+) -> Result<ResourceArc<ASTResource>, RhaiRustlerError> {
+    let engine = resource.engine.try_lock().unwrap();
+    let ast = engine.compile_file(path.into())?;
+
+    let ast_resource = ResourceArc::new(ASTResource {
+        ast: Mutex::new(ast),
+    });
+
+    Ok(ast_resource)
+}
+
+#[rustler::nif]
+fn engine_compile_file_with_scope(
+    resource: ResourceArc<EngineResource>,
+    scope_resource: ResourceArc<ScopeResource>,
+    path: &str,
+) -> Result<ResourceArc<ASTResource>, RhaiRustlerError> {
+    let engine = resource.engine.try_lock().unwrap();
+    let scope = scope_resource.scope.try_lock().unwrap();
+    let ast = engine.compile_file_with_scope(&scope, path.into())?;
+
+    let ast_resource = ResourceArc::new(ASTResource {
+        ast: Mutex::new(ast),
+    });
+
+    Ok(ast_resource)
+}
+
+#[rustler::nif]
+fn engine_compile_into_self_contained(
+    resource: ResourceArc<EngineResource>,
+    scope_resource: ResourceArc<ScopeResource>,
+    script: &str,
+) -> Result<ResourceArc<ASTResource>, RhaiRustlerError> {
+    let engine = resource.engine.try_lock().unwrap();
+    let scope = scope_resource.scope.try_lock().unwrap();
+    let ast = engine.compile_into_self_contained(&scope, script)?;
+
+    let ast_resource = ResourceArc::new(ASTResource {
+        ast: Mutex::new(ast),
+    });
+
+    Ok(ast_resource)
+}
+
+#[rustler::nif]
+fn engine_compile_scripts_with_scope(
+    resource: ResourceArc<EngineResource>,
+    scope_resource: ResourceArc<ScopeResource>,
+    scripts: Vec<String>,
+) -> Result<ResourceArc<ASTResource>, RhaiRustlerError> {
+    let engine = resource.engine.try_lock().unwrap();
+    let scope = scope_resource.scope.try_lock().unwrap();
+    let ast = engine.compile_scripts_with_scope(&scope, scripts)?;
+
+    let ast_resource = ResourceArc::new(ASTResource {
+        ast: Mutex::new(ast),
+    });
+
+    Ok(ast_resource)
+}
+
+#[rustler::nif]
 fn engine_compact_script(
     resource: ResourceArc<EngineResource>,
     script: &str,
