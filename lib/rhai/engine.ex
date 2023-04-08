@@ -256,17 +256,17 @@ defmodule Rhai.Engine do
   """
   @spec run(t(), String.t()) :: :ok | {:error, Rhai.rhai_error()}
   def run(%__MODULE__{resource: resource}, script) do
-    case Rhai.Native.engine_run(resource, script) do
-      {:ok, _} ->
-        :ok
-
-      error ->
-        error
+    with {:ok, _} <- Rhai.Native.engine_run(resource, script) do
+      :ok
     end
   end
 
   @doc """
   Evaluate a string as script with own scope.
+
+  Constants Propagation
+  If the optimization_level is not `:none` constants defined within the scope are propagated throughout the script including functions.
+  This allows functions to be optimized based on dynamic global constants.
   """
   @spec run_with_scope(t(), Scope.t(), String.t()) :: :ok | {:error, Rhai.rhai_error()}
   def run_with_scope(
@@ -274,12 +274,62 @@ defmodule Rhai.Engine do
         %Scope{resource: scope_resource},
         script
       ) do
-    case Rhai.Native.engine_run_with_scope(engine_resource, scope_resource, script) do
-      {:ok, _} ->
-        :ok
+    with {:ok, _} <- Rhai.Native.engine_run_with_scope(engine_resource, scope_resource, script) do
+      :ok
+    end
+  end
 
-      error ->
-        error
+  @doc """
+  Evaluate an AST.
+  """
+  @spec run_ast(t(), AST.t()) :: :ok | {:error, Rhai.rhai_error()}
+  def run_ast(%__MODULE__{resource: resource}, %AST{resource: ast_resource}) do
+    with {:ok, _} <- Rhai.Native.engine_run_ast(resource, ast_resource) do
+      :ok
+    end
+  end
+
+  @doc """
+  Evaluate an AST with own scope.
+  """
+  @spec run_ast_with_scope(t(), Scope.t(), AST.t()) :: :ok | {:error, Rhai.rhai_error()}
+  def run_ast_with_scope(
+        %__MODULE__{resource: engine_resource},
+        %Scope{resource: scope_resource},
+        %AST{resource: ast_resource}
+      ) do
+    with {:ok, _} <-
+           Rhai.Native.engine_run_ast_with_scope(engine_resource, scope_resource, ast_resource) do
+      :ok
+    end
+  end
+
+  @doc """
+  Evaluate a file.
+  """
+  @spec run_file(t(), String.t()) :: :ok | {:error, Rhai.rhai_error()}
+  def run_file(%__MODULE__{resource: resource}, path) do
+    with {:ok, _} <- Rhai.Native.engine_run_file(resource, path) do
+      :ok
+    end
+  end
+
+  @doc """
+  Evaluate a file with own scope.
+
+  Constants Propagation
+  If the optimization_level is not `:none` constants defined within the scope are propagated throughout the script including functions.
+  This allows functions to be optimized based on dynamic global constants.
+  """
+  @spec run_file_with_scope(t(), Scope.t(), String.t()) :: :ok | {:error, Rhai.rhai_error()}
+  def run_file_with_scope(
+        %__MODULE__{resource: engine_resource},
+        %Scope{resource: scope_resource},
+        path
+      ) do
+    with {:ok, _} <-
+           Rhai.Native.engine_run_file_with_scope(engine_resource, scope_resource, path) do
+      :ok
     end
   end
 

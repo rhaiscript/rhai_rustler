@@ -264,14 +264,67 @@ fn engine_run(resource: ResourceArc<EngineResource>, script: &str) -> Result<(),
 
 #[rustler::nif]
 fn engine_run_with_scope(
-    engine_resource: ResourceArc<EngineResource>,
+    resource: ResourceArc<EngineResource>,
     scope_resource: ResourceArc<ScopeResource>,
     script: &str,
 ) -> Result<(), RhaiRustlerError> {
-    let engine = engine_resource.engine.try_lock().unwrap();
+    let engine = resource.engine.try_lock().unwrap();
     let mut scope = scope_resource.scope.try_lock().unwrap();
 
     engine.run_with_scope(&mut scope, script)?;
+
+    Ok(())
+}
+
+#[rustler::nif]
+fn engine_run_ast(
+    resource: ResourceArc<EngineResource>,
+    ast_resource: ResourceArc<ASTResource>,
+) -> Result<(), RhaiRustlerError> {
+    let engine = resource.engine.try_lock().unwrap();
+    let ast = ast_resource.ast.try_lock().unwrap();
+
+    engine.run_ast(&ast)?;
+
+    Ok(())
+}
+
+#[rustler::nif]
+fn engine_run_ast_with_scope(
+    resource: ResourceArc<EngineResource>,
+    scope_resource: ResourceArc<ScopeResource>,
+    ast_resource: ResourceArc<ASTResource>,
+) -> Result<(), RhaiRustlerError> {
+    let engine = resource.engine.try_lock().unwrap();
+    let mut scope = scope_resource.scope.try_lock().unwrap();
+    let ast = ast_resource.ast.try_lock().unwrap();
+
+    engine.run_ast_with_scope(&mut scope, &ast)?;
+
+    Ok(())
+}
+
+#[rustler::nif]
+fn engine_run_file(
+    resource: ResourceArc<EngineResource>,
+    path: &str,
+) -> Result<(), RhaiRustlerError> {
+    let engine = resource.engine.try_lock().unwrap();
+    engine.run_file(path.into())?;
+
+    Ok(())
+}
+
+#[rustler::nif]
+fn engine_run_file_with_scope(
+    resource: ResourceArc<EngineResource>,
+    scope_resource: ResourceArc<ScopeResource>,
+    path: &str,
+) -> Result<(), RhaiRustlerError> {
+    let engine = resource.engine.try_lock().unwrap();
+    let mut scope = scope_resource.scope.try_lock().unwrap();
+
+    engine.run_file_with_scope(&mut scope, path.into())?;
 
     Ok(())
 }

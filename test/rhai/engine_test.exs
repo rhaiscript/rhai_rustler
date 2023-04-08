@@ -291,6 +291,53 @@ defmodule Rhai.EngineTest do
     end
   end
 
+  describe "run_ast/2" do
+    test "should run an AST" do
+      engine = Engine.new()
+      {:ok, ast} = Engine.compile(engine, "40 + 2;")
+
+      assert :ok = Engine.run_ast(engine, ast)
+    end
+  end
+
+  describe "run_ast_with_scope/3" do
+    test "should run an AST with scope" do
+      engine = Engine.new()
+      scope = Scope.new() |> Scope.push_dynamic("x", 40)
+
+      {:ok, ast} = Engine.compile(engine, "x += 2;")
+
+      assert :ok = Engine.run_ast_with_scope(engine, scope, ast)
+      assert 42 == Scope.get_value(scope, "x")
+    end
+  end
+
+  describe "run_file/2" do
+    test "should run a script file" do
+      engine = Engine.new()
+
+      assert :ok = Engine.run_file(engine, File.cwd!() <> "/test/fixtures/script.rhai")
+    end
+  end
+
+  describe "run_file_with_scope/3" do
+    test "should run a script file with scope" do
+      engine = Engine.new()
+
+      scope =
+        Scope.new() |> Scope.push_constant_dynamic("a", 1) |> Scope.push_constant_dynamic("b", 2)
+
+      assert :ok =
+               Engine.run_file_with_scope(
+                 engine,
+                 scope,
+                 File.cwd!() <> "/test/fixtures/script_with_scope.rhai"
+               )
+
+      assert 45 == Scope.get_value(scope, "x")
+    end
+  end
+
   describe "call_fn/5" do
     test "should call a script function" do
       engine = Engine.new()
