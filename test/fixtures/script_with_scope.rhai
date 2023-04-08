@@ -2,4 +2,6 @@ fn test(x) {
   a + b + x
 }
 
-test(42)
+let x = test(42);
+
+x
