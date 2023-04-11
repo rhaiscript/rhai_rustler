@@ -757,6 +757,45 @@ defmodule Rhai.Engine do
     Rhai.Native.engine_strict_variables(resource)
   end
 
+  @doc """
+  The current optimization level. It controls whether and how the Engine will optimize an AST after compilation.
+  """
+  @spec optimization_level(t()) :: :none | :simple | :full
+  def optimization_level(%__MODULE__{resource: resource}) do
+    Rhai.Native.engine_optimization_level(resource)
+  end
+
+  @doc """
+  Control whether and how the Engine will optimize an AST after compilation.
+  """
+  @spec set_optimization_level(t(), :none | :simple | :full) :: t()
+  def set_optimization_level(%__MODULE__{resource: resource} = engine, optimization_level) do
+    Rhai.Native.engine_set_optimization_level(resource, optimization_level)
+
+    engine
+  end
+
+  @doc """
+  Optimize the AST with constants defined in an external Scope.
+  An optimized copy of the AST is returned while the original AST is consumed.
+
+  Although optimization is performed by default during compilation, sometimes it is necessary to re-optimize an AST.
+  For example, when working with constants that are passed in via an external scope,
+  it will be more efficient to optimize the AST once again to take advantage of the new constants.
+  With this method, it is no longer necessary to recompile a large script. The script AST can be compiled just once.
+  Before evaluation, constants are passed into the Engine via an external scope (i.e. with Rhai.Scope.push_constant/2).
+  Then, the AST is cloned and the copy re-optimized before running.
+  """
+  @spec optimize_ast(t(), Scope.t(), AST.t(), :none | :simple | :full) :: AST.t()
+  def optimize_ast(
+        %__MODULE__{resource: resource},
+        %Scope{resource: scope_resource},
+        %AST{resource: ast_resource},
+        optimization_level
+      ) do
+    Rhai.Native.engine_optimize_ast(resource, scope_resource, ast_resource, optimization_level)
+  end
+
   @doc false
   def wrap_resource(resource) do
     %__MODULE__{
