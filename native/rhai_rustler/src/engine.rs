@@ -8,7 +8,7 @@ use rhai::{
 use rhai_dylib::loader::{libloading::Libloading, Loader};
 use rhai_dylib::module_resolvers::libloading::DylibModuleResolver;
 
-use rustler::{Env, ResourceArc, Term};
+use rustler::{Env, NifUnitEnum, ResourceArc, Term};
 
 use crate::{
     ast::ASTResource,
@@ -673,4 +673,67 @@ fn engine_strict_variables(resource: ResourceArc<EngineResource>) -> bool {
     let engine = resource.engine.try_lock().unwrap();
 
     engine.strict_variables()
+}
+
+#[derive(NifUnitEnum)]
+enum OptimizationLevel {
+    None,
+    Simple,
+    Full,
+}
+
+impl From<rhai::OptimizationLevel> for OptimizationLevel {
+    fn from(optimization_level: rhai::OptimizationLevel) -> Self {
+        match optimization_level {
+            rhai::OptimizationLevel::None => OptimizationLevel::None,
+            rhai::OptimizationLevel::Simple => OptimizationLevel::Simple,
+            rhai::OptimizationLevel::Full => OptimizationLevel::Full,
+            // This is needed because rhai::OptimizationLevel is #[non_exhaustive]
+            _ => todo!("OptimizationLevel not supported yet."),
+        }
+    }
+}
+
+impl From<OptimizationLevel> for rhai::OptimizationLevel {
+    fn from(optimization_level: OptimizationLevel) -> Self {
+        match optimization_level {
+            OptimizationLevel::None => rhai::OptimizationLevel::None,
+            OptimizationLevel::Simple => rhai::OptimizationLevel::Simple,
+            OptimizationLevel::Full => rhai::OptimizationLevel::Full,
+        }
+    }
+}
+
+#[rustler::nif]
+fn engine_optimization_level(resource: ResourceArc<EngineResource>) -> OptimizationLevel {
+    let engine = resource.engine.try_lock().unwrap();
+
+    engine.optimization_level().into()
+}
+
+#[rustler::nif]
+fn engine_set_optimization_level(
+    resource: ResourceArc<EngineResource>,
+    optimization_level: OptimizationLevel,
+) {
+    let mut engine = resource.engine.try_lock().unwrap();
+
+    engine.set_optimization_level(optimization_level.into());
+}
+#[rustler::nif]
+fn engine_optimize_ast(
+    resource: ResourceArc<EngineResource>,
+    scope_resource: ResourceArc<ScopeResource>,
+    ast_resource: ResourceArc<ASTResource>,
+    optimization_level: OptimizationLevel,
+) -> ResourceArc<ASTResource> {
+    let engine = resource.engine.try_lock().unwrap();
+    let scope = scope_resource.scope.try_lock().unwrap();
+    let ast = ast_resource.ast.try_lock().unwrap().clone();
+
+    let result = engine.optimize_ast(&scope, ast, optimization_level.into());
+
+    ResourceArc::new(ASTResource {
+        ast: Mutex::new(result),
+    })
 }

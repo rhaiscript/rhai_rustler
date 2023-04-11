@@ -91,6 +91,9 @@ defmodule Rhai.Native do
   def engine_max_string_size(_engine), do: err()
   def engine_set_strict_variables(_engine, _flag), do: err()
   def engine_strict_variables(_engine), do: err()
+  def engine_optimization_level(_engine), do: err()
+  def engine_set_optimization_level(_engine, _optimization_level), do: err()
+  def engine_optimize_ast(_engine, _scope, _ast, _optimization_level), do: err()
   # scope
   def scope_new, do: err()
   def scope_with_capacity(_capacity), do: err()
