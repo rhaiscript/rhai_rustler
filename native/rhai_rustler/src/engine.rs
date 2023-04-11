@@ -43,6 +43,15 @@ fn engine_new() -> ResourceArc<EngineResource> {
 }
 
 #[rustler::nif]
+fn engine_new_raw() -> ResourceArc<EngineResource> {
+    let engine = Engine::new_raw();
+
+    ResourceArc::new(EngineResource {
+        engine: Mutex::new(engine),
+    })
+}
+
+#[rustler::nif]
 fn engine_register_global_module(
     resource: ResourceArc<EngineResource>,
     path: String,
