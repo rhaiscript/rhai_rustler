@@ -255,12 +255,12 @@ fn engine_eval_ast(
 }
 
 #[rustler::nif]
-fn engine_eval_ast_with_scope<'a>(
-    env: Env<'a>,
+fn engine_eval_ast_with_scope(
+    env: Env,
     engine_resource: ResourceArc<EngineResource>,
     scope_resource: ResourceArc<ScopeResource>,
     ast_resource: ResourceArc<ASTResource>,
-) -> Result<Term<'a>, RhaiRustlerError> {
+) -> Result<Term, RhaiRustlerError> {
     let engine = engine_resource.engine.try_lock().unwrap();
     let mut scope = scope_resource.scope.try_lock().unwrap();
     let ast = ast_resource.ast.try_lock().unwrap();
