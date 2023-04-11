@@ -694,9 +694,9 @@ impl From<rhai::OptimizationLevel> for OptimizationLevel {
     }
 }
 
-impl Into<rhai::OptimizationLevel> for OptimizationLevel {
-    fn into(self) -> rhai::OptimizationLevel {
-        match self {
+impl From<OptimizationLevel> for rhai::OptimizationLevel {
+    fn from(optimization_level: OptimizationLevel) -> Self {
+        match optimization_level {
             OptimizationLevel::None => rhai::OptimizationLevel::None,
             OptimizationLevel::Simple => rhai::OptimizationLevel::Simple,
             OptimizationLevel::Full => rhai::OptimizationLevel::Full,
@@ -728,10 +728,10 @@ fn engine_optimize_ast(
     optimization_level: OptimizationLevel,
 ) -> ResourceArc<ASTResource> {
     let engine = resource.engine.try_lock().unwrap();
-    let mut scope = scope_resource.scope.try_lock().unwrap();
+    let scope = scope_resource.scope.try_lock().unwrap();
     let ast = ast_resource.ast.try_lock().unwrap().clone();
 
-    let result = engine.optimize_ast(&mut scope, ast, optimization_level.into());
+    let result = engine.optimize_ast(&scope, ast, optimization_level.into());
 
     ResourceArc::new(ASTResource {
         ast: Mutex::new(result),
