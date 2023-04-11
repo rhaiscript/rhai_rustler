@@ -664,4 +664,35 @@ defmodule Rhai.EngineTest do
              |> Engine.strict_variables?()
     end
   end
+
+  describe "set_optimization_level/2, optimization_level/1" do
+    test "should return :simple by default" do
+      engine = Engine.new()
+
+      assert :simple == Engine.optimization_level(engine)
+    end
+
+    test "should set the optimization level" do
+      optimization_level = Enum.random([:full, :simple, :none])
+
+      assert optimization_level ==
+               Engine.new()
+               |> Engine.set_optimization_level(optimization_level)
+               |> Engine.optimization_level()
+    end
+  end
+
+  describe "optimize_ast/4" do
+    test "should optimize an AST" do
+      engine = Engine.new()
+
+      scope =
+        Scope.new() |> Scope.push_constant_dynamic("a", 1) |> Scope.push_constant_dynamic("b", 2)
+
+      {:ok, ast} = Engine.compile(engine, "a + b")
+
+      assert %AST{} = optimized_ast = Engine.optimize_ast(engine, scope, ast, :full)
+      assert {:ok, 3} = Engine.eval_ast_with_scope(engine, scope, optimized_ast)
+    end
+  end
 end

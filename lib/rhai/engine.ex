@@ -793,7 +793,10 @@ defmodule Rhai.Engine do
         %AST{resource: ast_resource},
         optimization_level
       ) do
-    Rhai.Native.engine_optimize_ast(resource, scope_resource, ast_resource, optimization_level)
+    ast =
+      Rhai.Native.engine_optimize_ast(resource, scope_resource, ast_resource, optimization_level)
+
+    AST.wrap_resource(ast)
   end
 
   @doc false
