@@ -255,6 +255,74 @@ fn engine_eval_ast(
 }
 
 #[rustler::nif]
+fn engine_eval_ast_with_scope(
+    env: Env,
+    engine_resource: ResourceArc<EngineResource>,
+    scope_resource: ResourceArc<ScopeResource>,
+    ast_resource: ResourceArc<ASTResource>,
+) -> Result<Term, RhaiRustlerError> {
+    let engine = engine_resource.engine.try_lock().unwrap();
+    let mut scope = scope_resource.scope.try_lock().unwrap();
+    let ast = ast_resource.ast.try_lock().unwrap();
+
+    let result = engine.eval_ast_with_scope::<Dynamic>(&mut scope, &ast)?;
+
+    Ok(from_dynamic(env, result))
+}
+
+#[rustler::nif]
+fn engine_eval_expression<'a>(
+    env: Env<'a>,
+    resource: ResourceArc<EngineResource>,
+    expression: &str,
+) -> Result<Term<'a>, RhaiRustlerError> {
+    let engine = resource.engine.try_lock().unwrap();
+    let result = engine.eval_expression::<Dynamic>(expression)?;
+
+    Ok(from_dynamic(env, result))
+}
+
+#[rustler::nif]
+fn engine_eval_expression_with_scope<'a>(
+    env: Env<'a>,
+    resource: ResourceArc<EngineResource>,
+    scope_resource: ResourceArc<ScopeResource>,
+    expression: &str,
+) -> Result<Term<'a>, RhaiRustlerError> {
+    let engine = resource.engine.try_lock().unwrap();
+    let mut scope = scope_resource.scope.try_lock().unwrap();
+    let result = engine.eval_expression_with_scope::<Dynamic>(&mut scope, expression)?;
+
+    Ok(from_dynamic(env, result))
+}
+
+#[rustler::nif]
+fn engine_eval_file<'a>(
+    env: Env<'a>,
+    resource: ResourceArc<EngineResource>,
+    path: &str,
+) -> Result<Term<'a>, RhaiRustlerError> {
+    let engine = resource.engine.try_lock().unwrap();
+    let result = engine.eval_file::<Dynamic>(path.into())?;
+
+    Ok(from_dynamic(env, result))
+}
+
+#[rustler::nif]
+fn engine_eval_file_with_scope<'a>(
+    env: Env<'a>,
+    resource: ResourceArc<EngineResource>,
+    scope_resource: ResourceArc<ScopeResource>,
+    path: &str,
+) -> Result<Term<'a>, RhaiRustlerError> {
+    let engine = resource.engine.try_lock().unwrap();
+    let mut scope = scope_resource.scope.try_lock().unwrap();
+    let result = engine.eval_file_with_scope::<Dynamic>(&mut scope, path.into())?;
+
+    Ok(from_dynamic(env, result))
+}
+
+#[rustler::nif]
 fn engine_run(resource: ResourceArc<EngineResource>, script: &str) -> Result<(), RhaiRustlerError> {
     let engine = resource.engine.try_lock().unwrap();
     engine.run(script)?;

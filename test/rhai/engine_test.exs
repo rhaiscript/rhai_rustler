@@ -273,6 +273,59 @@ defmodule Rhai.EngineTest do
     end
   end
 
+  describe "eval_ast_with_scope/3" do
+    test "should eval an AST with scope" do
+      engine = Engine.new()
+      {:ok, ast} = Engine.compile(engine, "a + b")
+      scope = Scope.new() |> Scope.push_constant_dynamic("a", 1) |> Scope.push_dynamic("b", 1)
+
+      assert {:ok, 2} = Engine.eval_ast_with_scope(engine, scope, ast)
+    end
+  end
+
+  describe "eval_expression/2" do
+    test "should eval an expression" do
+      engine = Engine.new()
+
+      assert {:ok, 2} = Engine.eval_expression(engine, "1 + 1")
+    end
+  end
+
+  describe "eval_expression_with_scope/3" do
+    test "should eval an expression with scope" do
+      engine = Engine.new()
+
+      scope =
+        Scope.new() |> Scope.push_constant_dynamic("a", 1) |> Scope.push_constant_dynamic("b", 1)
+
+      assert {:ok, 2} = Engine.eval_expression_with_scope(engine, scope, "a + b")
+    end
+  end
+
+  describe "eval_file/2" do
+    test "should eval a script file" do
+      engine = Engine.new()
+
+      assert {:ok, 43} = Engine.eval_file(engine, File.cwd!() <> "/test/fixtures/script.rhai")
+    end
+  end
+
+  describe "eval_file_with_scope/3" do
+    test "should eval a script file with scope" do
+      engine = Engine.new()
+
+      scope =
+        Scope.new() |> Scope.push_constant_dynamic("a", 1) |> Scope.push_constant_dynamic("b", 2)
+
+      assert {:ok, 45} =
+               Engine.eval_file_with_scope(
+                 engine,
+                 scope,
+                 File.cwd!() <> "/test/fixtures/script_with_scope.rhai"
+               )
+    end
+  end
+
   describe "run/2" do
     test "should run a script" do
       engine = Engine.new()

@@ -252,6 +252,61 @@ defmodule Rhai.Engine do
   end
 
   @doc """
+  Evaluate an AST with own scope, returning the result value or an error.
+  """
+  @spec eval_ast_with_scope(t(), Scope.t(), AST.t()) ::
+          {:ok, Rhai.rhai_any()} | {:error, Rhai.rhai_error()}
+  def eval_ast_with_scope(
+        %__MODULE__{resource: engine_resource},
+        %Scope{resource: scope_resource},
+        %AST{resource: ast_resource}
+      ) do
+    Rhai.Native.engine_eval_ast_with_scope(engine_resource, scope_resource, ast_resource)
+  end
+
+  @doc """
+  Evaluate a string containing an expression, returning the result value or an error.
+  """
+  @spec eval_expression(t(), String.t()) :: {:ok, Rhai.rhai_any()} | {:error, Rhai.rhai_error()}
+  def eval_expression(%__MODULE__{resource: resource}, script) do
+    Rhai.Native.engine_eval_expression(resource, script)
+  end
+
+  @doc """
+  Evaluate a string containing an expression with own scope, returning the result value or an error.
+  """
+  @spec eval_expression_with_scope(t(), Scope.t(), String.t()) ::
+          {:ok, Rhai.rhai_any()} | {:error, Rhai.rhai_error()}
+  def eval_expression_with_scope(
+        %__MODULE__{resource: engine_resource},
+        %Scope{resource: scope_resource},
+        script
+      ) do
+    Rhai.Native.engine_eval_expression_with_scope(engine_resource, scope_resource, script)
+  end
+
+  @doc """
+  Evaluate a script file, returning the result value or an error.
+  """
+  @spec eval_file(t(), String.t()) :: {:ok, Rhai.rhai_any()} | {:error, Rhai.rhai_error()}
+  def eval_file(%__MODULE__{resource: resource}, path) do
+    Rhai.Native.engine_eval_file(resource, path)
+  end
+
+  @doc """
+  Evaluate a script file with own scope, returning the result value or an error.
+  """
+  @spec eval_file_with_scope(t(), Scope.t(), String.t()) ::
+          {:ok, Rhai.rhai_any()} | {:error, Rhai.rhai_error()}
+  def eval_file_with_scope(
+        %__MODULE__{resource: engine_resource},
+        %Scope{resource: scope_resource},
+        path
+      ) do
+    Rhai.Native.engine_eval_file_with_scope(engine_resource, scope_resource, path)
+  end
+
+  @doc """
   Evaluate a string as script.
   """
   @spec run(t(), String.t()) :: :ok | {:error, Rhai.rhai_error()}
