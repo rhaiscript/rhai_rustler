@@ -9,6 +9,12 @@ defmodule Rhai.EngineTest do
     end
   end
 
+  describe "new_raw/0" do
+    test "should create a new raw engine" do
+      assert %Engine{} = Engine.new_raw()
+    end
+  end
+
   describe "module resolvers" do
     test "should load a dylib module via the import directive" do
       assert {:ok, [6, "inner", "value"]} =

@@ -27,6 +27,14 @@ defmodule Rhai.Engine do
   end
 
   @doc """
+  Create a new Engine with minimal built-in functions.
+  """
+  @spec new_raw :: t()
+  def new_raw do
+    wrap_resource(Rhai.Native.engine_new_raw())
+  end
+
+  @doc """
   Register a shared dylib Module into the global namespace of Engine.
 
   All functions and type iterators are automatically available to scripts without namespace qualifications.

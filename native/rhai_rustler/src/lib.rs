@@ -62,6 +62,7 @@ rustler::init!(
         eval,
         // engine
         engine_new,
+        engine_new_raw,
         engine_compile,
         engine_compile_with_scope,
         engine_compile_expression,
