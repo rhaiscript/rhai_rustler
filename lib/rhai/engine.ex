@@ -799,6 +799,16 @@ defmodule Rhai.Engine do
     AST.wrap_resource(ast)
   end
 
+  @doc """
+  Disable a particular keyword or operator in the language.
+  """
+  @spec disable_symbol(t(), String.t()) :: t()
+  def disable_symbol(%__MODULE__{resource: resource} = engine, symbol) do
+    Rhai.Native.engine_disable_symbol(resource, symbol)
+
+    engine
+  end
+
   @doc false
   def wrap_resource(resource) do
     %__MODULE__{

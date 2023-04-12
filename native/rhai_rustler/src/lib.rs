@@ -127,6 +127,7 @@ rustler::init!(
         engine_optimization_level,
         engine_set_optimization_level,
         engine_optimize_ast,
+        engine_disable_symbol,
         // scope
         scope_new,
         scope_with_capacity,
