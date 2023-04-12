@@ -8,7 +8,7 @@ use rhai::{
 use rhai_dylib::loader::{libloading::Libloading, Loader};
 use rhai_dylib::module_resolvers::libloading::DylibModuleResolver;
 
-use rustler::{Env, NifUnitEnum, ResourceArc, Term};
+use rustler::{Encoder, Env, NifUnitEnum, OwnedEnv, ResourceArc, Term};
 
 use crate::{
     ast::ASTResource,
@@ -743,4 +743,30 @@ fn engine_disable_symbol(resource: ResourceArc<EngineResource>, symbol: &str) {
     let mut engine = resource.engine.try_lock().unwrap();
 
     engine.disable_symbol(symbol);
+}
+
+fn engine_register_fn<'a>(env: Env<'a>, resource: ResourceArc<EngineResource>, fun: Term<'a>) {
+    let mut engine = resource.engine.try_lock().unwrap();
+    // rustler_elixir_fun::apply_elixir_fun(env, a.encode(env), fun, parameters).into()
+    let fun = |parameters: Term<'a>| -> Dynamic {
+        let owned_env = OwnedEnv::new();
+        owned_env.run(|env2| {
+            let a = String::from("ciao");
+
+            to_dynamic(env2, &parameters)
+        })
+        // let a = String::from("ciao");
+        // match rustler_elixir_fun::apply_elixir_fun(env, a.encode(env), fun, parameters) {
+        //     Ok(result) => match result {
+        //         rustler_elixir_fun::ElixirFunCallResult::Success(_) => todo!(),
+        //         rustler_elixir_fun::ElixirFunCallResult::ExceptionRaised(_) => todo!(),
+        //         rustler_elixir_fun::ElixirFunCallResult::Exited(_) => todo!(),
+        //         rustler_elixir_fun::ElixirFunCallResult::ValueThrown(_) => todo!(),
+        //         rustler_elixir_fun::ElixirFunCallResult::TimedOut => todo!(),
+        //     },
+        //     Err(_) => Dynamic::from(()),
+        // }
+    };
+
+    engine.register_fn("ciao", fun);
 }

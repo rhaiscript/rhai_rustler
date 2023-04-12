@@ -222,6 +222,7 @@ dependencies = [
  "rhai",
  "rhai-dylib",
  "rustler",
+ "rustler_elixir_fun",
  "thiserror",
 ]
 
@@ -246,6 +247,24 @@ dependencies = [
  "proc-macro2",
  "quote",
  "syn 1.0.109",
+]
+
+[[package]]
+name = "rustler_elixir_fun"
+version = "0.3.0"
+source = "git+https://github.com/fabriziosestito/elixir-rustler_elixir_fun.git#dfdd0d5a597c4cbed9d2869533225a37b42cda55"
+dependencies = [
+ "rustler",
+ "rustler_stored_term",
+ "rustler_sys",
+]
+
+[[package]]
+name = "rustler_stored_term"
+version = "0.1.0"
+source = "git+https://github.com/fabriziosestito/elixir-rustler_elixir_fun.git#dfdd0d5a597c4cbed9d2869533225a37b42cda55"
+dependencies = [
+ "rustler",
 ]
 
 [[package]]
