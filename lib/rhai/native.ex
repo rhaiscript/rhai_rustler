@@ -94,6 +94,7 @@ defmodule Rhai.Native do
   def engine_optimization_level(_engine), do: err()
   def engine_set_optimization_level(_engine, _optimization_level), do: err()
   def engine_optimize_ast(_engine, _scope, _ast, _optimization_level), do: err()
+  def engine_disable_symbol(_engine, _symbol), do: err()
   # scope
   def scope_new, do: err()
   def scope_with_capacity(_capacity), do: err()

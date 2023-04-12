@@ -737,3 +737,10 @@ fn engine_optimize_ast(
         ast: Mutex::new(result),
     })
 }
+
+#[rustler::nif]
+fn engine_disable_symbol(resource: ResourceArc<EngineResource>, symbol: &str) {
+    let mut engine = resource.engine.try_lock().unwrap();
+
+    engine.disable_symbol(symbol);
+}

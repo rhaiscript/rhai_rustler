@@ -695,4 +695,20 @@ defmodule Rhai.EngineTest do
       assert {:ok, 3} = Engine.eval_ast_with_scope(engine, scope, optimized_ast)
     end
   end
+
+  describe "disable_symbol/2" do
+    test "should disable a keyword" do
+      assert {:error, {:parsing, "'if' is a reserved keyword (line 1, position 9)"}} =
+               Engine.new()
+               |> Engine.disable_symbol("if")
+               |> Engine.compile("let x = if true { 42 } else { 0 };")
+    end
+
+    test "should disable an operator" do
+      assert {:error, {:parsing, "Unknown operator: '+' (line 1, position 11)"}} =
+               Engine.new()
+               |> Engine.disable_symbol("+")
+               |> Engine.compile("let x = 1 + 2;")
+    end
+  end
 end
