@@ -74,6 +74,7 @@ rustler::init!(
         engine_compact_script,
         engine_register_global_module,
         engine_register_static_module,
+        engine_register_custom_operator,
         engine_eval,
         engine_eval_with_scope,
         engine_eval_ast,
