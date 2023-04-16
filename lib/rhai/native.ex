@@ -32,6 +32,7 @@ defmodule Rhai.Native do
   def engine_new_raw, do: err()
   def engine_register_global_module(_engine, _path), do: err()
   def engine_register_static_module(_engine, _namespace, _path), do: err()
+  def engine_register_custom_operator(_engine, _keyword, _precedence), do: err()
   def engine_compile(_engine, _script), do: err()
   def engine_compile_with_scope(_engine, _scope, _script), do: err()
   def engine_compile_expression(_engine, _script), do: err()

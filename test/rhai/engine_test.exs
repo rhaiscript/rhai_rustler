@@ -132,6 +132,48 @@ defmodule Rhai.EngineTest do
     end
   end
 
+  describe "register_custom_operator/3" do
+    test "should register a custom operator" do
+      assert {:ok, engine} =
+               Engine.new()
+               |> Engine.register_static_module!(
+                 "plugin",
+                 "#{File.cwd!()}/priv/native/libtest_dylib_module"
+               )
+               |> Engine.register_custom_operator("#", 160)
+
+      assert {:ok, 3} = Engine.eval(engine, "1 # 2")
+    end
+
+    test "should return error if the operator is reserved" do
+      engine = Engine.new()
+
+      assert {:error, {:custom_operator, "'+' is a reserved operator"}} =
+               Engine.register_custom_operator(engine, "+", 160)
+    end
+  end
+
+  describe "register_custom_operator!/3" do
+    test "should register a custom operator" do
+      assert {:ok, 3} =
+               Engine.new()
+               |> Engine.register_static_module!(
+                 "plugin",
+                 "#{File.cwd!()}/priv/native/libtest_dylib_module"
+               )
+               |> Engine.register_custom_operator!("#", 160)
+               |> Engine.eval("1 # 2")
+    end
+
+    test "should raise if the operator is reserved" do
+      engine = Engine.new()
+
+      assert_raise RuntimeError, fn ->
+        Engine.register_custom_operator!(engine, "+", 160)
+      end
+    end
+  end
+
   describe "compile/2" do
     test "should compile a string into an AST" do
       engine = Engine.new()

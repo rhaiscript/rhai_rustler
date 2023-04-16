@@ -102,6 +102,39 @@ defmodule Rhai.Engine do
   end
 
   @doc """
+  Register a custom operator with a precedence into the language.
+
+  The operator can be a valid identifier, a reserved symbol, a disabled operator or a disabled keyword.
+  The precedence cannot be zero.
+  """
+  @spec register_custom_operator(t(), String.t(), non_neg_integer()) ::
+          {:ok, t()} | {:error, {:custom_operator, String.t()}}
+  def register_custom_operator(%__MODULE__{resource: resource} = engine, operator, precedence) do
+    with {:ok, _} <- Rhai.Native.engine_register_custom_operator(resource, operator, precedence) do
+      {:ok, engine}
+    end
+  end
+
+  @doc """
+  Register a custom operator with a precedence into the language.
+
+  The operator can be a valid identifier, a reserved symbol, a disabled operator or a disabled keyword.
+  The precedence cannot be zero.
+
+  Raises if the operator cannot be registered.
+  """
+  @spec register_custom_operator!(t(), String.t(), non_neg_integer()) :: t()
+  def register_custom_operator!(%__MODULE__{resource: resource} = engine, operator, precedence) do
+    case Rhai.Native.engine_register_custom_operator(resource, operator, precedence) do
+      {:ok, _} ->
+        engine
+
+      {:error, {:custom_operator, message}} ->
+        raise message
+    end
+  end
+
+  @doc """
   Compile a string into an AST, which can be used later for evaluation.
   """
   @spec compile(t(), String.t()) :: {:ok, AST.t()} | {:error, Rhai.rhai_error()}

@@ -83,6 +83,20 @@ fn engine_register_static_module(
 }
 
 #[rustler::nif]
+fn engine_register_custom_operator(
+    resource: ResourceArc<EngineResource>,
+    keyword: &str,
+    precedence: u8,
+) -> Result<(), RhaiRustlerError> {
+    let mut engine = resource.engine.try_lock().unwrap();
+
+    match engine.register_custom_operator(keyword, precedence) {
+        Ok(_) => Ok(()),
+        Err(message) => Err(RhaiRustlerError::CustomOperatorError { message }),
+    }
+}
+
+#[rustler::nif]
 fn engine_compile(
     resource: ResourceArc<EngineResource>,
     script: &str,

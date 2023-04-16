@@ -37,6 +37,7 @@ mod atoms {
         non_pure_method_call_on_constant,
         scope_is_empty,
         cannot_update_value_of_constant,
+        custom_operator
     }
 }
 
@@ -56,6 +57,8 @@ pub enum RhaiRustlerError {
     ParseError(#[from] ParseError),
     #[error("Error when accessing a scope: {0}.")]
     ScopeError(#[from] ScopeError),
+    #[error("Error when defining a custom operator: {message}.")]
+    CustomOperatorError { message: String },
 }
 
 impl Encoder for RhaiRustlerError {
@@ -117,6 +120,9 @@ impl Encoder for RhaiRustlerError {
                 };
 
                 make_reason_tuple(env, error_atom, err.to_string())
+            }
+            RhaiRustlerError::CustomOperatorError { message } => {
+                make_reason_tuple(env, atoms::custom_operator(), message.to_owned())
             }
         }
     }

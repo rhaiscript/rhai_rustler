@@ -37,6 +37,12 @@ pub mod my_plugin_api {
         a + b + c
     }
 
+    /// Custom operator
+    #[rhai_fn(name = "#", global)]
+    pub fn custom_operator(a: INT, b: INT) -> INT {
+        a + b
+    }
+
     /// Using Rhai types, non-global function.
     #[rhai_fn()]
     pub fn get_property(m: &mut Map) -> String {
