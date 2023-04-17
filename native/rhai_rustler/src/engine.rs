@@ -758,3 +758,15 @@ fn engine_disable_symbol(resource: ResourceArc<EngineResource>, symbol: &str) {
 
     engine.disable_symbol(symbol);
 }
+
+#[rustler::nif]
+fn engine_ensure_data_size_within_limits<'a>(
+    env: Env<'a>,
+    resource: ResourceArc<EngineResource>,
+    value: Term<'a>,
+) -> Result<(), RhaiRustlerError> {
+    let engine = resource.engine.try_lock().unwrap();
+    engine.ensure_data_size_within_limits(&to_dynamic(env, &value))?;
+
+    Ok(())
+}
