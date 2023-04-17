@@ -57,7 +57,7 @@ pub fn to_dynamic<'a>(env: Env<'a>, term: &Term<'a>) -> Dynamic {
                 .map(|item| to_dynamic(env, item))
                 .collect();
 
-            Dynamic::from(items)
+            Dynamic::from_array(items)
         }
         TermType::Map => {
             let mut object_map = rhai::Map::new();
