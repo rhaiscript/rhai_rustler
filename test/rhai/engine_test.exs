@@ -756,14 +756,14 @@ defmodule Rhai.EngineTest do
 
   describe "ensure_data_size_within_limits/2" do
     test "should not return an error if the data size is within limits" do
-      assert {:ok, 42} =
+      assert :ok =
                Engine.new()
                |> Engine.set_max_array_size(2)
                |> Engine.ensure_data_size_within_limits("[1, 2]")
     end
 
     test "should return error if the data size is too big" do
-      assert {:error, :data_size_limit_exceeded} =
+      assert {:error, {:data_too_large, "Length of string too large"}} =
                Engine.new()
                |> Engine.set_max_string_size(1)
                |> Engine.ensure_data_size_within_limits("[1, 2]")
