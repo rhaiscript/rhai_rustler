@@ -842,6 +842,16 @@ defmodule Rhai.Engine do
     engine
   end
 
+  @doc """
+  Return an error if the size of a Dynamic is out of limits (if any).
+  """
+  @spec ensure_data_size_within_limits(t(), Rhai.rhai_any()) :: :ok | Rhai.rhai_error()
+  def ensure_data_size_within_limits(%__MODULE__{resource: resource}, value) do
+    with {:ok, _} <- Rhai.Native.engine_ensure_data_size_within_limits(resource, value) do
+      :ok
+    end
+  end
+
   @doc false
   def wrap_resource(resource) do
     %__MODULE__{
