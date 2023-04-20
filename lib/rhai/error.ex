@@ -1,4 +1,6 @@
 defmodule Rhai.Error do
+  @moduledoc false
+
   @type error ::
           :system
           | :parsing
