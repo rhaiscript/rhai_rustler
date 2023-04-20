@@ -146,7 +146,6 @@ rustler::init!(
         scope_rewind,
         scope_pop,
         scope_set_value,
-        scope_set_alias,
         scope_set_or_push,
         scope_iter_collect,
         // AST

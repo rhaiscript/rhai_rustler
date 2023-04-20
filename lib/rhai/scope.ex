@@ -212,19 +212,6 @@ defmodule Rhai.Scope do
   end
 
   @doc """
-  Add an alias to a variable in the Scope so that it is exported under that name. This is an advanced API.
-  If the alias is empty, then the variable is exported under its original name.
-  Multiple aliases can be added to any variable.
-  Only the last variable matching the name (and not other shadowed versions) is aliased by this call.
-  """
-  @spec set_alias(t(), String.t(), String.t()) :: t()
-  def set_alias(%__MODULE__{resource: resource} = scope, name, alias_name) do
-    Rhai.Native.scope_set_alias(resource, name, alias_name)
-
-    scope
-  end
-
-  @doc """
   Update the value of the named entry in the Scope if it already exists and is not constant.
   Push a new entry with the value into the Scope if the name doesn’t exist or if the existing entry is constant.
 
