@@ -25,8 +25,6 @@ defmodule Rhai.Native do
     version: version,
     targets: targets
 
-  # legacy
-  def eval(_, _), do: err()
   # engine
   def engine_new, do: err()
   def engine_new_raw, do: err()

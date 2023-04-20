@@ -137,7 +137,7 @@ defmodule Rhai.Engine do
   @doc """
   Compile a string into an AST, which can be used later for evaluation.
   """
-  @spec compile(t(), String.t()) :: {:ok, AST.t()} | {:error, Rhai.rhai_error()}
+  @spec compile(t(), String.t()) :: {:ok, AST.t()} | {:error, Rhai.Error.t()}
   def compile(%__MODULE__{resource: resource}, script) do
     with {:ok, ast_resource} <- Rhai.Native.engine_compile(resource, script) do
       {:ok, AST.wrap_resource(ast_resource)}
@@ -152,7 +152,7 @@ defmodule Rhai.Engine do
   This allows functions to be optimized based on dynamic global constants.
   """
   @spec compile_with_scope(t(), Scope.t(), String.t()) ::
-          {:ok, AST.t()} | {:error, Rhai.rhai_error()}
+          {:ok, AST.t()} | {:error, Rhai.Error.t()}
   def compile_with_scope(
         %__MODULE__{resource: resource},
         %Scope{resource: scope_resource},
@@ -167,7 +167,7 @@ defmodule Rhai.Engine do
   @doc """
   Compile a string containing an expression into an AST, which can be used later for evaluation.
   """
-  @spec compile_expression(t(), String.t()) :: {:ok, AST.t()} | {:error, Rhai.rhai_error()}
+  @spec compile_expression(t(), String.t()) :: {:ok, AST.t()} | {:error, Rhai.Error.t()}
   def compile_expression(%__MODULE__{resource: resource}, script) do
     with {:ok, ast_resource} <- Rhai.Native.engine_compile_expression(resource, script) do
       {:ok, AST.wrap_resource(ast_resource)}
@@ -178,7 +178,7 @@ defmodule Rhai.Engine do
   Compile a string containing an expression into an AST using own scope, which can be used later for evaluation.
   """
   @spec compile_expression_with_scope(t(), Scope.t(), String.t()) ::
-          {:ok, AST.t()} | {:error, Rhai.rhai_error()}
+          {:ok, AST.t()} | {:error, Rhai.Error.t()}
   def compile_expression_with_scope(
         %__MODULE__{resource: resource},
         %Scope{resource: scope_resource},
@@ -193,7 +193,7 @@ defmodule Rhai.Engine do
   @doc """
   Compile a script file into an AST, which can be used later for evaluation.
   """
-  @spec compile_file(t(), String.t()) :: {:ok, AST.t()} | {:error, Rhai.rhai_error()}
+  @spec compile_file(t(), String.t()) :: {:ok, AST.t()} | {:error, Rhai.Error.t()}
   def compile_file(%__MODULE__{resource: resource}, path) do
     with {:ok, ast_resource} <-
            Rhai.Native.engine_compile_file(resource, path) do
@@ -205,7 +205,7 @@ defmodule Rhai.Engine do
   Compile a script file into an AST using own scope, which can be used later for evaluation.
   """
   @spec compile_file_with_scope(t(), Scope.t(), String.t()) ::
-          {:ok, AST.t()} | {:error, Rhai.rhai_error()}
+          {:ok, AST.t()} | {:error, Rhai.Error.t()}
   def compile_file_with_scope(
         %__MODULE__{resource: resource},
         %Scope{resource: scope_resource},
@@ -222,7 +222,7 @@ defmodule Rhai.Engine do
   Modules referred by import statements containing literal string paths are eagerly resolved via the current module resolver and embedded into the resultant AST. When it is evaluated later, import statement directly recall pre-resolved modules and the resolution process is not performed again.
   """
   @spec compile_into_self_contained(t(), Scope.t(), String.t()) ::
-          {:ok, AST.t()} | {:error, Rhai.rhai_error()}
+          {:ok, AST.t()} | {:error, Rhai.Error.t()}
   def compile_into_self_contained(
         %__MODULE__{resource: resource},
         %Scope{resource: scope_resource},
@@ -240,7 +240,7 @@ defmodule Rhai.Engine do
   The scope is useful for passing constants into the script for optimization when using `:full` optimization level.
   """
   @spec compile_scripts_with_scope(t(), Scope.t(), [String.t()]) ::
-          {:ok, AST.t()} | {:error, Rhai.rhai_error()}
+          {:ok, AST.t()} | {:error, Rhai.Error.t()}
   def compile_scripts_with_scope(
         %__MODULE__{resource: resource},
         %Scope{resource: scope_resource},
@@ -266,7 +266,7 @@ defmodule Rhai.Engine do
   @doc """
   Evaluate a string as a script, returning the result value or an error.
   """
-  @spec eval(t(), String.t()) :: {:ok, Rhai.rhai_any()} | {:error, Rhai.rhai_error()}
+  @spec eval(t(), String.t()) :: {:ok, Rhai.Any.t()} | {:error, Rhai.Error.t()}
   def eval(%__MODULE__{resource: resource}, script) do
     Rhai.Native.engine_eval(resource, script)
   end
@@ -275,7 +275,7 @@ defmodule Rhai.Engine do
   Evaluate a string as a script with own scope, returning the result value or an error.
   """
   @spec eval_with_scope(t(), Scope.t(), String.t()) ::
-          {:ok, Rhai.rhai_any()} | {:error, Rhai.rhai_error()}
+          {:ok, Rhai.Any.t()} | {:error, Rhai.Error.t()}
   def eval_with_scope(
         %__MODULE__{resource: engine_resource},
         %Scope{resource: scope_resource},
@@ -287,7 +287,7 @@ defmodule Rhai.Engine do
   @doc """
   Evaluate an AST, returning the result value or an error.
   """
-  @spec eval_ast(t(), AST.t()) :: {:ok, Rhai.rhai_any()} | {:error, Rhai.rhai_error()}
+  @spec eval_ast(t(), AST.t()) :: {:ok, Rhai.Any.t()} | {:error, Rhai.Error.t()}
   def eval_ast(%__MODULE__{resource: resource}, %AST{resource: ast_resource}) do
     Rhai.Native.engine_eval_ast(resource, ast_resource)
   end
@@ -296,7 +296,7 @@ defmodule Rhai.Engine do
   Evaluate an AST with own scope, returning the result value or an error.
   """
   @spec eval_ast_with_scope(t(), Scope.t(), AST.t()) ::
-          {:ok, Rhai.rhai_any()} | {:error, Rhai.rhai_error()}
+          {:ok, Rhai.Any.t()} | {:error, Rhai.Error.t()}
   def eval_ast_with_scope(
         %__MODULE__{resource: engine_resource},
         %Scope{resource: scope_resource},
@@ -308,7 +308,7 @@ defmodule Rhai.Engine do
   @doc """
   Evaluate a string containing an expression, returning the result value or an error.
   """
-  @spec eval_expression(t(), String.t()) :: {:ok, Rhai.rhai_any()} | {:error, Rhai.rhai_error()}
+  @spec eval_expression(t(), String.t()) :: {:ok, Rhai.Any.t()} | {:error, Rhai.Error.t()}
   def eval_expression(%__MODULE__{resource: resource}, script) do
     Rhai.Native.engine_eval_expression(resource, script)
   end
@@ -317,7 +317,7 @@ defmodule Rhai.Engine do
   Evaluate a string containing an expression with own scope, returning the result value or an error.
   """
   @spec eval_expression_with_scope(t(), Scope.t(), String.t()) ::
-          {:ok, Rhai.rhai_any()} | {:error, Rhai.rhai_error()}
+          {:ok, Rhai.Any.t()} | {:error, Rhai.Error.t()}
   def eval_expression_with_scope(
         %__MODULE__{resource: engine_resource},
         %Scope{resource: scope_resource},
@@ -329,7 +329,7 @@ defmodule Rhai.Engine do
   @doc """
   Evaluate a script file, returning the result value or an error.
   """
-  @spec eval_file(t(), String.t()) :: {:ok, Rhai.rhai_any()} | {:error, Rhai.rhai_error()}
+  @spec eval_file(t(), String.t()) :: {:ok, Rhai.Any.t()} | {:error, Rhai.Error.t()}
   def eval_file(%__MODULE__{resource: resource}, path) do
     Rhai.Native.engine_eval_file(resource, path)
   end
@@ -338,7 +338,7 @@ defmodule Rhai.Engine do
   Evaluate a script file with own scope, returning the result value or an error.
   """
   @spec eval_file_with_scope(t(), Scope.t(), String.t()) ::
-          {:ok, Rhai.rhai_any()} | {:error, Rhai.rhai_error()}
+          {:ok, Rhai.Any.t()} | {:error, Rhai.Error.t()}
   def eval_file_with_scope(
         %__MODULE__{resource: engine_resource},
         %Scope{resource: scope_resource},
@@ -350,7 +350,7 @@ defmodule Rhai.Engine do
   @doc """
   Evaluate a string as script.
   """
-  @spec run(t(), String.t()) :: :ok | {:error, Rhai.rhai_error()}
+  @spec run(t(), String.t()) :: :ok | {:error, Rhai.Error.t()}
   def run(%__MODULE__{resource: resource}, script) do
     with {:ok, _} <- Rhai.Native.engine_run(resource, script) do
       :ok
@@ -364,7 +364,7 @@ defmodule Rhai.Engine do
   If the optimization_level is not `:none` constants defined within the scope are propagated throughout the script including functions.
   This allows functions to be optimized based on dynamic global constants.
   """
-  @spec run_with_scope(t(), Scope.t(), String.t()) :: :ok | {:error, Rhai.rhai_error()}
+  @spec run_with_scope(t(), Scope.t(), String.t()) :: :ok | {:error, Rhai.Error.t()}
   def run_with_scope(
         %__MODULE__{resource: engine_resource},
         %Scope{resource: scope_resource},
@@ -378,7 +378,7 @@ defmodule Rhai.Engine do
   @doc """
   Evaluate an AST.
   """
-  @spec run_ast(t(), AST.t()) :: :ok | {:error, Rhai.rhai_error()}
+  @spec run_ast(t(), AST.t()) :: :ok | {:error, Rhai.Error.t()}
   def run_ast(%__MODULE__{resource: resource}, %AST{resource: ast_resource}) do
     with {:ok, _} <- Rhai.Native.engine_run_ast(resource, ast_resource) do
       :ok
@@ -388,7 +388,7 @@ defmodule Rhai.Engine do
   @doc """
   Evaluate an AST with own scope.
   """
-  @spec run_ast_with_scope(t(), Scope.t(), AST.t()) :: :ok | {:error, Rhai.rhai_error()}
+  @spec run_ast_with_scope(t(), Scope.t(), AST.t()) :: :ok | {:error, Rhai.Error.t()}
   def run_ast_with_scope(
         %__MODULE__{resource: engine_resource},
         %Scope{resource: scope_resource},
@@ -403,7 +403,7 @@ defmodule Rhai.Engine do
   @doc """
   Evaluate a file.
   """
-  @spec run_file(t(), String.t()) :: :ok | {:error, Rhai.rhai_error()}
+  @spec run_file(t(), String.t()) :: :ok | {:error, Rhai.Error.t()}
   def run_file(%__MODULE__{resource: resource}, path) do
     with {:ok, _} <- Rhai.Native.engine_run_file(resource, path) do
       :ok
@@ -417,7 +417,7 @@ defmodule Rhai.Engine do
   If the optimization_level is not `:none` constants defined within the scope are propagated throughout the script including functions.
   This allows functions to be optimized based on dynamic global constants.
   """
-  @spec run_file_with_scope(t(), Scope.t(), String.t()) :: :ok | {:error, Rhai.rhai_error()}
+  @spec run_file_with_scope(t(), Scope.t(), String.t()) :: :ok | {:error, Rhai.Error.t()}
   def run_file_with_scope(
         %__MODULE__{resource: engine_resource},
         %Scope{resource: scope_resource},
@@ -433,7 +433,7 @@ defmodule Rhai.Engine do
   Call a script function defined in an AST with multiple arguments.
   """
   @spec call_fn(t(), Scope.t(), AST.t(), String.t(), list()) ::
-          {:ok, Rhai.rhai_any()} | {:error, Rhai.rhai_error()}
+          {:ok, Rhai.Any.t()} | {:error, Rhai.Error.t()}
   def call_fn(
         %__MODULE__{resource: resource},
         %Scope{resource: scope_resource},
@@ -845,7 +845,7 @@ defmodule Rhai.Engine do
   @doc """
   Return an error if the size of a Dynamic is out of limits (if any).
   """
-  @spec ensure_data_size_within_limits(t(), Rhai.rhai_any()) :: :ok | Rhai.rhai_error()
+  @spec ensure_data_size_within_limits(t(), Rhai.Any.t()) :: :ok | Rhai.Error.t()
   def ensure_data_size_within_limits(%__MODULE__{resource: resource}, value) do
     with {:ok, _} <- Rhai.Native.engine_ensure_data_size_within_limits(resource, value) do
       :ok

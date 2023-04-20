@@ -64,7 +64,7 @@ Elixir Types are converted to Rhai types (and back) as follows:
 | String.t()                    | Char                  |
 | list()                        | Array                 |
 | tuple()                       | Array                 |
-| %{ String.t() => rhai_any() } | Object map            |
+| %{ String.t() => Rhai.Any.t() } | Object map            |
 | nil()                         | Empty                 |
 | pid()                         | Empty (not supported) |
 | ref()                         | Empty (not supported) |

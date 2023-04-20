@@ -4,39 +4,12 @@ mod error;
 mod scope;
 mod types;
 
-use std::collections::HashMap;
-
 use rhai::config::hashing::set_ahash_seed;
-use rhai::{Dynamic, Engine, Scope};
 use rustler::{Env, Term};
 
 use crate::ast::*;
 use crate::engine::*;
-use crate::error::RhaiRustlerError;
 use crate::scope::*;
-
-#[rustler::nif]
-fn eval<'a>(
-    env: Env<'a>,
-    expression: &str,
-    expression_scope: HashMap<String, Term<'a>>,
-) -> Result<Term<'a>, RhaiRustlerError> {
-    // Create an 'Engine'
-    let mut engine = Engine::new();
-    engine.set_fail_on_invalid_map_property(true);
-    let engine = engine;
-
-    let mut scope = Scope::new();
-
-    // Add variables to the scope
-    for (k, v) in &expression_scope {
-        scope.push_dynamic(k, types::to_dynamic(env, v));
-    }
-
-    let result = engine.eval_with_scope::<Dynamic>(&mut scope, expression)?;
-
-    Ok(types::from_dynamic(env, result))
-}
 
 fn load(env: Env, _: Term) -> bool {
     // Set dylib ahash seed
@@ -58,8 +31,6 @@ fn load(env: Env, _: Term) -> bool {
 rustler::init!(
     "Elixir.Rhai.Native",
     [
-        // legacy
-        eval,
         // engine
         engine_new,
         engine_new_raw,
