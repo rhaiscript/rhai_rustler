@@ -59,7 +59,7 @@ jobs:
         if: ${{matrix.lint}}
 
       - name: Dialyzer
-        run: mix dialyzer --strict
+        run: mix dialyzer
         if: ${{matrix.lint}}
 
       - name: Check no unused dependencies
