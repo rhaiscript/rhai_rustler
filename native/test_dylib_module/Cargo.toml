@@ -10,8 +10,5 @@ path = "src/lib.rs"
 crate-type = ["cdylib"]
 
 [dependencies]
-rhai-dylib = { version = "=0.1.6", features = ["sync"] }
+rhai-dylib = { version = "=0.1.7", features = ["sync"] }
 rustler = "0.27.0"
-
-[patch.crates-io]
-rhai-dylib = { git = 'https://github.com/rhaiscript/rhai-dylib.git' }
