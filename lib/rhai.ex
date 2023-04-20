@@ -1,46 +1,8 @@
 defmodule Rhai do
   @moduledoc """
   Rhai elixir bindings
+
   """
-
-  @type rhai_any ::
-          number() | boolean() | String.t() | nil | [rhai_any()] | %{String.t() => rhai_any()}
-
-  @type rhai_error_type ::
-          :system
-          | :parsing
-          | :variable_exists
-          | :forbidden_variable
-          | :variable_not_found
-          | :property_not_found
-          | :index_not_found
-          | :function_not_found
-          | :module_not_found
-          | :in_function_call
-          | :in_module
-          | :unbound_this
-          | :mismatch_data_type
-          | :mismatch_output_type
-          | :indexing_type
-          | :array_bounds
-          | :string_bounds
-          | :bit_field_bounds
-          | :for_atom
-          | :data_race
-          | :assignment_to_constant
-          | :dot_expr
-          | :arithmetic
-          | :too_many_operations
-          | :too_many_modules
-          | :stack_overflow
-          | :data_too_large
-          | :terminated
-          | :custom_syntax
-          | :runtime
-          | :non_pure_method_call_on_constant
-
-  @type rhai_error :: {rhai_error_type(), String.t()}
-
   @doc """
   Evaluates the given expression and returns the result.
 
@@ -73,7 +35,7 @@ defmodule Rhai do
   @doc since: "0.1.0"
   @deprecated "Use Rhai.Engine instead"
   @spec eval(String.t() | Rhai.PrecompiledExpression.t(), map()) ::
-          {:ok, rhai_any()} | {:error, {rhai_error(), String.t()}}
+          {:ok, Rhai.Any.t()} | {:error, {Rhai.Error.t(), String.t()}}
   def eval(expression, context \\ %{}) do
     Rhai.Native.eval(expression, %{} = context)
   end

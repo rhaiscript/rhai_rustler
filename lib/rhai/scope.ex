@@ -38,7 +38,7 @@ defmodule Rhai.Scope do
   @doc """
   Add (push) a new Dynamic entry to the Scope.
   """
-  @spec push_dynamic(t(), String.t(), Rhai.rhai_any()) :: t()
+  @spec push_dynamic(t(), String.t(), Rhai.Any.t()) :: t()
   def push_dynamic(%__MODULE__{resource: resource} = scope, name, value) do
     Rhai.Native.scope_push_dynamic(resource, name, value)
 
@@ -51,7 +51,7 @@ defmodule Rhai.Scope do
   Constants are immutable and cannot be assigned to. Their values never change.
   Constants propagation is a technique used to optimize an AST.
   """
-  @spec push_constant_dynamic(t(), String.t(), Rhai.rhai_any()) :: t()
+  @spec push_constant_dynamic(t(), String.t(), Rhai.Any.t()) :: t()
   def push_constant_dynamic(%__MODULE__{resource: resource} = scope, name, value) do
     Rhai.Native.scope_push_constant_dynamic(resource, name, value)
 
@@ -79,7 +79,7 @@ defmodule Rhai.Scope do
   @doc """
   Get the value of an entry in the Scope, starting from the last.
   """
-  @spec get_value(t(), String.t()) :: nil | Rhai.rhai_any()
+  @spec get_value(t(), String.t()) :: nil | Rhai.Any.t()
   def get_value(%__MODULE__{resource: resource}, name) do
     Rhai.Native.scope_get_value(resource, name)
   end
@@ -125,7 +125,7 @@ defmodule Rhai.Scope do
 
   If the entry by the specified name is not found, None is returned.
   """
-  @spec remove(t(), String.t()) :: nil | Rhai.rhai_any()
+  @spec remove(t(), String.t()) :: nil | Rhai.Any.t()
   def remove(%__MODULE__{resource: resource}, name) do
     Rhai.Native.scope_remove(resource, name)
   end
@@ -180,7 +180,7 @@ defmodule Rhai.Scope do
 
   Returns an error when trying to update the value of a constant.
   """
-  @spec set_value(t(), String.t(), Rhai.rhai_any()) ::
+  @spec set_value(t(), String.t(), Rhai.Any.t()) ::
           {:ok, t()} | {:error, {:cannot_update_value_of_constant, String.t()}}
   def set_value(%__MODULE__{resource: resource} = scope, name, value) do
     case Rhai.Native.scope_set_value(resource, name, value) do
@@ -200,7 +200,7 @@ defmodule Rhai.Scope do
 
   Raises when trying to update the value of a constant.
   """
-  @spec set_value!(t(), String.t(), Rhai.rhai_any()) :: t()
+  @spec set_value!(t(), String.t(), Rhai.Any.t()) :: t()
   def set_value!(%__MODULE__{} = scope, name, value) do
     case set_value(scope, name, value) do
       {:ok, _} ->
@@ -217,7 +217,7 @@ defmodule Rhai.Scope do
 
   Search starts backwards from the last, and only the first entry matching the specified name is updated.
   """
-  @spec set_or_push(t(), String.t(), Rhai.rhai_any()) :: t()
+  @spec set_or_push(t(), String.t(), Rhai.Any.t()) :: t()
   def set_or_push(%__MODULE__{resource: resource} = scope, name, value) do
     Rhai.Native.scope_set_or_push(resource, name, value)
 
