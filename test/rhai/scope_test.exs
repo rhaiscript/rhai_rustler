@@ -250,10 +250,6 @@ defmodule ScopeTest do
     end
   end
 
-  # TODO: test set_alias/1
-  # describe "set_alias/1" do
-  # end
-
   describe "set_or_push/3" do
     test "should update the value of the named entry in the Scope" do
       scope =
