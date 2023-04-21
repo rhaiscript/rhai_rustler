@@ -15,9 +15,9 @@ defmodule ScopeTest do
     end
   end
 
-  describe "push_dynamic/3" do
+  describe "push/3" do
     test "should push a dynamic variable" do
-      scope = Scope.new() |> Scope.push_dynamic("a", 1)
+      scope = Scope.new() |> Scope.push("a", 1)
 
       assert 1 = Scope.get_value(scope, "a")
       assert Scope.contains?(scope, "a")
@@ -25,9 +25,9 @@ defmodule ScopeTest do
     end
   end
 
-  describe "push_constant_dynamic/3" do
+  describe "push_constant/3" do
     test "should push a dynamic variable" do
-      scope = Scope.new() |> Scope.push_constant_dynamic("a", 1)
+      scope = Scope.new() |> Scope.push_constant("a", 1)
 
       assert 1 = Scope.get_value(scope, "a")
       assert Scope.contains?(scope, "a")
@@ -37,7 +37,7 @@ defmodule ScopeTest do
 
   describe "get_value/2" do
     test "should return the value of the variable" do
-      scope = Scope.new() |> Scope.push_dynamic("a", 1)
+      scope = Scope.new() |> Scope.push("a", 1)
 
       assert 1 == Scope.get_value(scope, "a")
     end
@@ -51,7 +51,7 @@ defmodule ScopeTest do
 
   describe "contains?/2" do
     test "should return true if the variable is found" do
-      scope = Scope.new() |> Scope.push_dynamic("a", 1)
+      scope = Scope.new() |> Scope.push("a", 1)
 
       assert Scope.contains?(scope, "a")
     end
@@ -65,7 +65,7 @@ defmodule ScopeTest do
 
   describe "constant?/2" do
     test "should return true if the variable is a constant" do
-      scope = Scope.new() |> Scope.push_constant_dynamic("a", 1)
+      scope = Scope.new() |> Scope.push_constant("a", 1)
 
       assert Scope.constant?(scope, "a")
     end
@@ -79,7 +79,7 @@ defmodule ScopeTest do
 
   describe "clear/1" do
     test "should clear the scope" do
-      scope = Scope.new() |> Scope.push_dynamic("a", 1) |> Scope.clear()
+      scope = Scope.new() |> Scope.push("a", 1) |> Scope.clear()
 
       refute Scope.contains?(scope, "a")
     end
@@ -89,8 +89,8 @@ defmodule ScopeTest do
     test "should clone the scope" do
       scope =
         Scope.new()
-        |> Scope.push_dynamic("a", 1)
-        |> Scope.push_dynamic("a", 2)
+        |> Scope.push("a", 1)
+        |> Scope.push("a", 2)
         |> Scope.clone_visible()
 
       assert 2 == Scope.get_value(scope, "a")
@@ -105,7 +105,7 @@ defmodule ScopeTest do
     end
 
     test "should return false if the scope is not empty" do
-      scope = Scope.new() |> Scope.push_dynamic("a", 1)
+      scope = Scope.new() |> Scope.push("a", 1)
 
       refute Scope.empty?(scope)
     end
@@ -119,8 +119,8 @@ defmodule ScopeTest do
 
       scope =
         scope
-        |> Scope.push_dynamic("a", 1)
-        |> Scope.push_dynamic("b", 2)
+        |> Scope.push("a", 1)
+        |> Scope.push("b", 2)
 
       assert 2 == Scope.len(scope)
     end
@@ -130,7 +130,7 @@ defmodule ScopeTest do
     test "should remove and return the variable from the scope" do
       scope = Scope.new()
 
-      assert 1 == scope |> Scope.push_dynamic("a", 1) |> Scope.remove("a")
+      assert 1 == scope |> Scope.push("a", 1) |> Scope.remove("a")
       refute Scope.contains?(scope, "a")
     end
 
@@ -146,9 +146,9 @@ defmodule ScopeTest do
     test "should rewind the scope to a previous size" do
       scope =
         Scope.new()
-        |> Scope.push_dynamic("a", 1)
-        |> Scope.push_dynamic("b", 2)
-        |> Scope.push_dynamic("c", 3)
+        |> Scope.push("a", 1)
+        |> Scope.push("b", 2)
+        |> Scope.push("c", 3)
         |> Scope.rewind(2)
 
       assert 2 == Scope.len(scope)
@@ -166,9 +166,9 @@ defmodule ScopeTest do
     test "should pop remove the last entry from the Scope" do
       scope =
         Scope.new()
-        |> Scope.push_dynamic("a", 1)
-        |> Scope.push_dynamic("b", 2)
-        |> Scope.push_dynamic("c", 3)
+        |> Scope.push("a", 1)
+        |> Scope.push("b", 2)
+        |> Scope.push("c", 3)
 
       assert {:ok, scope} = Scope.pop(scope)
       assert 2 == Scope.len(scope)
@@ -184,9 +184,9 @@ defmodule ScopeTest do
     test "should pop remove the last entry from the Scope" do
       scope =
         Scope.new()
-        |> Scope.push_dynamic("a", 1)
-        |> Scope.push_dynamic("b", 2)
-        |> Scope.push_dynamic("c", 3)
+        |> Scope.push("a", 1)
+        |> Scope.push("b", 2)
+        |> Scope.push("c", 3)
 
       scope = Scope.pop!(scope)
 
@@ -205,7 +205,7 @@ defmodule ScopeTest do
     test "should update the value of the named entry in the Scope" do
       assert {:ok, scope} =
                Scope.new()
-               |> Scope.push_dynamic("a", 1)
+               |> Scope.push("a", 1)
                |> Scope.set_value("a", 2)
 
       assert 2 == Scope.get_value(scope, "a")
@@ -220,7 +220,7 @@ defmodule ScopeTest do
     test "should return an error when trying to update the value of a constant" do
       assert {:error, {:cannot_update_value_of_constant, _}} =
                Scope.new()
-               |> Scope.push_constant_dynamic("a", 1)
+               |> Scope.push_constant("a", 1)
                |> Scope.set_value("a", 2)
     end
   end
@@ -229,7 +229,7 @@ defmodule ScopeTest do
     test "should update the value of the named entry in the Scope" do
       scope =
         Scope.new()
-        |> Scope.push_dynamic("a", 1)
+        |> Scope.push("a", 1)
         |> Scope.set_value!("a", 2)
 
       assert 2 == Scope.get_value(scope, "a")
@@ -244,7 +244,7 @@ defmodule ScopeTest do
     test "should raise when trying to update the value of a constant" do
       assert_raise RuntimeError, fn ->
         Scope.new()
-        |> Scope.push_constant_dynamic("a", 1)
+        |> Scope.push_constant("a", 1)
         |> Scope.set_value!("a", 2)
       end
     end
@@ -254,7 +254,7 @@ defmodule ScopeTest do
     test "should update the value of the named entry in the Scope" do
       scope =
         Scope.new()
-        |> Scope.push_dynamic("a", 1)
+        |> Scope.push("a", 1)
         |> Scope.set_or_push("a", 2)
 
       assert 2 == Scope.get_value(scope, "a")
@@ -270,7 +270,7 @@ defmodule ScopeTest do
     test "should push a new entry into the Scope if the existing entry is constant" do
       scope =
         Scope.new()
-        |> Scope.push_constant_dynamic("a", 1)
+        |> Scope.push_constant("a", 1)
         |> Scope.set_or_push("a", 2)
 
       assert 2 == Scope.get_value(scope, "a")
@@ -281,9 +281,9 @@ defmodule ScopeTest do
     setup do
       scope =
         Scope.new()
-        |> Scope.push_dynamic("a", 1)
-        |> Scope.push_dynamic("b", 2)
-        |> Scope.push_dynamic("c", 3)
+        |> Scope.push("a", 1)
+        |> Scope.push("b", 2)
+        |> Scope.push("c", 3)
 
       {:ok, %{scope: scope}}
     end
