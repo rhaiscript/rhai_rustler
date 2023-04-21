@@ -71,8 +71,8 @@ defmodule Rhai.Scope do
   Search starts backwards from the last, stopping at the first entry matching the specified name.
   Returns nil if no entry matching the specified name is found.
   """
-  @spec is_constant(t(), String.t()) :: nil | bool()
-  def is_constant(%__MODULE__{resource: resource}, name) do
+  @spec constant?(t(), String.t()) :: nil | bool()
+  def constant?(%__MODULE__{resource: resource}, name) do
     Rhai.Native.scope_is_constant(resource, name)
   end
 
@@ -107,8 +107,8 @@ defmodule Rhai.Scope do
   @doc """
   Returns true if this Scope contains no variables.
   """
-  @spec is_empty(t()) :: bool()
-  def is_empty(%__MODULE__{resource: resource}) do
+  @spec empty?(t()) :: bool()
+  def empty?(%__MODULE__{resource: resource}) do
     Rhai.Native.scope_is_empty(resource)
   end
 

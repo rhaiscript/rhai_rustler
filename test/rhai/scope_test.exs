@@ -21,7 +21,7 @@ defmodule ScopeTest do
 
       assert 1 = Scope.get_value(scope, "a")
       assert Scope.contains?(scope, "a")
-      refute Scope.is_constant(scope, "a")
+      refute Scope.constant?(scope, "a")
     end
   end
 
@@ -31,7 +31,7 @@ defmodule ScopeTest do
 
       assert 1 = Scope.get_value(scope, "a")
       assert Scope.contains?(scope, "a")
-      assert Scope.is_constant(scope, "a")
+      assert Scope.constant?(scope, "a")
     end
   end
 
@@ -63,17 +63,17 @@ defmodule ScopeTest do
     end
   end
 
-  describe "is_constant/2" do
+  describe "constant?/2" do
     test "should return true if the variable is a constant" do
       scope = Scope.new() |> Scope.push_constant_dynamic("a", 1)
 
-      assert Scope.is_constant(scope, "a")
+      assert Scope.constant?(scope, "a")
     end
 
     test "should return nil if the variable is not found" do
       scope = Scope.new()
 
-      assert nil == Scope.is_constant(scope, "a")
+      assert nil == Scope.constant?(scope, "a")
     end
   end
 
@@ -97,17 +97,17 @@ defmodule ScopeTest do
     end
   end
 
-  describe "is_empty/1" do
+  describe "empty?/1" do
     test "should return true if the scope is empty" do
       scope = Scope.new()
 
-      assert Scope.is_empty(scope)
+      assert Scope.empty?(scope)
     end
 
     test "should return false if the scope is not empty" do
       scope = Scope.new() |> Scope.push_dynamic("a", 1)
 
-      refute Scope.is_empty(scope)
+      refute Scope.empty?(scope)
     end
   end
 
@@ -158,7 +158,7 @@ defmodule ScopeTest do
 
       scope = Scope.rewind(scope, 0)
 
-      assert Scope.is_empty(scope)
+      assert Scope.empty?(scope)
     end
   end
 
