@@ -70,7 +70,7 @@ defmodule Rhai.MixProject do
       {:rustler_precompiled, "~> 0.6.0"},
       {:ex_doc, ">= 0.0.0", only: :dev, runtime: false},
       {:credo, "~> 1.6", only: [:dev, :test], runtime: false},
-      {:stream_data, "~> 0.5", only: [:test]},
+      {:stream_data, "~> 0.5", only: [:dev, :test]},
       {:dialyxir, "~> 1.3", only: [:dev, :test], runtime: false}
     ]
   end

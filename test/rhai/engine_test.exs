@@ -206,8 +206,7 @@ defmodule Rhai.EngineTest do
     test "should compile a string into an AST with scope" do
       engine = Engine.new()
 
-      scope =
-        Scope.new() |> Scope.push_constant("a", 1) |> Scope.push_constant("b", 2)
+      scope = Scope.new() |> Scope.push_constant("a", 1) |> Scope.push_constant("b", 2)
 
       assert {:ok, %AST{} = ast} =
                Engine.compile_with_scope(engine, scope, "fn test (x) { a + b + x}; test(3)")
@@ -229,8 +228,7 @@ defmodule Rhai.EngineTest do
     test "should compile an expression into an AST with scope" do
       engine = Engine.new()
 
-      scope =
-        Scope.new() |> Scope.push_constant("a", 1) |> Scope.push_constant("b", 2)
+      scope = Scope.new() |> Scope.push_constant("a", 1) |> Scope.push_constant("b", 2)
 
       assert {:ok, %AST{} = ast} = Engine.compile_expression_with_scope(engine, scope, "a + b")
 
@@ -253,8 +251,7 @@ defmodule Rhai.EngineTest do
     test "should compile an expression into an AST with scope" do
       engine = Engine.new()
 
-      scope =
-        Scope.new() |> Scope.push_constant("a", 1) |> Scope.push_constant("b", 2)
+      scope = Scope.new() |> Scope.push_constant("a", 1) |> Scope.push_constant("b", 2)
 
       assert {:ok, %AST{} = ast} =
                Engine.compile_file_with_scope(
@@ -359,8 +356,7 @@ defmodule Rhai.EngineTest do
     test "should eval an expression with scope" do
       engine = Engine.new()
 
-      scope =
-        Scope.new() |> Scope.push_constant("a", 1) |> Scope.push_constant("b", 1)
+      scope = Scope.new() |> Scope.push_constant("a", 1) |> Scope.push_constant("b", 1)
 
       assert {:ok, 2} = Engine.eval_expression_with_scope(engine, scope, "a + b")
     end
@@ -378,8 +374,7 @@ defmodule Rhai.EngineTest do
     test "should eval a script file with scope" do
       engine = Engine.new()
 
-      scope =
-        Scope.new() |> Scope.push_constant("a", 1) |> Scope.push_constant("b", 2)
+      scope = Scope.new() |> Scope.push_constant("a", 1) |> Scope.push_constant("b", 2)
 
       assert {:ok, 45} =
                Engine.eval_file_with_scope(
@@ -441,8 +436,7 @@ defmodule Rhai.EngineTest do
     test "should run a script file with scope" do
       engine = Engine.new()
 
-      scope =
-        Scope.new() |> Scope.push_constant("a", 1) |> Scope.push_constant("b", 2)
+      scope = Scope.new() |> Scope.push_constant("a", 1) |> Scope.push_constant("b", 2)
 
       assert :ok =
                Engine.run_file_with_scope(
@@ -744,8 +738,7 @@ defmodule Rhai.EngineTest do
     test "should optimize an AST" do
       engine = Engine.new()
 
-      scope =
-        Scope.new() |> Scope.push_constant("a", 1) |> Scope.push_constant("b", 2)
+      scope = Scope.new() |> Scope.push_constant("a", 1) |> Scope.push_constant("b", 2)
 
       {:ok, ast} = Engine.compile(engine, "a + b")
 
