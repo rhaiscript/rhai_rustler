@@ -35,6 +35,18 @@ defmodule Rhai.Engine do
   end
 
   @doc """
+  Set the module resolution services used by the Engine.
+
+  This library supports `:file` and `:dylib` module resolvers.
+  """
+  @spec set_module_resolvers(t(), [:file | :dylib]) :: t()
+  def set_module_resolvers(%__MODULE__{resource: resource} = engine, module_resolvers) do
+    Rhai.Native.engine_set_module_resolvers(resource, module_resolvers)
+
+    engine
+  end
+
+  @doc """
   Register a shared dylib Module into the global namespace of Engine.
 
   All functions and type iterators are automatically available to scripts without namespace qualifications.

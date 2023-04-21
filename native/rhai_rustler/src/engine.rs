@@ -30,12 +30,7 @@ pub struct EngineResource {
 
 #[rustler::nif]
 fn engine_new() -> ResourceArc<EngineResource> {
-    let mut engine = Engine::new();
-
-    let mut resolvers_collection = ModuleResolversCollection::new();
-    resolvers_collection.push(FileModuleResolver::new());
-    resolvers_collection.push(DylibModuleResolver::new());
-    engine.set_module_resolver(resolvers_collection);
+    let engine = Engine::new();
 
     ResourceArc::new(EngineResource {
         engine: Mutex::new(engine),
@@ -49,6 +44,29 @@ fn engine_new_raw() -> ResourceArc<EngineResource> {
     ResourceArc::new(EngineResource {
         engine: Mutex::new(engine),
     })
+}
+#[derive(NifUnitEnum)]
+enum ModuleResolver {
+    File,
+    Dylib,
+}
+
+#[rustler::nif]
+fn engine_set_module_resolvers(
+    resource: ResourceArc<EngineResource>,
+    module_resolvers: Vec<ModuleResolver>,
+) {
+    let mut engine = resource.engine.try_lock().unwrap();
+    let mut resolvers_collection = ModuleResolversCollection::new();
+
+    for module_resolver in module_resolvers {
+        match module_resolver {
+            ModuleResolver::File => resolvers_collection.push(FileModuleResolver::new()),
+            ModuleResolver::Dylib => resolvers_collection.push(DylibModuleResolver::new()),
+        };
+    }
+
+    engine.set_module_resolver(resolvers_collection);
 }
 
 #[rustler::nif]
