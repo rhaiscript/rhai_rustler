@@ -19,6 +19,7 @@ defmodule Rhai.EngineTest do
     test "should load a dylib module via the import directive" do
       assert {:ok, [6, "inner", "value"]} =
                Engine.new()
+               |> Engine.set_module_resolvers([:dylib])
                |> Engine.eval("""
                import "#{File.cwd!()}/priv/native/libtest_dylib_module" as plugin;
 
@@ -255,7 +256,7 @@ defmodule Rhai.EngineTest do
 
   describe "compile_into_self_contained/3" do
     test "should compile a script into an AST with scope embedding all imported modules" do
-      engine = Engine.new()
+      engine = Engine.new_raw()
 
       scope =
         Scope.new()
@@ -264,7 +265,9 @@ defmodule Rhai.EngineTest do
         |> Scope.push_constant_dynamic("c", 3)
 
       assert {:ok, %AST{} = ast} =
-               Engine.compile_into_self_contained(engine, scope, """
+               engine
+               |> Engine.set_module_resolvers([:dylib])
+               |> Engine.compile_into_self_contained(scope, """
                import "#{File.cwd!()}/priv/native/libtest_dylib_module" as plugin;
 
                let result = [];
