@@ -16,9 +16,20 @@ defmodule Rhai.EngineTest do
   end
 
   describe "module resolvers" do
+    test "should load a rhai module via the import directive" do
+      assert {:ok, 42} =
+               Engine.new_raw()
+               |> Engine.set_module_resolvers([:file])
+               |> Engine.eval("""
+               import "#{File.cwd!()}/test/fixtures/script" as m;
+
+               m::test(41)
+               """)
+    end
+
     test "should load a dylib module via the import directive" do
       assert {:ok, [6, "inner", "value"]} =
-               Engine.new()
+               Engine.new_raw()
                |> Engine.set_module_resolvers([:dylib])
                |> Engine.eval("""
                import "#{File.cwd!()}/priv/native/libtest_dylib_module" as plugin;
