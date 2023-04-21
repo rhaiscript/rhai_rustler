@@ -38,6 +38,7 @@ rustler::init!(
         engine_register_global_module,
         engine_register_static_module,
         engine_register_custom_operator,
+        engine_register_package,
         engine_compile,
         engine_compile_with_scope,
         engine_compile_expression,

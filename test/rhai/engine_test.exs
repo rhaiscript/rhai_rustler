@@ -175,6 +175,19 @@ defmodule Rhai.EngineTest do
     end
   end
 
+  describe "register_package/2" do
+    test "should register the standard package" do
+      engine = Engine.new_raw()
+
+      assert {:error, {:function_not_found, _}} = Engine.eval(engine, "[1, 2, 3].get(1)")
+
+      assert {:ok, 2} =
+               engine
+               |> Engine.register_package(:standard)
+               |> Engine.eval("[1, 2, 3].get(1)")
+    end
+  end
+
   describe "compile/2" do
     test "should compile a string into an AST" do
       engine = Engine.new()

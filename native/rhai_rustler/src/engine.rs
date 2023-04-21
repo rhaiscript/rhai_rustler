@@ -2,6 +2,7 @@ use std::sync::Mutex;
 
 use rhai::{
     module_resolvers::{FileModuleResolver, ModuleResolversCollection},
+    packages::Package as RhaiPackage,
     Dynamic, Engine,
 };
 
@@ -112,6 +113,93 @@ fn engine_register_custom_operator(
         Ok(_) => Ok(()),
         Err(message) => Err(RhaiRustlerError::CustomOperatorError { message }),
     }
+}
+
+#[derive(NifUnitEnum)]
+enum Package {
+    Arithmetic,
+    BasicArray,
+    BasicBlob,
+    BasicFn,
+    BasicIterator,
+    BasicMap,
+    BasicMath,
+    BasicString,
+    BasicTime,
+    BitField,
+    Core,
+    LanguageCore,
+    Logic,
+    MoreString,
+    Standard,
+}
+
+#[rustler::nif]
+fn engine_register_package(resource: ResourceArc<EngineResource>, package: Package) {
+    let mut engine = resource.engine.try_lock().unwrap();
+
+    match package {
+        Package::Arithmetic => {
+            let package = rhai::packages::ArithmeticPackage::new();
+            package.register_into_engine(&mut engine);
+        }
+        Package::BasicArray => {
+            let package = rhai::packages::BasicArrayPackage::new();
+            package.register_into_engine(&mut engine);
+        }
+        Package::BasicBlob => {
+            let package = rhai::packages::BasicBlobPackage::new();
+            package.register_into_engine(&mut engine);
+        }
+        Package::BasicFn => {
+            let package = rhai::packages::BasicFnPackage::new();
+            package.register_into_engine(&mut engine);
+        }
+        Package::BasicIterator => {
+            let package = rhai::packages::BasicIteratorPackage::new();
+            package.register_into_engine(&mut engine);
+        }
+        Package::BasicMap => {
+            let package = rhai::packages::BasicMapPackage::new();
+            package.register_into_engine(&mut engine);
+        }
+        Package::BasicMath => {
+            let package = rhai::packages::BasicMathPackage::new();
+            package.register_into_engine(&mut engine);
+        }
+        Package::BasicString => {
+            let package = rhai::packages::BasicStringPackage::new();
+            package.register_into_engine(&mut engine);
+        }
+        Package::BasicTime => {
+            let package = rhai::packages::BasicTimePackage::new();
+            package.register_into_engine(&mut engine);
+        }
+        Package::BitField => {
+            let package = rhai::packages::BitFieldPackage::new();
+            package.register_into_engine(&mut engine);
+        }
+        Package::Core => {
+            let package = rhai::packages::CorePackage::new();
+            package.register_into_engine(&mut engine);
+        }
+        Package::LanguageCore => {
+            let package = rhai::packages::LanguageCorePackage::new();
+            package.register_into_engine(&mut engine);
+        }
+        Package::Logic => {
+            let package = rhai::packages::LogicPackage::new();
+            package.register_into_engine(&mut engine);
+        }
+        Package::MoreString => {
+            let package = rhai::packages::MoreStringPackage::new();
+            package.register_into_engine(&mut engine);
+        }
+        Package::Standard => {
+            let package = rhai::packages::StandardPackage::new();
+            package.register_into_engine(&mut engine);
+        }
+    };
 }
 
 #[rustler::nif]
