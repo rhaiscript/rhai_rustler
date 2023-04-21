@@ -147,6 +147,16 @@ defmodule Rhai.Engine do
   end
 
   @doc """
+  Register the package with an Engine.
+  """
+  @spec register_package(t(), Rhai.Package.t()) :: t()
+  def register_package(%__MODULE__{resource: resource} = engine, package) do
+    Rhai.Native.engine_register_package(resource, package)
+
+    engine
+  end
+
+  @doc """
   Compile a string into an AST, which can be used later for evaluation.
   """
   @spec compile(t(), String.t()) :: {:ok, AST.t()} | {:error, Rhai.Error.t()}
