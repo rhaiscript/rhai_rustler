@@ -36,23 +36,23 @@ defmodule Rhai.Scope do
   end
 
   @doc """
-  Add (push) a new Dynamic entry to the Scope.
+  Add (push) a new entry to the Scope.
   """
-  @spec push_dynamic(t(), String.t(), Rhai.Any.t()) :: t()
-  def push_dynamic(%__MODULE__{resource: resource} = scope, name, value) do
+  @spec push(t(), String.t(), Rhai.Any.t()) :: t()
+  def push(%__MODULE__{resource: resource} = scope, name, value) do
     Rhai.Native.scope_push_dynamic(resource, name, value)
 
     scope
   end
 
   @doc """
-  Add (push) a new constant with a Dynamic value to the Scope.
+  Add (push) a new constant to the Scope.
 
   Constants are immutable and cannot be assigned to. Their values never change.
   Constants propagation is a technique used to optimize an AST.
   """
-  @spec push_constant_dynamic(t(), String.t(), Rhai.Any.t()) :: t()
-  def push_constant_dynamic(%__MODULE__{resource: resource} = scope, name, value) do
+  @spec push_constant(t(), String.t(), Rhai.Any.t()) :: t()
+  def push_constant(%__MODULE__{resource: resource} = scope, name, value) do
     Rhai.Native.scope_push_constant_dynamic(resource, name, value)
 
     scope
@@ -71,8 +71,8 @@ defmodule Rhai.Scope do
   Search starts backwards from the last, stopping at the first entry matching the specified name.
   Returns nil if no entry matching the specified name is found.
   """
-  @spec is_constant(t(), String.t()) :: nil | bool()
-  def is_constant(%__MODULE__{resource: resource}, name) do
+  @spec constant?(t(), String.t()) :: nil | bool()
+  def constant?(%__MODULE__{resource: resource}, name) do
     Rhai.Native.scope_is_constant(resource, name)
   end
 
@@ -107,8 +107,8 @@ defmodule Rhai.Scope do
   @doc """
   Returns true if this Scope contains no variables.
   """
-  @spec is_empty(t()) :: bool()
-  def is_empty(%__MODULE__{resource: resource}) do
+  @spec empty?(t()) :: bool()
+  def empty?(%__MODULE__{resource: resource}) do
     Rhai.Native.scope_is_empty(resource)
   end
 
