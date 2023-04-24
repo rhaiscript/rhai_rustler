@@ -12,3 +12,7 @@ updates:
     directory: "/native/rhai_rustler"
     schedule:
       interval: "daily"
+  - package-ecosystem: "cargo"
+    directory: "/native/test_dylib_module"
+    schedule:
+      interval: "daily"
