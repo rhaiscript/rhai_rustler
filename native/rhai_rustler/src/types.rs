@@ -13,8 +13,8 @@ pub fn from_dynamic(env: Env, value: Dynamic) -> Term {
         "char" => value.cast::<char>().to_string().encode(env),
         "array" => value
             .cast::<Vec<Dynamic>>()
-            .iter()
-            .map(|v| from_dynamic(env, v.clone()))
+            .into_iter()
+            .map(|v| from_dynamic(env, v))
             .collect::<Vec<Term>>()
             .encode(env),
         "map" => {
