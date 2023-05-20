@@ -1,5 +1,7 @@
 defmodule Rhai.Error do
-  @moduledoc false
+  @moduledoc """
+  Rhai error types
+  """
 
   @type error ::
           :system

@@ -1,5 +1,7 @@
 defmodule Rhai.Package do
-  @moduledoc false
+  @moduledoc """
+  Rhai package types
+  """
 
   @type t ::
           :arithmetic
