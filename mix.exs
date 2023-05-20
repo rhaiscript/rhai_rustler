@@ -37,6 +37,7 @@ defmodule Rhai.MixProject do
         "checksum-*.exs",
         "mix.exs",
         "README.md",
+        "guides/nif-bindings.md",
         "LICENSE"
       ],
       licenses: ["Apache-2.0"],
@@ -51,7 +52,7 @@ defmodule Rhai.MixProject do
   defp docs do
     [
       main: "readme",
-      extras: ["README.md", "LICENSE"]
+      extras: ["README.md", "guides/nif-bindings.md", "LICENSE"]
     ]
   end
 
