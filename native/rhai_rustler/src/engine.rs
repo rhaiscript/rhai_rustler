@@ -46,6 +46,7 @@ fn engine_new_raw() -> ResourceArc<EngineResource> {
         engine: Mutex::new(engine),
     })
 }
+
 #[derive(NifUnitEnum)]
 enum ModuleResolver {
     File,
@@ -343,7 +344,7 @@ fn engine_compact_script(
     Ok(result)
 }
 
-#[rustler::nif]
+#[rustler::nif(schedule = "DirtyCpu")]
 fn engine_eval<'a>(
     env: Env<'a>,
     resource: ResourceArc<EngineResource>,
@@ -355,7 +356,7 @@ fn engine_eval<'a>(
     Ok(from_dynamic(env, result))
 }
 
-#[rustler::nif]
+#[rustler::nif(schedule = "DirtyCpu")]
 fn engine_eval_with_scope<'a>(
     env: Env<'a>,
     engine_resource: ResourceArc<EngineResource>,
@@ -369,7 +370,7 @@ fn engine_eval_with_scope<'a>(
     Ok(from_dynamic(env, result))
 }
 
-#[rustler::nif]
+#[rustler::nif(schedule = "DirtyCpu")]
 fn engine_eval_ast(
     env: Env,
     engine_resource: ResourceArc<EngineResource>,
@@ -383,7 +384,7 @@ fn engine_eval_ast(
     Ok(from_dynamic(env, result))
 }
 
-#[rustler::nif]
+#[rustler::nif(schedule = "DirtyCpu")]
 fn engine_eval_ast_with_scope(
     env: Env,
     engine_resource: ResourceArc<EngineResource>,
@@ -399,7 +400,7 @@ fn engine_eval_ast_with_scope(
     Ok(from_dynamic(env, result))
 }
 
-#[rustler::nif]
+#[rustler::nif(schedule = "DirtyCpu")]
 fn engine_eval_expression<'a>(
     env: Env<'a>,
     resource: ResourceArc<EngineResource>,
@@ -411,7 +412,7 @@ fn engine_eval_expression<'a>(
     Ok(from_dynamic(env, result))
 }
 
-#[rustler::nif]
+#[rustler::nif(schedule = "DirtyCpu")]
 fn engine_eval_expression_with_scope<'a>(
     env: Env<'a>,
     resource: ResourceArc<EngineResource>,
@@ -425,7 +426,7 @@ fn engine_eval_expression_with_scope<'a>(
     Ok(from_dynamic(env, result))
 }
 
-#[rustler::nif]
+#[rustler::nif(schedule = "DirtyCpu")]
 fn engine_eval_file<'a>(
     env: Env<'a>,
     resource: ResourceArc<EngineResource>,
@@ -437,7 +438,7 @@ fn engine_eval_file<'a>(
     Ok(from_dynamic(env, result))
 }
 
-#[rustler::nif]
+#[rustler::nif(schedule = "DirtyCpu")]
 fn engine_eval_file_with_scope<'a>(
     env: Env<'a>,
     resource: ResourceArc<EngineResource>,
@@ -451,7 +452,7 @@ fn engine_eval_file_with_scope<'a>(
     Ok(from_dynamic(env, result))
 }
 
-#[rustler::nif]
+#[rustler::nif(schedule = "DirtyCpu")]
 fn engine_run(resource: ResourceArc<EngineResource>, script: &str) -> Result<(), RhaiRustlerError> {
     let engine = resource.engine.try_lock().unwrap();
     engine.run(script)?;
@@ -459,7 +460,7 @@ fn engine_run(resource: ResourceArc<EngineResource>, script: &str) -> Result<(),
     Ok(())
 }
 
-#[rustler::nif]
+#[rustler::nif(schedule = "DirtyCpu")]
 fn engine_run_with_scope(
     resource: ResourceArc<EngineResource>,
     scope_resource: ResourceArc<ScopeResource>,
@@ -473,7 +474,7 @@ fn engine_run_with_scope(
     Ok(())
 }
 
-#[rustler::nif]
+#[rustler::nif(schedule = "DirtyCpu")]
 fn engine_run_ast(
     resource: ResourceArc<EngineResource>,
     ast_resource: ResourceArc<ASTResource>,
@@ -486,7 +487,7 @@ fn engine_run_ast(
     Ok(())
 }
 
-#[rustler::nif]
+#[rustler::nif(schedule = "DirtyCpu")]
 fn engine_run_ast_with_scope(
     resource: ResourceArc<EngineResource>,
     scope_resource: ResourceArc<ScopeResource>,
@@ -501,7 +502,7 @@ fn engine_run_ast_with_scope(
     Ok(())
 }
 
-#[rustler::nif]
+#[rustler::nif(schedule = "DirtyCpu")]
 fn engine_run_file(
     resource: ResourceArc<EngineResource>,
     path: &str,
@@ -512,7 +513,7 @@ fn engine_run_file(
     Ok(())
 }
 
-#[rustler::nif]
+#[rustler::nif(schedule = "DirtyCpu")]
 fn engine_run_file_with_scope(
     resource: ResourceArc<EngineResource>,
     scope_resource: ResourceArc<ScopeResource>,
@@ -526,7 +527,7 @@ fn engine_run_file_with_scope(
     Ok(())
 }
 
-#[rustler::nif]
+#[rustler::nif(schedule = "DirtyCpu")]
 fn engine_call_fn<'a>(
     env: Env<'a>,
     resource: ResourceArc<EngineResource>,
