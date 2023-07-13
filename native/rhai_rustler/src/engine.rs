@@ -203,7 +203,7 @@ fn engine_register_package(resource: ResourceArc<EngineResource>, package: Packa
     };
 }
 
-#[rustler::nif]
+#[rustler::nif(schedule = "DirtyCpu")]
 fn engine_compile(
     resource: ResourceArc<EngineResource>,
     script: &str,
@@ -218,7 +218,7 @@ fn engine_compile(
     Ok(ast_resource)
 }
 
-#[rustler::nif]
+#[rustler::nif(schedule = "DirtyCpu")]
 fn engine_compile_with_scope(
     resource: ResourceArc<EngineResource>,
     scope_resource: ResourceArc<ScopeResource>,
@@ -235,7 +235,7 @@ fn engine_compile_with_scope(
     Ok(ast_resource)
 }
 
-#[rustler::nif]
+#[rustler::nif(schedule = "DirtyCpu")]
 fn engine_compile_expression(
     resource: ResourceArc<EngineResource>,
     expression: &str,
@@ -250,7 +250,7 @@ fn engine_compile_expression(
     Ok(ast_resource)
 }
 
-#[rustler::nif]
+#[rustler::nif(schedule = "DirtyCpu")]
 fn engine_compile_expression_with_scope(
     resource: ResourceArc<EngineResource>,
     scope_resource: ResourceArc<ScopeResource>,
@@ -267,7 +267,7 @@ fn engine_compile_expression_with_scope(
     Ok(ast_resource)
 }
 
-#[rustler::nif]
+#[rustler::nif(schedule = "DirtyCpu")]
 fn engine_compile_file(
     resource: ResourceArc<EngineResource>,
     path: &str,
@@ -282,7 +282,7 @@ fn engine_compile_file(
     Ok(ast_resource)
 }
 
-#[rustler::nif]
+#[rustler::nif(schedule = "DirtyCpu")]
 fn engine_compile_file_with_scope(
     resource: ResourceArc<EngineResource>,
     scope_resource: ResourceArc<ScopeResource>,
@@ -299,7 +299,7 @@ fn engine_compile_file_with_scope(
     Ok(ast_resource)
 }
 
-#[rustler::nif]
+#[rustler::nif(schedule = "DirtyCpu")]
 fn engine_compile_into_self_contained(
     resource: ResourceArc<EngineResource>,
     scope_resource: ResourceArc<ScopeResource>,
@@ -316,7 +316,7 @@ fn engine_compile_into_self_contained(
     Ok(ast_resource)
 }
 
-#[rustler::nif]
+#[rustler::nif(schedule = "DirtyCpu")]
 fn engine_compile_scripts_with_scope(
     resource: ResourceArc<EngineResource>,
     scope_resource: ResourceArc<ScopeResource>,
@@ -333,7 +333,7 @@ fn engine_compile_scripts_with_scope(
     Ok(ast_resource)
 }
 
-#[rustler::nif]
+#[rustler::nif(schedule = "DirtyCpu")]
 fn engine_compact_script(
     resource: ResourceArc<EngineResource>,
     script: &str,
