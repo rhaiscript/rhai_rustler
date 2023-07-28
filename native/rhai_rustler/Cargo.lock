@@ -230,7 +230,7 @@ dependencies = [
 
 [[package]]
 name = "rhai_rustler"
-version = "1.0.1"
+version = "1.1.0-dev"
 dependencies = [
  "rhai",
  "rhai-dylib",
@@ -240,8 +240,9 @@ dependencies = [
 
 [[package]]
 name = "rustler"
-version = "0.29.0"
-source = "git+https://github.com/fabriziosestito/rustler.git?rev=dbb62cc#dbb62cc04547386aacd6c23d645917881a7dd400"
+version = "0.29.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "0884cb623b9f43d3e2c51f9071c5e96a5acf3e6e6007866812884ff0cb983f1e"
 dependencies = [
  "lazy_static",
  "rustler_codegen",
@@ -250,8 +251,9 @@ dependencies = [
 
 [[package]]
 name = "rustler_codegen"
-version = "0.29.0"
-source = "git+https://github.com/fabriziosestito/rustler.git?rev=dbb62cc#dbb62cc04547386aacd6c23d645917881a7dd400"
+version = "0.29.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "50e277af754f2560cf4c4ebedb68c1a735292fb354505c6133e47ec406e699cf"
 dependencies = [
  "heck",
  "proc-macro2",
@@ -261,8 +263,9 @@ dependencies = [
 
 [[package]]
 name = "rustler_sys"
-version = "2.3.0"
-source = "git+https://github.com/fabriziosestito/rustler.git?rev=dbb62cc#dbb62cc04547386aacd6c23d645917881a7dd400"
+version = "2.3.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "0a7c0740e5322b64e2b952d8f0edce5f90fcf6f6fe74cca3f6e78eb3de5ea858"
 dependencies = [
  "regex",
  "unreachable",
@@ -315,18 +318,18 @@ dependencies = [
 
 [[package]]
 name = "thiserror"
-version = "1.0.43"
+version = "1.0.44"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "a35fc5b8971143ca348fa6df4f024d4d55264f3468c71ad1c2f365b0a4d58c42"
+checksum = "611040a08a0439f8248d1990b111c95baa9c704c805fa1f62104b39655fd7f90"
 dependencies = [
  "thiserror-impl",
 ]
 
 [[package]]
 name = "thiserror-impl"
-version = "1.0.43"
+version = "1.0.44"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "463fe12d7993d3b327787537ce8dd4dfa058de32fc2b195ef3cde03dc4771e8f"
+checksum = "090198534930841fab3a5d1bb637cde49e339654e606195f8d9c76eeb081dc96"
 dependencies = [
  "proc-macro2",
  "quote",
