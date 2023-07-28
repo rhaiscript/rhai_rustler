@@ -1,5 +1,13 @@
 # Changelog
 
+## [v1.0.2](https://github.com/fabriziosestito/rhai_rustler/tree/v1.0.2) (2023-07-28)
+
+[Full Changelog](https://github.com/fabriziosestito/rhai_rustler/compare/v1.0.1...v1.0.2)
+
+- Fix rustler dependency being fetched from fork
+- Bump thiserror from 1.0.43 to 1.0.44 in /native/rhai\_rustler [\#120](https://github.com/fabriziosestito/rhai_rustler/pull/120) ([dependabot[bot]](https://github.com/apps/dependabot))
+- Bump ex\_doc from 0.30.2 to 0.30.3 [\#119](https://github.com/fabriziosestito/rhai_rustler/pull/119) ([dependabot[bot]](https://github.com/apps/dependabot))
+
 ## [v1.0.1](https://github.com/fabriziosestito/rhai_rustler/tree/v1.0.1) (2023-07-17)
 
 [Full Changelog](https://github.com/fabriziosestito/rhai_rustler/compare/v1.0.0...v1.0.1)
