@@ -13,4 +13,4 @@ crate-type = ["cdylib"]
 rhai = { version = "=1.15.1", features = ["sync"] }
 rhai-dylib = { version = "0.1.9", features = ["sync"] }
 thiserror = "1.0.43"
-rustler = { git = "https://github.com/fabriziosestito/rustler.git", rev = "dbb62cc" }
+rustler = "0.29.1"
