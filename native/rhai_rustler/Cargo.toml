@@ -12,5 +12,5 @@ crate-type = ["cdylib"]
 [dependencies]
 rhai = { version = "=1.15.1", features = ["sync"] }
 rhai-dylib = { version = "0.1.9", features = ["sync"] }
-thiserror = "1.0.44"
+thiserror = "1.0.46"
 rustler = "0.29.1"
