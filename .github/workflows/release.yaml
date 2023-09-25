@@ -45,7 +45,7 @@ jobs:
 
       - name: Build the project
         id: build-crate
-        uses: philss/rustler-precompiled-action@v1.0.1
+        uses: philss/rustler-precompiled-action@v1.1.0
         with:
           project-name: rhai_rustler
           project-version: ${{ env.PROJECT_VERSION }}
