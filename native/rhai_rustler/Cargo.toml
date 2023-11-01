@@ -1,6 +1,6 @@
 [package]
 name = "rhai_rustler"
-version = "1.0.2"
+version = "1.1.0-dev"
 authors = ["Fabrizio Sestito <fabrizio.sestito@suse.com>"]
 edition = "2021"
 
@@ -10,7 +10,7 @@ path = "src/lib.rs"
 crate-type = ["cdylib"]
 
 [dependencies]
-rhai = { version = "=1.15.1", features = ["sync"] }
-rhai-dylib = { version = "0.1.9", features = ["sync"] }
+rhai = { version = "=1.16.3", features = ["sync"] }
+rhai-dylib = { version = "0.1.12", features = ["sync"] }
 thiserror = "1.0.50"
 rustler = "0.30.0"
