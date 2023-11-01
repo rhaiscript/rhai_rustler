@@ -30,12 +30,12 @@ pub fn from_dynamic(env: Env, value: Dynamic) -> Term {
 
 pub fn to_dynamic<'a>(env: Env<'a>, term: &Term<'a>) -> Dynamic {
     match Term::get_type(*term) {
-        rustler::TermType::Binary => term
+        TermType::Binary => term
             .decode::<String>()
             .map(Dynamic::from)
             .expect("get_type() returned Binary but could not decode as string."),
 
-        rustler::TermType::Atom => term
+        TermType::Atom => term
             .decode::<bool>()
             .map(Dynamic::from)
             .or_else(|_| {
@@ -46,8 +46,6 @@ pub fn to_dynamic<'a>(env: Env<'a>, term: &Term<'a>) -> Dynamic {
                 }
             })
             .expect("get_type() returned Atom but could not decode as string, boolean or empty."),
-        TermType::EmptyList => Dynamic::from(Vec::<Dynamic>::new()),
-        TermType::Exception => Dynamic::from(()),
         TermType::Fun => Dynamic::from(()),
         TermType::List => {
             let items: Vec<Dynamic> = term
@@ -70,12 +68,14 @@ pub fn to_dynamic<'a>(env: Env<'a>, term: &Term<'a>) -> Dynamic {
             }
             Dynamic::from(object_map)
         }
-        TermType::Number => term
+        TermType::Integer => term
             .decode::<i64>()
             .map(Dynamic::from)
-            .or_else(|_| term.decode::<f64>().map(Dynamic::from))
-            .expect("get_type() returned Number but could not decode as integer or float."),
-
+            .expect("get_type() returned Integer but could not decode as integer."),
+        TermType::Float => term
+            .decode::<f64>()
+            .map(Dynamic::from)
+            .expect("get_type() returned Float but could not decode as float."),
         TermType::Pid => Dynamic::from(()),
         TermType::Port => Dynamic::from(()),
         TermType::Ref => Dynamic::from(()),
