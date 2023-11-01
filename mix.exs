@@ -1,7 +1,7 @@
 defmodule Rhai.MixProject do
   use Mix.Project
 
-  @version "1.0.2"
+  @version "1.0.2-dev"
 
   def project do
     [
