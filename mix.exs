@@ -76,7 +76,3 @@ defmodule Rhai.MixProject do
     ]
   end
 end
-
-
-
-
