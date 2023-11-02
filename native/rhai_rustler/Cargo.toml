@@ -14,3 +14,8 @@ rhai = { version = "=1.16.3", features = ["sync"] }
 rhai-dylib = { version = "0.1.12", features = ["sync"] }
 thiserror = "1.0.50"
 rustler = "0.30.0"
+
+[features]
+nif_version_2_15 = ["rustler/nif_version_2_15"]
+nif_version_2_16 = ["rustler/nif_version_2_16"]
+nif_version_2_17 = ["rustler/nif_version_2_17"]
