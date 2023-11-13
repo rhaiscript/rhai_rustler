@@ -1,6 +1,6 @@
 [package]
 name = "rhai_rustler"
-version = "1.1.0-dev"
+version = "1.1.0"
 authors = ["Fabrizio Sestito <fabrizio.sestito@suse.com>"]
 edition = "2021"
 

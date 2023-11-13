@@ -1,10 +1,33 @@
 # Changelog
 
+## [v1.1.0](https://github.com/fabriziosestito/rhai_rustler/tree/v1.1.0) (2023-11-13)
+
+[Full Changelog](https://github.com/fabriziosestito/rhai_rustler/compare/v1.0.2...v1.1.0)
+
+- fix: integer float conversion and native deps bump [\#149](https://github.com/fabriziosestito/rhai_rustler/pull/149) ([fabriziosestito](https://github.com/fabriziosestito))
+- Bump philss/rustler-precompiled-action from 1.1.1 to 1.1.3 [\#147](https://github.com/fabriziosestito/rhai_rustler/pull/147) ([dependabot[bot]](https://github.com/apps/dependabot))
+- Bump dialyxir from 1.3.0 to 1.4.2 [\#146](https://github.com/fabriziosestito/rhai_rustler/pull/146) ([dependabot[bot]](https://github.com/apps/dependabot))
+- Bump thiserror from 1.0.49 to 1.0.50 in /native/rhai\_rustler [\#145](https://github.com/fabriziosestito/rhai_rustler/pull/145) ([dependabot[bot]](https://github.com/apps/dependabot))
+- Bump ex\_doc from 0.30.8 to 0.30.9 [\#144](https://github.com/fabriziosestito/rhai_rustler/pull/144) ([dependabot[bot]](https://github.com/apps/dependabot))
+- Bump philss/rustler-precompiled-action from 1.1.0 to 1.1.1 [\#143](https://github.com/fabriziosestito/rhai_rustler/pull/143) ([dependabot[bot]](https://github.com/apps/dependabot))
+- Bump ex\_doc from 0.30.6 to 0.30.8 [\#142](https://github.com/fabriziosestito/rhai_rustler/pull/142) ([dependabot[bot]](https://github.com/apps/dependabot))
+- Bump rustler from 0.29.1 to 0.30.0 in /native/rhai\_rustler [\#140](https://github.com/fabriziosestito/rhai_rustler/pull/140) ([dependabot[bot]](https://github.com/apps/dependabot))
+- Bump rustler from 0.29.1 to 0.30.0 in /native/test\_dylib\_module [\#139](https://github.com/fabriziosestito/rhai_rustler/pull/139) ([dependabot[bot]](https://github.com/apps/dependabot))
+- Bump rustler from 0.29.1 to 0.30.0 [\#138](https://github.com/fabriziosestito/rhai_rustler/pull/138) ([dependabot[bot]](https://github.com/apps/dependabot))
+- Bump credo from 1.7.0 to 1.7.1 [\#137](https://github.com/fabriziosestito/rhai_rustler/pull/137) ([dependabot[bot]](https://github.com/apps/dependabot))
+- Bump thiserror from 1.0.44 to 1.0.49 in /native/rhai\_rustler [\#136](https://github.com/fabriziosestito/rhai_rustler/pull/136) ([dependabot[bot]](https://github.com/apps/dependabot))
+- Bump philss/rustler-precompiled-action from 1.0.1 to 1.1.0 [\#135](https://github.com/fabriziosestito/rhai_rustler/pull/135) ([dependabot[bot]](https://github.com/apps/dependabot))
+- Bump rustler\_precompiled from 0.6.3 to 0.7.0 [\#134](https://github.com/fabriziosestito/rhai_rustler/pull/134) ([dependabot[bot]](https://github.com/apps/dependabot))
+- Bump rhai-dylib from 0.1.9 to 0.1.11 in /native/test\_dylib\_module [\#133](https://github.com/fabriziosestito/rhai_rustler/pull/133) ([dependabot[bot]](https://github.com/apps/dependabot))
+- Bump actions/checkout from 3 to 4 [\#130](https://github.com/fabriziosestito/rhai_rustler/pull/130) ([dependabot[bot]](https://github.com/apps/dependabot))
+- Bump rustler\_precompiled from 0.6.2 to 0.6.3 [\#128](https://github.com/fabriziosestito/rhai_rustler/pull/128) ([dependabot[bot]](https://github.com/apps/dependabot))
+- Bump ex\_doc from 0.30.5 to 0.30.6 [\#126](https://github.com/fabriziosestito/rhai_rustler/pull/126) ([dependabot[bot]](https://github.com/apps/dependabot))
+- Bump ex\_doc from 0.30.3 to 0.30.5 [\#122](https://github.com/fabriziosestito/rhai_rustler/pull/122) ([dependabot[bot]](https://github.com/apps/dependabot))
+
 ## [v1.0.2](https://github.com/fabriziosestito/rhai_rustler/tree/v1.0.2) (2023-07-28)
 
 [Full Changelog](https://github.com/fabriziosestito/rhai_rustler/compare/v1.0.1...v1.0.2)
 
-- Fix rustler dependency being fetched from fork
 - Bump thiserror from 1.0.43 to 1.0.44 in /native/rhai\_rustler [\#120](https://github.com/fabriziosestito/rhai_rustler/pull/120) ([dependabot[bot]](https://github.com/apps/dependabot))
 - Bump ex\_doc from 0.30.2 to 0.30.3 [\#119](https://github.com/fabriziosestito/rhai_rustler/pull/119) ([dependabot[bot]](https://github.com/apps/dependabot))
 
