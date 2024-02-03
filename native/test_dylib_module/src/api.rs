@@ -1,8 +1,4 @@
-use rhai_dylib::rhai::plugin::{
-    mem, Dynamic, FnAccess, FnNamespace, ImmutableString, NativeCallContext, PluginFunction,
-    RhaiResult, TypeId,
-};
-
+use rhai_dylib::rhai::plugin::*;
 use rhai_dylib::rhai::{Map, Module, INT};
 
 #[derive(Clone)]
@@ -11,7 +7,7 @@ pub struct MyPluginObjectInner {
 }
 
 // The plugin API from rhai can be used to create your plugin API.
-#[rhai_dylib::rhai::plugin::export_module]
+#[rhai_dylib::rhai::export_module]
 pub mod my_plugin_api {
 
     // Implement a custom type.

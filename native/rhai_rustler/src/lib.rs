@@ -4,7 +4,7 @@ mod error;
 mod scope;
 mod types;
 
-use rhai::config::hashing::set_ahash_seed;
+use rhai::config::hashing::set_hashing_seed;
 use rustler::{Env, Term};
 
 use crate::ast::*;
@@ -13,7 +13,7 @@ use crate::scope::*;
 
 fn load(env: Env, _: Term) -> bool {
     // Set dylib ahash seed
-    if let Err(value) = set_ahash_seed(Some([1, 3, 3, 7])) {
+    if let Err(value) = set_hashing_seed(Some([1, 3, 3, 7])) {
         eprintln!(
             "Failed to set ahash seed, ahash seed already set: {:?}",
             value
