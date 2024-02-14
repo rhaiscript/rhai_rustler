@@ -13,7 +13,7 @@ crate-type = ["cdylib"]
 rhai = { version = "=1.17.1", features = ["sync"] }
 rhai-dylib = { version = "0.1.12", features = ["sync"] }
 thiserror = "1.0.56"
-rustler = "0.30.0"
+rustler = "0.31.0"
 
 [features]
 nif_version_2_15 = ["rustler/nif_version_2_15"]
