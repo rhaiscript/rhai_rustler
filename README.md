@@ -1,8 +1,8 @@
 # rhai_rustler
 
-[![CI](https://github.com/fabriziosestito/rhai_rustler/actions/workflows/main.yaml/badge.svg)](https://github.com/fabriziosestito/rhai_rustler/actions/workflows/main.yaml)
-[![Rust CI](https://github.com/fabriziosestito/rhai_rustler/actions/workflows/rust-ci.yaml/badge.svg)](https://github.com/fabriziosestito/rhai_rustler/actions/workflows/rust-ci.yaml)
-[![NIFs precompilation](https://github.com/fabriziosestito/rhai_rustler/actions/workflows/release.yaml/badge.svg)](https://github.com/fabriziosestito/rhai_rustler/actions/workflows/release.yaml)
+[![CI](https://github.com/rhaiscript/rhai_rustler/actions/workflows/main.yaml/badge.svg)](https://github.com/rhaiscript/rhai_rustler/actions/workflows/main.yaml)
+[![Rust CI](https://github.com/rhaiscript/rhai_rustler/actions/workflows/rust-ci.yaml/badge.svg)](https://github.com/rhaiscript/rhai_rustler/actions/workflows/rust-ci.yaml)
+[![NIFs precompilation](https://github.com/rhaiscript/rhai_rustler/actions/workflows/release.yaml/badge.svg)](https://github.com/rhaiscript/rhai_rustler/actions/workflows/release.yaml)
 [![Hex.pm](https://img.shields.io/hexpm/v/rhai_rustler.svg)](https://hex.pm/packages/rhai_rustler)
 [![Hex Docs](https://img.shields.io/badge/hex-docs-purple.svg)](https://hexdocs.pm/rhai_rustler/)
 
@@ -94,7 +94,7 @@ engine = Rhai.Engine.register_package(engine, :basic_array)
 
 `rhai_rustler` utilizes the `[rhai_dylib](https://github.com/rhaiscript/rhai-dylib)` library to expand the capabilities of Rhai by loading external native Rust modules. This allows users to introduce new functions, custom types, and operators.
 
-[test_dylib_module](https://github.com/fabriziosestito/rhai_rustler/tree/main/native/test_dylib_module) serves as an example of how to create a dylib module. A [dummy rustler module](https://github.com/fabriziosestito/rhai_rustler/blob/main/test/support/test_dylib_module.ex) is employed to trigger the compilation process. This same approach can be adopted in real-world projects, such as when distributing the dylib module as a Hex package.
+[test_dylib_module](https://github.com/rhaiscript/rhai_rustler/tree/main/native/test_dylib_module) serves as an example of how to create a dylib module. A [dummy rustler module](https://github.com/rhaiscript/rhai_rustler/blob/main/test/support/test_dylib_module.ex) is employed to trigger the compilation process. This same approach can be adopted in real-world projects, such as when distributing the dylib module as a Hex package.
 
 ## Type conversion table
 

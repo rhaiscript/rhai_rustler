@@ -43,7 +43,7 @@ defmodule Rhai.MixProject do
       licenses: ["Apache-2.0"],
       mantainers: ["Fabrizio Sestito <fabrizio.sestito@suse.com>"],
       links: %{
-        "GitHub" => "https://github.com/fabriziosestito/rhai_rustler",
+        "GitHub" => "https://github.com/rhaiscript/rhai_rustler",
         "Docs" => "https://hexdocs.pm/rhai_rustler/"
       }
     ]
@@ -76,3 +76,5 @@ defmodule Rhai.MixProject do
     ]
   end
 end
+
+
