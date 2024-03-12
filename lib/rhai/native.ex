@@ -18,7 +18,7 @@ defmodule Rhai.Native do
   use RustlerPrecompiled,
     otp_app: :rhai_rustler,
     crate: "rhai_rustler",
-    base_url: "https://github.com/fabriziosestito/rhai_rustler/releases/download/v#{version}",
+    base_url: "https://github.com/rhaiscript/rhai_rustler/releases/download/v#{version}",
     force_build:
       Application.compile_env(:rustler_precompiled, [:force_build, :rhai_rustler], false) ||
         System.get_env("RHAI_RUSTLER_FORCE_BUILD") in ["1", "true"],
