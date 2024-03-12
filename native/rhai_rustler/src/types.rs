@@ -62,18 +62,20 @@ pub fn to_dynamic<'a>(env: Env<'a>, term: &Term<'a>) -> Dynamic {
 
             for (k, v) in term
                 .decode::<HashMap<String, Term>>()
-                .expect("get_type() returned Number but could not decod Hashmap.")
+                .expect("get_type() returned Map but could not decod Hashmap.")
             {
                 object_map.insert(k.into(), to_dynamic(env, &v));
             }
             Dynamic::from(object_map)
         }
         TermType::Float => term
+            .decode::<f64>()
+            .map(Dynamic::from)
+            .expect("get_type() returned Float but could not decode as float."),
+        TermType::Integer => term
             .decode::<i64>()
             .map(Dynamic::from)
-            .or_else(|_| term.decode::<f64>().map(Dynamic::from))
-            .expect("get_type() returned Number but could not decode as integer or float."),
-
+            .expect("get_type() returned Integer but could not decode as integer."),
         TermType::Pid => Dynamic::from(()),
         TermType::Port => Dynamic::from(()),
         TermType::Ref => Dynamic::from(()),
@@ -88,6 +90,5 @@ pub fn to_dynamic<'a>(env: Env<'a>, term: &Term<'a>) -> Dynamic {
         }
 
         TermType::Unknown => Dynamic::from(()),
-        TermType::Integer => unreachable!(),
     }
 }
