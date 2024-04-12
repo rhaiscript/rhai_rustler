@@ -10,5 +10,5 @@ path = "src/lib.rs"
 crate-type = ["cdylib"]
 
 [dependencies]
-rhai-dylib = { version = "=0.2.1", features = ["sync"] }
+rhai-dylib = { version = "=0.3.0", features = ["sync"] }
 rustler = "0.31.0"
