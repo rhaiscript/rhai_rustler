@@ -225,7 +225,7 @@ dependencies = [
 
 [[package]]
 name = "rhai_rustler"
-version = "1.1.1"
+version = "1.1.2-dev"
 dependencies = [
  "rhai",
  "rhai-dylib",
