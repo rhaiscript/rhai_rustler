@@ -14,6 +14,6 @@
   "nimble_parsec": {:hex, :nimble_parsec, "1.4.0", "51f9b613ea62cfa97b25ccc2c1b4216e81df970acd8e16e8d1bdc58fef21370d", [:mix], [], "hexpm", "9c565862810fb383e9838c1dd2d7d2c437b3d13b267414ba6af33e50d2d1cf28"},
   "rustler": {:hex, :rustler, "0.33.0", "4a5b0a7a7b0b51549bea49947beff6fae9bc5d5326104dcd4531261e876b5619", [:mix], [{:jason, "~> 1.0", [hex: :jason, repo: "hexpm", optional: false]}, {:toml, "~> 0.6", [hex: :toml, repo: "hexpm", optional: false]}], "hexpm", "7c4752728fee59a815ffd20c3429c55b644041f25129b29cdeb5c470b80ec5fd"},
   "rustler_precompiled": {:hex, :rustler_precompiled, "0.7.1", "ecadf02cc59a0eccbaed6c1937303a5827fbcf60010c541595e6d3747d3d0f9f", [:mix], [{:castore, "~> 0.1 or ~> 1.0", [hex: :castore, repo: "hexpm", optional: false]}, {:rustler, "~> 0.23", [hex: :rustler, repo: "hexpm", optional: true]}], "hexpm", "b9e4657b99a1483ea31502e1d58c464bedebe9028808eda45c3a429af4550c66"},
-  "stream_data": {:hex, :stream_data, "1.0.0", "c1380747a4650902732696861d5cb66ad3cb1cc93f31c2c8498bf87cddbabe2d", [:mix], [], "hexpm", "acd53e27c66c617d466f42ec77a7f59e5751f6051583c621ccdb055b9690435d"},
+  "stream_data": {:hex, :stream_data, "1.1.0", "ef3a7cac0f200c43caf3e6caf9be63115851b4f1cde3f21afaab220adc40e3d7", [:mix], [], "hexpm", "cccc411d5facf1bab86e7c671382d164f05f8992574c95349d3c8b317e14d953"},
   "toml": {:hex, :toml, "0.7.0", "fbcd773caa937d0c7a02c301a1feea25612720ac3fa1ccb8bfd9d30d822911de", [:mix], [], "hexpm", "0690246a2478c1defd100b0c9b89b4ea280a22be9a7b313a8a058a2408a2fa70"},
 }
