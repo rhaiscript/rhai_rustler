@@ -1,3 +1,5 @@
+use std::panic::RefUnwindSafe;
+
 use thiserror::Error;
 
 use rhai::{EvalAltResult, ParseError};
@@ -50,9 +52,21 @@ pub enum ScopeError {
 }
 
 #[derive(Error, Debug)]
+#[error(transparent)]
+pub struct EvaluationError(pub Box<EvalAltResult>);
+
+impl RefUnwindSafe for EvaluationError {}
+
+impl From<Box<EvalAltResult>> for RhaiRustlerError {
+    fn from(err: Box<EvalAltResult>) -> Self {
+        RhaiRustlerError::EvaluationError(EvaluationError(err))
+    }
+}
+
+#[derive(Error, Debug)]
 pub enum RhaiRustlerError {
     #[error("Error in evaluation: {0}.")]
-    EvalAltResult(#[from] Box<EvalAltResult>),
+    EvaluationError(#[from] EvaluationError),
     #[error("Error when parsing a script: {0}.")]
     ParseError(#[from] ParseError),
     #[error("Error when accessing a scope: {0}.")]
@@ -64,7 +78,7 @@ pub enum RhaiRustlerError {
 impl Encoder for RhaiRustlerError {
     fn encode<'a>(&self, env: Env<'a>) -> Term<'a> {
         match self {
-            RhaiRustlerError::EvalAltResult(err) => {
+            RhaiRustlerError::EvaluationError(EvaluationError(err)) => {
                 let error_atom = match err.unwrap_inner() {
                     EvalAltResult::ErrorSystem(_, _) => atoms::system(),
                     EvalAltResult::ErrorParsing(_, _) => atoms::parsing(),
