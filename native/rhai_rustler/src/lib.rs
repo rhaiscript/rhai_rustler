@@ -21,11 +21,14 @@ fn load(env: Env, _: Term) -> bool {
         return false;
     }
 
-    rustler::resource!(EngineResource, env);
-    rustler::resource!(ScopeResource, env);
-    rustler::resource!(ASTResource, env);
+    let resources = [
+        rustler::resource!(EngineResource, env),
+        rustler::resource!(ScopeResource, env),
+        rustler::resource!(ASTResource, env),
+    ];
 
-    true
+    // If any resource was not loaded correctly, return false
+    !resources.into_iter().any(|resource| !resource)
 }
 
 rustler::init!("Elixir.Rhai.Native", load = load);
