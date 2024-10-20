@@ -14,4 +14,4 @@ pub extern "C" fn module_entrypoint() -> Shared<Module> {
     exported_module!(api::my_plugin_api).into()
 }
 
-rustler::init!("Elixir.Rhai.TestDylibModule", []);
+rustler::init!("Elixir.Rhai.TestDylibModule");
