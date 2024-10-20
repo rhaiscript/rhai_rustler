@@ -1,3 +1,5 @@
+use std::panic::RefUnwindSafe;
+
 use thiserror::Error;
 
 use rhai::{EvalAltResult, ParseError};
@@ -50,21 +52,33 @@ pub enum ScopeError {
 }
 
 #[derive(Error, Debug)]
+#[error(transparent)]
+pub struct EvaluationError(pub Box<EvalAltResult>);
+
+impl RefUnwindSafe for EvaluationError {}
+
+impl From<Box<EvalAltResult>> for RhaiRustlerError {
+    fn from(err: Box<EvalAltResult>) -> Self {
+        RhaiRustlerError::Evaluation(EvaluationError(err))
+    }
+}
+
+#[derive(Error, Debug)]
 pub enum RhaiRustlerError {
     #[error("Error in evaluation: {0}.")]
-    EvalAltResult(#[from] Box<EvalAltResult>),
+    Evaluation(#[from] EvaluationError),
     #[error("Error when parsing a script: {0}.")]
-    ParseError(#[from] ParseError),
+    Parse(#[from] ParseError),
     #[error("Error when accessing a scope: {0}.")]
-    ScopeError(#[from] ScopeError),
+    Scope(#[from] ScopeError),
     #[error("Error when defining a custom operator: {message}.")]
-    CustomOperatorError { message: String },
+    CustomOperator { message: String },
 }
 
 impl Encoder for RhaiRustlerError {
     fn encode<'a>(&self, env: Env<'a>) -> Term<'a> {
         match self {
-            RhaiRustlerError::EvalAltResult(err) => {
+            RhaiRustlerError::Evaluation(EvaluationError(err)) => {
                 let error_atom = match err.unwrap_inner() {
                     EvalAltResult::ErrorSystem(_, _) => atoms::system(),
                     EvalAltResult::ErrorParsing(_, _) => atoms::parsing(),
@@ -108,10 +122,10 @@ impl Encoder for RhaiRustlerError {
 
                 make_reason_tuple(env, error_atom, err.to_string())
             }
-            RhaiRustlerError::ParseError(err) => {
+            RhaiRustlerError::Parse(err) => {
                 make_reason_tuple(env, atoms::parsing(), err.to_string())
             }
-            RhaiRustlerError::ScopeError(err) => {
+            RhaiRustlerError::Scope(err) => {
                 let error_atom = match err {
                     ScopeError::ErrorScopeIsEmpty => atoms::scope_is_empty(),
                     ScopeError::ErrorCannotUpdateValueOfConstant => {
@@ -121,7 +135,7 @@ impl Encoder for RhaiRustlerError {
 
                 make_reason_tuple(env, error_atom, err.to_string())
             }
-            RhaiRustlerError::CustomOperatorError { message } => {
+            RhaiRustlerError::CustomOperator { message } => {
                 make_reason_tuple(env, atoms::custom_operator(), message.to_owned())
             }
         }

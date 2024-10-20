@@ -112,7 +112,7 @@ fn engine_register_custom_operator(
 
     match engine.register_custom_operator(keyword, precedence) {
         Ok(_) => Ok(()),
-        Err(message) => Err(RhaiRustlerError::CustomOperatorError { message }),
+        Err(message) => Err(RhaiRustlerError::CustomOperator { message }),
     }
 }
 
