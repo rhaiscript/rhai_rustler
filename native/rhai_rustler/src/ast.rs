@@ -1,11 +1,14 @@
 use std::sync::Mutex;
 
 use rhai::AST;
-use rustler::ResourceArc;
+use rustler::{Resource, ResourceArc};
 
 pub struct ASTResource {
     pub ast: Mutex<AST>,
 }
+
+#[rustler::resource_impl]
+impl Resource for ASTResource {}
 
 #[rustler::nif]
 fn ast_empty() -> ResourceArc<ASTResource> {

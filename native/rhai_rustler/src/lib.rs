@@ -7,11 +7,7 @@ mod types;
 use rhai::config::hashing::set_hashing_seed;
 use rustler::{Env, Term};
 
-use crate::ast::*;
-use crate::engine::*;
-use crate::scope::*;
-
-fn load(env: Env, _: Term) -> bool {
+fn load(_: Env, _: Term) -> bool {
     // Set dylib ahash seed
     if let Err(value) = set_hashing_seed(Some([1, 3, 3, 7])) {
         eprintln!(
@@ -21,14 +17,7 @@ fn load(env: Env, _: Term) -> bool {
         return false;
     }
 
-    let resources = [
-        rustler::resource!(EngineResource, env),
-        rustler::resource!(ScopeResource, env),
-        rustler::resource!(ASTResource, env),
-    ];
-
-    // If any resource was not loaded correctly, return false
-    !resources.into_iter().any(|resource| !resource)
+    true
 }
 
 rustler::init!("Elixir.Rhai.Native", load = load);

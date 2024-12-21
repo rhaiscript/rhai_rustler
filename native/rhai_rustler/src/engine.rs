@@ -9,7 +9,7 @@ use rhai::{
 use rhai_dylib::loader::{libloading::Libloading, Loader};
 use rhai_dylib::module_resolvers::libloading::DylibModuleResolver;
 
-use rustler::{Env, NifUnitEnum, ResourceArc, Term};
+use rustler::{Env, NifUnitEnum, Resource, ResourceArc, Term};
 
 use crate::{
     ast::ASTResource,
@@ -28,6 +28,9 @@ const DYLIB_EXTENSION: &str = "dll";
 pub struct EngineResource {
     pub engine: Mutex<Engine>,
 }
+
+#[rustler::resource_impl]
+impl Resource for EngineResource {}
 
 #[rustler::nif]
 fn engine_new() -> ResourceArc<EngineResource> {
