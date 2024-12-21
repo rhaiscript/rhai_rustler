@@ -1,7 +1,7 @@
 use std::sync::Mutex;
 
 use rhai::Scope;
-use rustler::{Encoder, Env, ResourceArc, Term};
+use rustler::{Encoder, Env, Resource, ResourceArc, Term};
 
 use crate::{
     error::{RhaiRustlerError, ScopeError},
@@ -11,6 +11,9 @@ use crate::{
 pub struct ScopeResource {
     pub scope: Mutex<Scope<'static>>,
 }
+
+#[rustler::resource_impl]
+impl Resource for ScopeResource {}
 
 #[rustler::nif]
 fn scope_new() -> ResourceArc<ScopeResource> {
