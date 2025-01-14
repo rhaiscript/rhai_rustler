@@ -67,7 +67,7 @@ defmodule Rhai.MixProject do
 
   defp deps do
     [
-      {:rustler, "~> 0.35.0"},
+      {:rustler, "~> 0.36.0"},
       {:rustler_precompiled, "~> 0.8.0"},
       {:ex_doc, ">= 0.0.0", only: :dev, runtime: false},
       {:credo, "~> 1.6", only: [:dev, :test], runtime: false},
