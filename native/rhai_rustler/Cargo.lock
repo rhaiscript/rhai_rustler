@@ -188,9 +188,9 @@ dependencies = [
 
 [[package]]
 name = "rhai-dylib"
-version = "0.5.0"
+version = "0.6.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "5996402b1af9424e355dbf1761d0605f0f08eca909609b445383369a2bc83f0a"
+checksum = "1ba94b374f7c1773444814b2b99275206c1dcce454e39e38dbaa9c6e7d6aeba5"
 dependencies = [
  "libloading",
  "rhai",
