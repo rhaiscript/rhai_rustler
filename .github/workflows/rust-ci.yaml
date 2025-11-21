@@ -21,7 +21,7 @@ jobs:
 
     steps:
       - name: Check out this repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: Install Rust
         uses: actions-rs/toolchain@v1
